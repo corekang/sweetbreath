@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { BodyLarge } from "../../style/style";
+import { BodyLarge } from "../../constants/style";
 import { Link } from "react-router-dom";
-import { theme } from "../../style/theme";
+import { theme } from "../../constants/theme";
 
 const Logo = styled.div`
   display: flex;
