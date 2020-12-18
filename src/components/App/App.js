@@ -2,24 +2,26 @@ import React from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
-import HomePage from "../../pages/HomePage";
-import AboutPage from "../../pages/AboutPage";
-import LoginPage from "../../pages/LoginPage";
-import RegisterPage from "../../pages/RegisterPage";
-import ProductListPage from "../../pages/ProductListPage";
-import ProductPage from "../../pages/ProductPage";
-import NewsPage from "../../pages/NewsPage";
-import ContactUsPage from "../../pages/ContactUsPage";
-import CartPage from "../../pages/CartPage";
-import CheckoutPage from "../../pages/CheckoutPage";
-import OrderListPage from "../../pages/OrderListPage";
-import MemberPage from "../../pages/MemberPage";
-import AdminPage from "../../pages/admin/AdminPage";
-import AdminProductListPage from "../../pages/admin/AdminProductListPage";
-import AdminProductPage from "../../pages/admin/AdminProductPage";
-import AdminMemberPage from "../../pages/admin/AdminMemberPage";
-import AdminOrderListPage from "../../pages/admin/AdminOrderListPage";
-import AdminNewsPage from "../../pages/admin/AdminNewsPage";
+import {
+  HomePage,
+  AboutPage,
+  LoginPage,
+  RegisterPage,
+  ProductListPage,
+  ProductPage,
+  NewsPage,
+  ContactUsPage,
+  CartPage,
+  CheckoutPage,
+  OrderListPage,
+  MemberPage,
+  AdminPage,
+  AdminProductListPage,
+  AdminProductPage,
+  AdminMemberPage,
+  AdminOrderListPage,
+  AdminNewsPage,
+} from "../../pages";
 
 function App() {
   return (
