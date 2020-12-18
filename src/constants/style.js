@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { theme } from "./theme";
 
+export const MEDIA_QUERY = "@media screen and (min-width: 768px)";
+
 export const H1 = styled.h1`
   font-size: ${theme.fontSize.h1};
   font-weight: 500;
