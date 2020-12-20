@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BodyLarge } from "../../constants/style";
+import { BodyLarge, MEDIA_QUERY } from "../../constants/style";
 import { Link } from "react-router-dom";
 import { theme } from "../../constants/theme";
 import member from "../icon/member.png";
@@ -15,13 +15,21 @@ const Logo = styled.div`
 const NavbarContent = styled.div`
   display: flex;
   box-sizing: border-box;
-  min-width: 1440px;
+  max-width: 1440px;
   height: 86px;
-  padding: 27px 140px 26px;
+  padding: 27px;
   box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${theme.colors.neutralWhite};
   align-items: center;
   justify-content: space-between;
+  @media screen and (max-width: 1280px) {
+    padding: 27px 0px;
+  }
+  ${MEDIA_QUERY} {
+    min-width: 768px;
+    max-width: 1440px;
+    height: auto;
+  } ;
 `;
 
 const ButtonContent = styled(Link)`
@@ -34,12 +42,18 @@ const ButtonContent = styled(Link)`
   text-align: center;
   text-decoration: none;
   font-weight: 500;
+  @media screen and (max-width: 1280px) {
+    padding: 4px;
+  }
   :hover {
     background-color: ${theme.colors.neutralGrey};
     color: ${theme.colors.neutralSnow};
   }
   & + & {
     margin-left: 60px;
+    @media screen and (max-width: 1280px) {
+      margin-left: 20px;
+    }
   }
 `;
 
