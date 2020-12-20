@@ -18,13 +18,13 @@ const Logo = styled.div`
 const NavbarContent = styled.div`
   display: flex;
   box-sizing: border-box;
-  max-width: 1440px;
   height: 86px;
   padding: 27px;
   box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${theme.colors.neutralWhite};
   align-items: center;
   justify-content: space-between;
+  border: 0px soild black;
   @media screen and (max-width: 980px) {
     padding: 0px;
     justify-content: center;
@@ -46,13 +46,13 @@ const ButtonContent = styled(Link)`
   text-align: center;
   text-decoration: none;
   font-weight: 500;
-  @media screen and (max-width: 980px) {
+  ${MEDIA_QUERY} {
     padding: 0px;
   }
   :hover {
     background-color: ${theme.colors.neutralGrey};
     color: ${theme.colors.neutralSnow};
-    @media screen and (max-width: 980px) {
+    ${MEDIA_QUERY} {
       background-color: white;
     }
   }
@@ -115,7 +115,7 @@ const ButtonText = styled(BodyLarge)`
   ${MEDIA_QUERY} {
     padding: 9px 0px;
     :hover {
-      background-color: ${theme.colors.neutralLightGrey};
+      background-color: ${theme.colors.neutralGrey};
     }
   }
 `;
