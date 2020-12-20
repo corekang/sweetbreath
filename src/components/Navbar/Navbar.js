@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BodyLarge } from "../../constants/style";
+import { BodyLarge, MEDIA_QUERY } from "../../constants/style";
 import { Link } from "react-router-dom";
 import { theme } from "../../constants/theme";
 import member from "../icon/member.png";
@@ -10,18 +10,30 @@ import instagram from "../icon/instagram.png";
 
 const Logo = styled.div`
   display: flex;
+  ${MEDIA_QUERY} {
+    display: block;
+  } ;
 `;
 
 const NavbarContent = styled.div`
   display: flex;
   box-sizing: border-box;
-  min-width: 1440px;
   height: 86px;
-  padding: 27px 140px 26px;
+  padding: 27px;
   box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${theme.colors.neutralWhite};
   align-items: center;
   justify-content: space-between;
+  border: 0px soild black;
+  @media screen and (max-width: 980px) {
+    padding: 0px;
+    justify-content: center;
+  }
+  ${MEDIA_QUERY} {
+    display: block;
+    max-width: 768px;
+    height: auto;
+  } ;
 `;
 
 const ButtonContent = styled(Link)`
@@ -34,12 +46,21 @@ const ButtonContent = styled(Link)`
   text-align: center;
   text-decoration: none;
   font-weight: 500;
+  ${MEDIA_QUERY} {
+    padding: 0px;
+  }
   :hover {
     background-color: ${theme.colors.neutralGrey};
     color: ${theme.colors.neutralSnow};
+    ${MEDIA_QUERY} {
+      background-color: white;
+    }
   }
   & + & {
     margin-left: 60px;
+    @media screen and (max-width: 980px) {
+      margin-left: 0px;
+    }
   }
 `;
 
@@ -56,21 +77,33 @@ const IconContent = styled(Link)`
   }
   & + & {
     margin-left: 25px;
+    @media screen and (max-width: 980px) {
+      margin: 0px;
+    }
   }
 `;
 
 const FunctionBar = styled.div`
   display: flex;
+  box-sizing: border-box;
+  ${MEDIA_QUERY} {
+    display: block;
+  } ;
 `;
 
 const IconBar = styled.div`
   display: flex;
   box-sizing: border-box;
+  ${MEDIA_QUERY} {
+    display: flex;
+    justify-content: center;
+  } ;
 `;
 
 const IconImg = styled.img`
   width: 21px;
   height: 21px;
+  box-sizing: border-box;
 `;
 
 const InstagramImg = styled.img`
@@ -78,10 +111,19 @@ const InstagramImg = styled.img`
   height: 27px;
 `;
 
+const ButtonText = styled(BodyLarge)`
+  ${MEDIA_QUERY} {
+    padding: 9px 0px;
+    :hover {
+      background-color: ${theme.colors.neutralGrey};
+    }
+  }
+`;
+
 const NavButton = (props) => {
   return (
     <ButtonContent to={props.route}>
-      <BodyLarge>{props.title}</BodyLarge>
+      <ButtonText>{props.title}</ButtonText>
     </ButtonContent>
   );
 };
