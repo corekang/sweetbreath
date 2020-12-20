@@ -10,6 +10,9 @@ import instagram from "../icon/instagram.png";
 
 const Logo = styled.div`
   display: flex;
+  ${MEDIA_QUERY} {
+    display: block;
+  } ;
 `;
 
 const NavbarContent = styled.div`
@@ -22,12 +25,13 @@ const NavbarContent = styled.div`
   background-color: ${theme.colors.neutralWhite};
   align-items: center;
   justify-content: space-between;
-  @media screen and (max-width: 1280px) {
-    padding: 27px 0px;
+  @media screen and (max-width: 980px) {
+    padding: 0px;
+    justify-content: center;
   }
   ${MEDIA_QUERY} {
-    min-width: 768px;
-    max-width: 1440px;
+    display: block;
+    max-width: 768px;
     height: auto;
   } ;
 `;
@@ -42,17 +46,20 @@ const ButtonContent = styled(Link)`
   text-align: center;
   text-decoration: none;
   font-weight: 500;
-  @media screen and (max-width: 1280px) {
-    padding: 4px;
+  @media screen and (max-width: 980px) {
+    padding: 0px;
   }
   :hover {
     background-color: ${theme.colors.neutralGrey};
     color: ${theme.colors.neutralSnow};
+    @media screen and (max-width: 980px) {
+      background-color: white;
+    }
   }
   & + & {
     margin-left: 60px;
-    @media screen and (max-width: 1280px) {
-      margin-left: 20px;
+    @media screen and (max-width: 980px) {
+      margin-left: 0px;
     }
   }
 `;
@@ -70,21 +77,33 @@ const IconContent = styled(Link)`
   }
   & + & {
     margin-left: 25px;
+    @media screen and (max-width: 980px) {
+      margin: 0px;
+    }
   }
 `;
 
 const FunctionBar = styled.div`
   display: flex;
+  box-sizing: border-box;
+  ${MEDIA_QUERY} {
+    display: block;
+  } ;
 `;
 
 const IconBar = styled.div`
   display: flex;
   box-sizing: border-box;
+  ${MEDIA_QUERY} {
+    display: flex;
+    justify-content: center;
+  } ;
 `;
 
 const IconImg = styled.img`
   width: 21px;
   height: 21px;
+  box-sizing: border-box;
 `;
 
 const InstagramImg = styled.img`
@@ -92,10 +111,19 @@ const InstagramImg = styled.img`
   height: 27px;
 `;
 
+const ButtonText = styled(BodyLarge)`
+  ${MEDIA_QUERY} {
+    padding: 9px 0px;
+    :hover {
+      background-color: ${theme.colors.neutralLightGrey};
+    }
+  }
+`;
+
 const NavButton = (props) => {
   return (
     <ButtonContent to={props.route}>
-      <BodyLarge>{props.title}</BodyLarge>
+      <ButtonText>{props.title}</ButtonText>
     </ButtonContent>
   );
 };
