@@ -20,6 +20,7 @@ const Category = styled.div`
 `;
 
 const CategoryName = styled(H5)`
+  cursor: pointer;
   a {
     text-decoration: none;
     color: ${(props) => props.theme.colors.neutralBlack};
@@ -78,7 +79,22 @@ const Pointer = styled.div`
   }
 `;
 
-const ProductLink = styled.a`
+const Up = styled(Pointer)`
+  width: 55px;
+  height: 55px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  position: fixed;
+  top: 80%;
+  left: 90%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ProductLink = styled(Link)`
+  text-decoration: none;
+  color: ${(props) => props.theme.colors.neutralBlack};
   &:hover {
     ${Pointer} {
       display: flex;
@@ -101,19 +117,37 @@ const ProductPrice = styled(Body)`
 `;
 
 export default function ProductListPage() {
+  const scrollToAnchor = (anchorName) => {
+    if (anchorName) {
+      let anchorElement = document.getElementById(anchorName);
+      if (anchorElement) {
+        anchorElement.scrollIntoView();
+      }
+    }
+  };
+
   return (
     <Content>
-      <H1>MENU</H1>
+      <H1 id="top">MENU</H1>
+      <Up onClick={() => scrollToAnchor("top")}>
+        <span>⇧</span>
+      </Up>
       <Category>
-        <CategoryName to="#cake">常溫蛋糕</CategoryName>
-        <CategoryName to="#pie">家常塔派</CategoryName>
-        <CategoryName to="#house">招牌蛋糕</CategoryName>
+        <CategoryName onClick={() => scrollToAnchor("cake")}>
+          常溫蛋糕
+        </CategoryName>
+        <CategoryName onClick={() => scrollToAnchor("pie")}>
+          家常塔派
+        </CategoryName>
+        <CategoryName onClick={() => scrollToAnchor("house")}>
+          招牌蛋糕
+        </CategoryName>
       </Category>
       <CategorySection>
         <CategoryTitle id="cake">常溫蛋糕</CategoryTitle>
         <ProductList>
           <Product>
-            <ProductLink>
+            <ProductLink to="/ProductPage/">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
