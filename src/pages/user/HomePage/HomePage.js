@@ -4,8 +4,8 @@ import { BodyLarge, MEDIA_QUERY, H2 } from "../../../constants/style";
 import { Link } from "react-router-dom";
 
 const SubTitle = styled(H2)`
-  margin-top: 80px;
-  margin-bottom: 11px;
+  width: 80%;
+  margin: 80px auto 11px;
   text-align: center;
   padding-bottom: 20px;
   color: ${(props) => props.theme.colors.neutralDarkGrey};
@@ -64,12 +64,12 @@ const Product = styled.div`
 const Pointer = styled.div`
   display: none;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   width: 46px;
   height: 46px;
   font-size: ${(props) => props.theme.fontSize.h4};
   font-weight: bold;
-  top: 67%;
+  top: 72%;
   border-radius: 50%;
   left: 76%;
   color: ${(props) => props.theme.colors.neutralWhite};
@@ -99,7 +99,12 @@ const ProductImage = styled.img`
 `;
 
 const ProductName = styled(BodyLarge)`
-  margin: 15px 20px;
+  position: relative;
+  top: -10px;
+  padding: 15px 20px;
+  text-align: left;
+  z-index: 1;
+  background-color: white;
   text-align: left;
 `;
 
@@ -142,12 +147,7 @@ function Banner() {
             }
             alt="pic1"
           />
-          <SliderItem
-            src={
-              "https://images.unsplash.com/photo-1558661092-f9ad8c1c63c1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1650&q=80"
-            }
-            alt="pic2"
-          />
+          <SliderItem src={"https://imgur.com/HB8fY8K.jpg"} alt="pic2" />
           <SliderItem
             src={
               "https://images.unsplash.com/photo-1601000937859-3031d1be1caa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80"
