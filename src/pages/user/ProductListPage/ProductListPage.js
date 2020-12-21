@@ -147,7 +147,7 @@ export default function ProductListPage() {
         <CategoryTitle id="cake">常溫蛋糕</CategoryTitle>
         <ProductList>
           <Product>
-            <ProductLink to="/ProductPage/">
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -157,7 +157,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -167,7 +167,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -177,7 +177,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -192,7 +192,7 @@ export default function ProductListPage() {
         <CategoryTitle id="pie">家常塔派</CategoryTitle>
         <ProductList>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -202,7 +202,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -212,7 +212,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -222,7 +222,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -237,7 +237,7 @@ export default function ProductListPage() {
         <CategoryTitle id="house">招牌蛋糕</CategoryTitle>
         <ProductList>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -247,7 +247,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -257,7 +257,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
@@ -267,7 +267,7 @@ export default function ProductListPage() {
             </ProductLink>
           </Product>
           <Product>
-            <ProductLink>
+            <ProductLink to="/product/1">
               <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
               <Pointer>
                 <span>➜</span>
