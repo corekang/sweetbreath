@@ -37,7 +37,7 @@ const Product = styled.div`
 `;
 
 const ProductImage = styled.div`
-  flex: 1;
+  flex: 5.5;
   margin-right: 40px;
   border-radius: 4px;
   img {
@@ -49,7 +49,7 @@ const ProductImage = styled.div`
   }
 `;
 const ProductDesc = styled.div`
-  flex: 1;
+  flex: 4.5;
   ${MEDIA_QUERY} {
     margin: 20px 0;
   }
