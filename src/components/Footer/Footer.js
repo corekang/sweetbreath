@@ -4,7 +4,7 @@ import { H4, BodyLarge, Caption1 } from "../../constants/style";
 import gitHubIcon from "../icon/gitHub.png";
 
 const FooterContent = styled.div`
-  margin: 0px;
+  margin-top: 200px;
   padding-top: 20px;
   background-color: ${theme.colors.neutralPaleGrey};
   color: ${theme.colors.neutralDarkGrey};
