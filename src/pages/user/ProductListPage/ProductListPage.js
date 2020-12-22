@@ -87,10 +87,11 @@ const Up = styled(Pointer)`
   text-align: center;
   display: flex;
   position: fixed;
-  top: 80%;
+  top: 85%;
   left: 90%;
   justify-content: center;
   align-items: center;
+  z-index:2;
 
   ${MEDIA_QUERY} {
     top: 90%;
