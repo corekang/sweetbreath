@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+
 const Content = styled.div`
   max-width: 1280px;
   margin: 40px 80px;
@@ -172,6 +173,7 @@ export default function ProductListPage() {
       img: "https://imgur.com/lxWa1BS.png",
     },
   ]);
+
   const scrollToAnchor = (anchorName) => {
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
@@ -204,6 +206,7 @@ export default function ProductListPage() {
           {products.map((product) => (
             <Products product={product} />
           ))}
+
         </ProductList>
       </CategorySection>
       <CategorySection>
