@@ -7,11 +7,15 @@ import cart from "../icon/cart.png";
 import magnifying from "../icon/magnifying.png";
 import facebook from "../icon/facebook.png";
 import instagram from "../icon/instagram.png";
+import sweetBreath from "../icon/sweetBreath_line.png";
 
-const Logo = styled.div`
+const LogoContent = styled.div`
   display: flex;
+  margin-top: 10px;
   ${MEDIA_QUERY} {
-    display: block;
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
   } ;
 `;
 
@@ -100,6 +104,10 @@ const IconBar = styled.div`
   } ;
 `;
 
+const LogoImg = styled.img`
+  height: 80px;
+`;
+
 const IconImg = styled.img`
   width: 21px;
   height: 21px;
@@ -112,6 +120,7 @@ const InstagramImg = styled.img`
 `;
 
 const ButtonText = styled(BodyLarge)`
+  font-family: serif;
   ${MEDIA_QUERY} {
     padding: 9px 0px;
     :hover {
@@ -119,6 +128,16 @@ const ButtonText = styled(BodyLarge)`
     }
   }
 `;
+
+function Logo() {
+  return (
+    <LogoContent>
+      <Link to={"/"}>
+        <LogoImg src={sweetBreath} alt="logo" />
+      </Link>
+    </LogoContent>
+  );
+}
 
 const NavButton = (props) => {
   return (
