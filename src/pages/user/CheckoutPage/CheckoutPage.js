@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { theme } from "../../../constants/theme";
 import {
@@ -33,7 +33,6 @@ const CheckoutContainer = styled.div`
 
   ${MEDIA_QUERY} {
     height: 100%;
-    max-width: 100%;
   }
 `;
 
@@ -93,12 +92,17 @@ const CheckoutContent = styled.div`
 
   ${MEDIA_QUERY} {
     flex-direction: column-reverse;
+    align-items: center;
   }
 `;
 
 const CheckoutForm = styled.form`
   width: 350px;
   margin-right: 80px;
+
+  ${MEDIA_QUERY} {
+    margin: 0;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -124,6 +128,7 @@ const ButtonContainer = styled.div`
     padding: 10px 32px;
     font-size: ${theme.fontSize.button};
     transition: ease-in-out 0.1s;
+    cursor: pointer;
   }
 
   ${MEDIA_QUERY} {
@@ -160,6 +165,7 @@ const OrderListContainer = styled.div`
 
 const OrderItemsContainer = styled.div`
   border-bottom: 1px solid ${theme.colors.neutralLightGrey};
+  padding: 10px 0;
 `;
 
 const OrderItemContainer = styled.div`
@@ -216,7 +222,10 @@ function OrderItem() {
   return (
     <OrderItemContainer>
       <Link to="/product/1" target="_blank">
-        <img src="https://img2.momoshop.com.tw/goodsimg/0007/249/953/7249953_L.jpg?t=1608292496"></img>
+        <img
+          src="https://img2.momoshop.com.tw/goodsimg/0007/249/953/7249953_L.jpg?t=1608292496"
+          alt="product"
+        ></img>
       </Link>
       <OrderItemContent>
         <OrderItemTitle>
@@ -240,16 +249,22 @@ function OrderList() {
       <OrderItemsContainer>
         <OrderItem />
         <OrderItem />
+        <OrderItem />
       </OrderItemsContainer>
-      <OrderTotalPrice>總付款金額 NT$ 200</OrderTotalPrice>
+      <OrderTotalPrice>
+        總付款金額：<b>NT$ 200</b>
+      </OrderTotalPrice>
     </OrderListContainer>
   );
 }
 
 function CheckoutList() {
+  const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`下單成功，感謝您的購買`);
+    history.push("/orders");
   };
 
   return (
