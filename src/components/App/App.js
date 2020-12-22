@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "../Navbar";
+import AdminNavbar from "../AdminNavbar";
 import Footer from "../Footer";
 import {
   HomePage,
@@ -24,9 +25,11 @@ import {
 } from "../../pages";
 
 function App() {
+  const [user, setUser] = useState("customer");
+
   return (
     <Router>
-      <Navbar />
+      {user === "customer" ? <Navbar /> : <AdminNavbar />}
       <Switch>
         <Route exact path="/">
           <HomePage />
