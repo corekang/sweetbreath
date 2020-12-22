@@ -67,7 +67,7 @@ export const Input = styled.input`
   border-radius: 4px;
   border: solid 1px ${theme.colors.neutralLightGrey};
   background-color: ${theme.colors.neutralWhite};
-  color: ${theme.colors.neutralBlack}
+  color: ${theme.colors.neutralBlack};
 
   &:focus {
     border: solid 1px ${theme.colors.mainPrimary};
