@@ -8,11 +8,11 @@ import {
   Body,
 } from "../../../constants/style";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Content = styled.div`
   max-width: 1280px;
   margin: 40px 80px;
-  font-family: Inter-Regular;
 `;
 
 const Category = styled.div`
@@ -47,10 +47,7 @@ const Product = styled.div`
   position: relative;
   display: inline-block;
   background: ${(props) => props.theme.colors.neutralWhite};
-  & {
-    margin: 20px 40px 20px 0;
-  }
-
+  margin: 20px;
   :hover {
     box-shadow: 0 3px 22px 1px rgba(90, 92, 102, 0.06);
   }
@@ -111,12 +108,70 @@ const ProductName = styled(BodyLarge)`
   margin: 15px 20px;
   text-align: left;
 `;
-const ProductPrice = styled(Body)`
+
+const ProductPrices = styled.div`
+  display: flex;
   margin: 15px 20px;
+`;
+const ProductPromoPrice = styled(Body)`
   text-align: left;
+  font-weight: 500;
+`;
+const ProductPrice = styled(Body)`
+  text-align: left;
+  margin-left: 10px;
+  text-decoration: line-through;
+  color: ${(props) => props.theme.colors.neutralGrey};
 `;
 
+const Products = ({ product }) => {
+  return (
+    <Product>
+      <ProductLink to={"/product/" + product.id}>
+        <ProductImage src={product.img}></ProductImage>
+        <Pointer>
+          <span>➜</span>
+        </Pointer>
+        <ProductName>{product.name}</ProductName>
+        <ProductPrices>
+          <ProductPromoPrice>${product.promoPrice}</ProductPromoPrice>
+          <ProductPrice>${product.price}</ProductPrice>
+        </ProductPrices>
+      </ProductLink>
+    </Product>
+  );
+};
 export default function ProductListPage() {
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "可麗露",
+      price: "280",
+      promoPrice: "180",
+      img: "https://imgur.com/lxWa1BS.png",
+    },
+    {
+      id: 1,
+      name: "可麗露",
+      price: "280",
+      promoPrice: "180",
+      img: "https://imgur.com/lxWa1BS.png",
+    },
+    {
+      id: 1,
+      name: "可麗露",
+      price: "280",
+      promoPrice: "180",
+      img: "https://imgur.com/lxWa1BS.png",
+    },
+    {
+      id: 1,
+      name: "可麗露",
+      price: "280",
+      promoPrice: "180",
+      img: "https://imgur.com/lxWa1BS.png",
+    },
+  ]);
   const scrollToAnchor = (anchorName) => {
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
@@ -146,136 +201,25 @@ export default function ProductListPage() {
       <CategorySection>
         <CategoryTitle id="cake">常溫蛋糕</CategoryTitle>
         <ProductList>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
+          {products.map((product) => (
+            <Products product={product} />
+          ))}
         </ProductList>
       </CategorySection>
       <CategorySection>
         <CategoryTitle id="pie">家常塔派</CategoryTitle>
         <ProductList>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
+          {products.map((product) => (
+            <Products product={product} />
+          ))}
         </ProductList>
       </CategorySection>
       <CategorySection>
         <CategoryTitle id="house">招牌蛋糕</CategoryTitle>
         <ProductList>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
-          <Product>
-            <ProductLink to="/product/1">
-              <ProductImage src="https://imgur.com/lxWa1BS.png"></ProductImage>
-              <Pointer>
-                <span>➜</span>
-              </Pointer>
-              <ProductName>可麗露</ProductName>
-              <ProductPrice>$280</ProductPrice>
-            </ProductLink>
-          </Product>
+          {products.map((product) => (
+            <Products product={product} />
+          ))}
         </ProductList>
       </CategorySection>
     </Content>
