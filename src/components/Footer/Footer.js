@@ -80,7 +80,7 @@ function Item(props) {
 export default function Footer() {
   return (
     <FooterContent>
-      <FooterTitle>Create by</FooterTitle>
+      <FooterTitle>Created by</FooterTitle>
       <ItemContent>
         <Item creater={"Core"} gitHubPage={"https://github.com/corekang"} />
         <Item
