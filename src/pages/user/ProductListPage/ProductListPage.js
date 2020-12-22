@@ -13,7 +13,8 @@ import { useState } from "react";
 
 const Content = styled.div`
   max-width: 1280px;
-  margin: 40px 80px;
+  margin: 40px auto;
+  padding: 0 40px;
 `;
 
 const Category = styled.div`
@@ -49,8 +50,10 @@ const Product = styled.div`
   display: inline-block;
   background: ${(props) => props.theme.colors.neutralWhite};
   margin: 20px;
+  border-radius: 5px;
+
   :hover {
-    box-shadow: 0 3px 22px 1px rgba(90, 92, 102, 0.06);
+    box-shadow: 0 3px 22px 1px rgba(100, 100, 100, 0.32);
   }
   ${MEDIA_QUERY} {
     width: 300px;
@@ -88,6 +91,14 @@ const Up = styled(Pointer)`
   left: 90%;
   justify-content: center;
   align-items: center;
+
+  ${MEDIA_QUERY} {
+    top: 90%;
+    left: 85%;
+    width: 60px;
+    height: 60px;
+    font-size: ${(props) => props.theme.fontSize.h3};
+  }
 `;
 
 const ProductLink = styled(Link)`
@@ -98,21 +109,27 @@ const ProductLink = styled(Link)`
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index:2;
     }
   }
 `;
 
 const ProductImage = styled.img`
   width: 100%;
+  border-radius: 5px;
 `;
 const ProductName = styled(BodyLarge)`
-  margin: 15px 20px;
+  padding: 15px 20px 0 20px;
+  background:${(props) => props.theme.colors.neutralWhite};
+  z-index:1;
+  position:relative;
+  top: -10px;
   text-align: left;
 `;
 
 const ProductPrices = styled.div`
   display: flex;
-  margin: 15px 20px;
+  margin: 0px 20px 15px 20px;
 `;
 const ProductPromoPrice = styled(Body)`
   text-align: left;
@@ -185,7 +202,7 @@ export default function ProductListPage() {
 
   return (
     <Content>
-      <H1 id="top">MENU</H1>
+      <H1>MENU</H1>
       <Up onClick={() => scrollToAnchor("top")}>
         <span>⇧</span>
       </Up>
