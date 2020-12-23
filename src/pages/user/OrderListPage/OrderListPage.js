@@ -182,7 +182,7 @@ function Order({ order }) {
   );
 }
 
-export default function AdminOrderListPage() {
+export default function OrderListPage() {
   const [orders, setOrders] = useState([
     {
       id: 1,
