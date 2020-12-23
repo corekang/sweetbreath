@@ -12,7 +12,8 @@ import {
 } from "../../../constants/style";
 
 const Content = styled.div`
-  margin: 40px 80px;
+  margin: 40px auto;
+  padding: 0 40px;
 `;
 
 const CategoryBar = styled.div`
@@ -160,7 +161,7 @@ const AddToCart = styled(Button)`
   background: ${(props) => props.theme.colors.mainPrimary};
   ${MEDIA_QUERY} {
     width: 100%;
-    font-size: ${(props) => props.theme.fontSize.h3};
+    font-size: ${(props) => props.theme.fontSize.h4};
   }
 `;
 

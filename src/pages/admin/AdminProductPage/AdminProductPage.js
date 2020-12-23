@@ -10,7 +10,8 @@ import {
 } from "../../../constants/style";
 
 const Content = styled.div`
-  margin: 40px 80px;
+  margin: 40px auto;
+  padding: 0 40px;
 `;
 
 const Product = styled.div`
@@ -86,7 +87,7 @@ const SubmitButton = styled(Button)`
   ${MEDIA_QUERY} {
     width: 95%;
     padding: 10px;
-    font-size: ${(props) => props.theme.fontSize.h3};
+    font-size: ${(props) => props.theme.fontSize.h4};
   }
 `;
 
