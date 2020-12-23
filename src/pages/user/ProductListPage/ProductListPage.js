@@ -15,6 +15,9 @@ const Content = styled.div`
   max-width: 1280px;
   margin: 40px auto;
   padding: 0 40px;
+  ${MEDIA_QUERY} {
+    padding: 0 20px;
+  }
 `;
 
 const Category = styled.div`
