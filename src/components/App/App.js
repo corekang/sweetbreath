@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import { Up, scrollToAnchor } from "../Anchor";
 import Navbar from "../Navbar";
+import AdminNavbar from "../AdminNavbar";
 import Footer from "../Footer";
 import {
   HomePage,
   AboutPage,
   LoginPage,
+  LogoutPage,
   RegisterPage,
   ProductListPage,
   ProductPage,
@@ -21,12 +24,18 @@ import {
   AdminMemberPage,
   AdminOrderListPage,
   AdminNewsPage,
+  AdminCategoryPage,
 } from "../../pages";
 
 function App() {
+  const [user, setUser] = useState("customer");
+
   return (
     <Router>
-      <Navbar />
+      {user === "customer" ? <Navbar /> : <AdminNavbar />}
+      <Up onClick={() => scrollToAnchor("top")}>
+        <span>⇧</span>
+      </Up>
       <Switch>
         <Route exact path="/">
           <HomePage />
@@ -36,6 +45,9 @@ function App() {
         </Route>
         <Route exact path="/login">
           <LoginPage />
+        </Route>
+        <Route exact path="/logout">
+          <LogoutPage />
         </Route>
         <Route exact path="/register">
           <RegisterPage />
@@ -70,8 +82,11 @@ function App() {
         <Route exact path="/admin/products">
           <AdminProductListPage />
         </Route>
-        <Route exact path="/admin/product/:id">
+        <Route path="/admin/product/">
           <AdminProductPage />
+        </Route>
+        <Route path="/admin/category/">
+          <AdminCategoryPage />
         </Route>
         <Route exact path="/admin/member">
           <AdminMemberPage />
