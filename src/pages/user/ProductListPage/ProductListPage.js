@@ -9,7 +9,7 @@ import {
 } from "../../../constants/style";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import { scrollToAnchor } from "../../../components/Anchor";
 
 const Content = styled.div`
   max-width: 1280px;
@@ -80,28 +80,6 @@ const Pointer = styled.div`
   }
 `;
 
-const Up = styled(Pointer)`
-  width: 55px;
-  height: 55px;
-  cursor: pointer;
-  text-align: center;
-  display: flex;
-  position: fixed;
-  top: 85%;
-  left: 90%;
-  justify-content: center;
-  align-items: center;
-  z-index:2;
-
-  ${MEDIA_QUERY} {
-    top: 90%;
-    left: 85%;
-    width: 60px;
-    height: 60px;
-    font-size: ${(props) => props.theme.fontSize.h3};
-  }
-`;
-
 const ProductLink = styled(Link)`
   text-decoration: none;
   color: ${(props) => props.theme.colors.neutralBlack};
@@ -110,7 +88,7 @@ const ProductLink = styled(Link)`
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index:2;
+      z-index: 2;
     }
   }
 `;
@@ -121,9 +99,9 @@ const ProductImage = styled.img`
 `;
 const ProductName = styled(BodyLarge)`
   padding: 15px 20px 0 20px;
-  background:${(props) => props.theme.colors.neutralWhite};
-  z-index:1;
-  position:relative;
+  background: ${(props) => props.theme.colors.neutralWhite};
+  z-index: 1;
+  position: relative;
   top: -10px;
   text-align: left;
 `;
@@ -192,21 +170,9 @@ export default function ProductListPage() {
     },
   ]);
 
-  const scrollToAnchor = (anchorName) => {
-    if (anchorName) {
-      let anchorElement = document.getElementById(anchorName);
-      if (anchorElement) {
-        anchorElement.scrollIntoView();
-      }
-    }
-  };
-
   return (
     <Content>
       <H1>MENU</H1>
-      <Up onClick={() => scrollToAnchor("top")}>
-        <span>⇧</span>
-      </Up>
       <Category>
         <CategoryName onClick={() => scrollToAnchor("cake")}>
           常溫蛋糕
@@ -224,7 +190,6 @@ export default function ProductListPage() {
           {products.map((product) => (
             <Products product={product} />
           ))}
-
         </ProductList>
       </CategorySection>
       <CategorySection>

@@ -1,6 +1,7 @@
 import HomePage from "./user/HomePage";
 import AboutPage from "./user/AboutPage";
 import LoginPage from "./user/LoginPage";
+import LogoutPage from "./user/LogoutPage";
 import RegisterPage from "./user/RegisterPage";
 import ProductListPage from "./user/ProductListPage";
 import ProductPage from "./user/ProductPage";
@@ -16,11 +17,13 @@ import AdminProductPage from "./admin/AdminProductPage";
 import AdminMemberPage from "./admin/AdminMemberPage";
 import AdminOrderListPage from "./admin/AdminOrderListPage";
 import AdminNewsPage from "./admin/AdminNewsPage";
+import AdminCategoryPage from "./admin/AdminCategory";
 
 export {
   HomePage,
   AboutPage,
   LoginPage,
+  LogoutPage,
   RegisterPage,
   ProductListPage,
   ProductPage,
@@ -36,4 +39,5 @@ export {
   AdminMemberPage,
   AdminOrderListPage,
   AdminNewsPage,
+  AdminCategoryPage,
 };
