@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { MEDIA_QUERY, H1, H3, H4, H5 } from "../../../constants/style";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { scrollToAnchor } from "../../../components/Anchor";
 
 const Content = styled.div`
   max-width: 1280px;
@@ -12,6 +13,11 @@ const Content = styled.div`
 const Category = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${MEDIA_QUERY} {
+    display: block;
+    justify-content: center;
+  }
 `;
 
 const CategoryName = styled(H5)`
@@ -22,6 +28,10 @@ const CategoryName = styled(H5)`
   }
   & {
     margin-right: 20px;
+  }
+  ${MEDIA_QUERY} {
+    margin: 10px;
+    justify-content: center;
   }
 `;
 
@@ -39,6 +49,13 @@ const ProductList = styled.div`
     flex-direction: column;
   }
 `;
+const ProductSetting = styled.div`
+  display: none;
+
+  ${MEDIA_QUERY} {
+    display: grid;
+  }
+`;
 const Product = styled.div`
   display: flex;
   padding: 5px;
@@ -51,11 +68,20 @@ const Product = styled.div`
 
   :hover {
     box-shadow: 0 3px 22px 1px rgba(90, 92, 102, 0.06);
+    ${ProductSetting} {
+      display: flex;
+      ${MEDIA_QUERY} {
+        display: grid;
+      }
+    }
   }
 `;
 
 const ProductItem = styled.div`
   display: flex;
+  ${MEDIA_QUERY} {
+    display: block;
+  }
 `;
 
 const ProductName = styled(H4)`
@@ -68,25 +94,27 @@ const ProductDesc = styled(H5)`
   color: ${(props) => props.theme.colors.neutralDarkGrey};
 `;
 
-const ProductSetting = styled.div`
-  display: flex;
-`;
-
 const SettingButton = styled(Link)`
+  display: flex;
+  margin: auto 10px;
+  align-items: center;
   font-size: ${(props) => props.theme.fontSize.button};
   line-height: 1.21;
   font-weight: 500;
   text-decoration: none;
   text-align: center;
-  padding: 10px 15px;
-  background: ${(props) => props.theme.colors.neutralDarkGrey};
+  padding: 15px 20px;
   border: none;
   border-radius: 4px;
   color: ${(props) => props.theme.colors.neutralWhite};
-  margin: auto 10px;
+  background: ${(props) => props.theme.colors.neutralDarkGrey};
   cursor: pointer;
   :hover {
     background: ${(props) => props.theme.colors.neutralGrey};
+  }
+  ${MEDIA_QUERY} {
+    margin: 15px;
+    font-size: ${(props) => props.theme.fontSize.h5};
   }
 `;
 
@@ -94,6 +122,7 @@ const AddBtn = styled(SettingButton)`
   background: ${(props) => props.theme.colors.uiWarning};
   color: ${(props) => props.theme.colors.neutralBlack};
   font-weight: bold;
+  justify-content: center;
   :hover {
     color: ${(props) => props.theme.colors.neutralWhite};
   }
@@ -101,6 +130,9 @@ const AddBtn = styled(SettingButton)`
 
 const CategoryList = styled.div`
   display: flex;
+  ${MEDIA_QUERY} {
+    justify-content: center;
+  }
 `;
 
 const Products = ({ product }) => {
@@ -149,14 +181,6 @@ export default function AdminProductListPage() {
       style: "2",
     },
   ]);
-  const scrollToAnchor = (anchorName) => {
-    if (anchorName) {
-      let anchorElement = document.getElementById(anchorName);
-      if (anchorElement) {
-        anchorElement.scrollIntoView();
-      }
-    }
-  };
 
   return (
     <Content>

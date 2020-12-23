@@ -16,12 +16,12 @@ export const Up = styled.div`
   justify-content: center;
   align-items: center;
   color: ${(props) => props.theme.colors.neutralWhite};
-  background: ${(props) => props.theme.colors.mainPrimary};
-  z-index: 2;
+  background: ${(props) => props.theme.colors.uiNegative};
+  z-index: 5;
 
   ${MEDIA_QUERY} {
-    top: 90%;
-    left: 85%;
+    top: 85%;
+    left: 75%;
     width: 60px;
     height: 60px;
     font-size: ${(props) => props.theme.fontSize.h3};
