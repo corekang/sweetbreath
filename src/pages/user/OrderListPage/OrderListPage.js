@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -17,7 +17,6 @@ const OrderListContainer = styled.div`
   a,
   button {
     text-decoration: none;
-
     outline: none;
   }
 
@@ -182,7 +181,7 @@ function Order({ order }) {
   );
 }
 
-export default function AdminOrderListPage() {
+export default function OrderListPage() {
   const [orders, setOrders] = useState([
     {
       id: 1,
