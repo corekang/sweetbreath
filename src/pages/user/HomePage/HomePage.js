@@ -17,7 +17,7 @@ const BannerContent = styled.div`
   margin: 0px auto;
   width: 100%;
   max-height: 500px;
-  over-flow: hidden;
+  overflow: hidden;
 `;
 
 const BannerImgContent = styled.div`
