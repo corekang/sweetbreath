@@ -3,17 +3,9 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import { theme } from "../../../constants/theme";
-import {
-  H2,
-  H3,
-  H4,
-  H5,
-  BodyLarge,
-  MEDIA_QUERY,
-} from "../../../constants/style";
+import { H2, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
 
 const OrderListContainer = styled.div`
-  height: 100vh;
   max-width: 700px;
   margin: 0 auto;
   padding: 20px;
@@ -25,7 +17,7 @@ const OrderListContainer = styled.div`
   a,
   button {
     text-decoration: none;
-    border: none;
+
     outline: none;
   }
 
@@ -37,27 +29,36 @@ const OrderListContainer = styled.div`
 
 const OrderListHeader = styled.div``;
 
-const OrderListTitle = styled(H2)`
-  padding: 8px;
+const OrderListTitle = styled(H2)``;
+
+const OrderStatusButtons = styled.div`
+  display: flex;
+  margin-bottom: 40px;
+  border-bottom: 1px solid ${theme.colors.neutralLightGrey};
 `;
 
-const OrderStatus = styled.div`
-  display: flex;
-  margin-bottom: 30px;
-  border-bottom: 1px solid ${theme.colors.neutralLightGrey};
+const StatusButton = styled.button`
+  cursor: pointer;
+  margin-right: 30px;
+  padding: 12px;
+  font-size: ${theme.fontSize.bodyLarge};
+  background: transparent;
+  border: 0px;
+  transition: ease-in-out 0.2s;
 
-  button {
-    margin-right: 30px;
-    padding: 6px 8px;
-    font-size: ${theme.fontSize.bodyLarge};
-    color: ${theme.colors.neutralDarkGrey};
-    background: ${theme.colors.neutralPaleGrey};
-    cursor: pointer;
+  color: ${(props) =>
+    props.className === "selected"
+      ? `${theme.colors.neutralBlack}`
+      : `${theme.colors.neutralDarkGrey}`};
 
-    :hover {
-      color: ${theme.colors.neutralBlack};
-      background: ${theme.colors.neutralLightGrey};
-    }
+  border-bottom: 4px solid
+    ${(props) =>
+      props.className === "selected"
+        ? `${theme.colors.mainPrimary}`
+        : `${theme.colors.neutralPaleGrey}`};
+
+  :hover {
+    color: ${theme.colors.neutralBlack};
   }
 `;
 
@@ -71,7 +72,7 @@ const OrderContainer = styled.div`
 
 const OrderHeader = styled.div`
   display: flex;
-  padding: 10px 20px;
+  padding: 12px 20px;
   background: ${theme.colors.neutralLightGrey};
 
   div {
@@ -133,8 +134,8 @@ const OrderItemNumber = styled(BodyLarge)`
 
 const OrderItemPrice = styled(BodyLarge)``;
 
-const OrderTotalPrice = styled(H4)`
-  padding: 0 20px;
+const OrderTotalPrice = styled(BodyLarge)`
+  margin: 12px 20px;
   text-align: right;
 `;
 
@@ -162,41 +163,113 @@ function OrderItem() {
   );
 }
 
-function Order() {
+function Order({ order }) {
   return (
     <OrderContainer>
       <OrderHeader>
-        <div>訂單日期：2020/12/12</div>
-        <div>訂單號碼：12345678</div>
-        <div>訂單狀態：處理中</div>
+        <div>訂單日期：{order.createdAt}</div>
+        <div>訂單號碼：{order.orderNumber}</div>
+        <div>訂單狀態：{order.orderStatus}</div>
       </OrderHeader>
       <OrderItemsContainer>
         <OrderItem />
         <OrderItem />
       </OrderItemsContainer>
       <OrderTotalPrice>
-        訂單金額：<b>NT$ 200</b>
+        訂單金額：<b>NT$ {order.totalAmount}</b>
       </OrderTotalPrice>
     </OrderContainer>
   );
 }
 
-export default function OrderListPage() {
-  const [orderStatus, setOrderStatus] = useState(false);
+export default function AdminOrderListPage() {
+  const [orders, setOrders] = useState([
+    {
+      id: 1,
+      orderNumber: 100001,
+      userNumber: 1001,
+      totalAmount: 288,
+      orderStatus: "處理中",
+      isPaid: false,
+      isSent: false,
+      isDone: false,
+      isCancel: false,
+      createdAt: "2020/12/23 00:00:00",
+    },
+    {
+      id: 2,
+      orderNumber: 100002,
+      userNumber: 1002,
+      totalAmount: 499,
+      orderStatus: "已完成",
+      isPaid: true,
+      isSent: true,
+      isDone: true,
+      isCancel: false,
+      createdAt: "2020/12/20 08:08:08",
+    },
+
+    {
+      id: 3,
+      orderNumber: 100003,
+      userNumber: 188,
+      totalAmount: 88888,
+      orderStatus: "已取消",
+      isPaid: false,
+      isSent: false,
+      isDone: true,
+      isCancel: true,
+      createdAt: "2020/12/12 12:12:12",
+    },
+  ]);
+
+  const [filterState, setFilterState] = useState("All");
+
+  const handleChangeFilter = (value) => setFilterState(value);
 
   return (
     <OrderListContainer>
       <OrderListHeader>
         <OrderListTitle>購買清單</OrderListTitle>
-        <OrderStatus>
-          <button>所有清單</button>
-          <button>未完成</button>
-          <button>已完成</button>
-        </OrderStatus>
+        <OrderStatusButtons>
+          <StatusButton
+            onClick={() => handleChangeFilter("All")}
+            className={filterState === "All" ? "selected" : ""}
+          >
+            所有訂單
+          </StatusButton>
+          <StatusButton
+            onClick={() => handleChangeFilter("Active")}
+            className={filterState === "Active" ? "selected" : ""}
+          >
+            處理中
+          </StatusButton>
+          <StatusButton
+            onClick={() => handleChangeFilter("Complete")}
+            className={filterState === "Complete" ? "selected" : ""}
+          >
+            已完成
+          </StatusButton>
+          <StatusButton
+            onClick={() => handleChangeFilter("Cancel")}
+            className={filterState === "Cancel" ? "selected" : ""}
+          >
+            已取消
+          </StatusButton>
+        </OrderStatusButtons>
       </OrderListHeader>
       <OrdersContainer>
-        <Order />
-        <Order />
+        {orders
+          .filter((order) => {
+            if (filterState === "All") return order;
+            if (filterState === "Active") return order.orderStatus === "處理中";
+            if (filterState === "Complete")
+              return order.orderStatus === "已完成";
+            if (filterState === "Cancel") return order.orderStatus === "已取消";
+          })
+          .map((order) => (
+            <Order key={order.id} order={order} />
+          ))}
       </OrdersContainer>
     </OrderListContainer>
   );
