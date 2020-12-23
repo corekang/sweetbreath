@@ -29,6 +29,7 @@ const ProductImage = styled.div`
   img {
     width: 100%;
     border-radius: 4px;
+    box-shadow: 0 3px 22px 1px rgba(100, 100, 100, 0.32);
   }
   ${MEDIA_QUERY} {
     margin: 0;
