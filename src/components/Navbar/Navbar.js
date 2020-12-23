@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { BodyLarge, MEDIA_QUERY } from "../../constants/style";
 import { Link } from "react-router-dom";
-import { theme } from "../../constants/theme";
 import member from "../icon/member.png";
 import cart from "../icon/cart.png";
 import magnifying from "../icon/magnifying.png";
 import facebook from "../icon/facebook.png";
 import instagram from "../icon/instagram.png";
 import sweetBreath from "../icon/sweetBreath_line.png";
+import logout from "../icon/logout.png";
 
 const LogoContent = styled.div`
   display: flex;
@@ -25,11 +25,12 @@ const NavbarContent = styled.div`
   height: 86px;
   padding: 27px;
   box-shadow: 0 0 1px 0 #bdbdbd;
-  background-color: ${theme.colors.neutralWhite};
+  background-color: ${(props) => props.theme.colors.neutralWhite};
   align-items: center;
   justify-content: space-between;
+  text-align: center;
   border: 0px soild black;
-  @media screen and (max-width: 980px) {
+  @media screen and (max-width: 1150px) {
     padding: 0px;
     justify-content: center;
   }
@@ -46,7 +47,7 @@ const ButtonContent = styled(Link)`
   height: 38px;
   padding: 7px;
   border-radius: 5px;
-  color: ${theme.colors.neutralBlack};
+  color: ${(props) => props.theme.colors.neutralBlack};
   text-align: center;
   text-decoration: none;
   font-weight: 500;
@@ -54,15 +55,15 @@ const ButtonContent = styled(Link)`
     padding: 0px;
   }
   :hover {
-    background-color: ${theme.colors.neutralGrey};
-    color: ${theme.colors.neutralSnow};
+    background-color: ${(props) => props.theme.colors.neutralGrey};
+    color: ${(props) => props.theme.colors.neutralSnow};
     ${MEDIA_QUERY} {
       background-color: white;
     }
   }
   & + & {
     margin-left: 60px;
-    @media screen and (max-width: 980px) {
+    @media screen and (max-width: 1150px) {
       margin-left: 0px;
     }
   }
@@ -77,11 +78,11 @@ const IconContent = styled(Link)`
   align-items: center;
   justify-content: center;
   :hover {
-    background-color: ${theme.colors.neutralLightGrey};
+    background-color: ${(props) => props.theme.colors.neutralLightGrey};
   }
   & + & {
     margin-left: 25px;
-    @media screen and (max-width: 980px) {
+    @media screen and (max-width: 1150px) {
       margin: 0px;
     }
   }
@@ -91,7 +92,7 @@ const FunctionBar = styled.div`
   display: flex;
   box-sizing: border-box;
   ${MEDIA_QUERY} {
-    display: block;
+    justify-content: center;
   } ;
 `;
 
@@ -99,7 +100,7 @@ const IconBar = styled.div`
   display: flex;
   box-sizing: border-box;
   ${MEDIA_QUERY} {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
   } ;
 `;
@@ -118,13 +119,18 @@ const InstagramImg = styled.img`
   width: 27px;
   height: 27px;
 `;
+const LogOutImg = styled.img`
+  width: 22px;
+  height: 23px;
+`;
 
 const ButtonText = styled(BodyLarge)`
   font-family: serif;
   ${MEDIA_QUERY} {
     padding: 9px 0px;
+    border-radius: 5px;
     :hover {
-      background-color: ${theme.colors.neutralGrey};
+      background-color: ${(props) => props.theme.colors.neutralGrey};
     }
   }
 `;
@@ -163,9 +169,17 @@ const InstagramButton = (props) => {
   );
 };
 
+const LogOutButton = (props) => {
+  return (
+    <IconContent to={props.route}>
+      <LogOutImg src={props.icon} />
+    </IconContent>
+  );
+};
+
 export default function Navbar() {
   return (
-    <NavbarContent>
+    <NavbarContent id="top">
       <Logo>
         <NavButton route="/" title={"SWEET_BREATH"} />
       </Logo>
@@ -183,6 +197,7 @@ export default function Navbar() {
       <IconBar>
         <IconButton route="/cart" icon={cart} />
         <IconButton route="/login" icon={member} />
+        <LogOutButton route="/logout" icon={logout} />
       </IconBar>
     </NavbarContent>
   );
