@@ -5,7 +5,8 @@ import { useState } from "react";
 
 const Content = styled.div`
   max-width: 1280px;
-  margin: 40px 80px;
+  margin: 40px auto;
+  padding: 0 40px;
 `;
 
 const Category = styled.div`
@@ -25,11 +26,13 @@ const CategoryName = styled(H5)`
 `;
 
 const CategorySection = styled.div`
-  ＆ {
+  & + & {
     margin: 80px 0;
   }
 `;
-const CategoryTitle = styled(H3)``;
+const CategoryTitle = styled(H3)`
+  margin: 60px 0 20px 0;
+`;
 const ProductList = styled.div`
   text-align: center;
   ${MEDIA_QUERY} {
@@ -49,53 +52,10 @@ const Product = styled.div`
   :hover {
     box-shadow: 0 3px 22px 1px rgba(90, 92, 102, 0.06);
   }
-  ${MEDIA_QUERY} {
-    width: 300px;
-  }
-`;
-
-const Pointer = styled.div`
-  display: none;
-  position: absolute;
-  z-index: 1;
-  width: 46px;
-  height: 46px;
-  font-size: ${(props) => props.theme.fontSize.h4};
-  font-weight: bold;
-  top: 67%;
-  border-radius: 50%;
-  left: 76%;
-  color: ${(props) => props.theme.colors.neutralWhite};
-  background: ${(props) => props.theme.colors.mainPrimary};
-  ${MEDIA_QUERY} {
-    width: 60px;
-    height: 60px;
-    font-size: ${(props) => props.theme.fontSize.h3};
-  }
-`;
-
-const Up = styled(Pointer)`
-  width: 55px;
-  height: 55px;
-  cursor: pointer;
-  text-align: center;
-  display: flex;
-  position: fixed;
-  top: 80%;
-  left: 90%;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ProductItem = styled.div`
   display: flex;
-  &:hover {
-    ${Pointer} {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
 `;
 
 const ProductName = styled(H4)`
@@ -129,6 +89,7 @@ const SettingButton = styled(Link)`
     background: ${(props) => props.theme.colors.neutralGrey};
   }
 `;
+
 const AddBtn = styled(SettingButton)`
   background: ${(props) => props.theme.colors.uiWarning};
   color: ${(props) => props.theme.colors.neutralBlack};
@@ -145,13 +106,15 @@ const CategoryList = styled.div`
 const Products = ({ product }) => {
   return (
     <Product>
-      <ProductItem>
+      <div>
         <ProductName>{product.name}</ProductName>
-        <ProductDesc>原價：${product.price}</ProductDesc>
-        <ProductDesc>特價：${product.promoPrice}</ProductDesc>
-        <ProductDesc>庫存：{product.stock}</ProductDesc>
-        <ProductDesc>規格：{product.style}</ProductDesc>
-      </ProductItem>
+        <ProductItem>
+          <ProductDesc>原價：${product.price}</ProductDesc>
+          <ProductDesc>特價：${product.promoPrice}</ProductDesc>
+          <ProductDesc>庫存：{product.stock}</ProductDesc>
+          <ProductDesc>規格：{product.style}</ProductDesc>
+        </ProductItem>
+      </div>
       <ProductSetting>
         <SettingButton to={"/admin/product/" + product.id}>編輯</SettingButton>
         <SettingButton>刪除</SettingButton>
@@ -197,10 +160,7 @@ export default function AdminProductListPage() {
 
   return (
     <Content>
-      <H1 id="top">商品管理</H1>
-      <Up onClick={() => scrollToAnchor("top")}>
-        <span>⇧</span>
-      </Up>
+      <H1>商品管理</H1>
       <Category>
         <CategoryList>
           <CategoryName onClick={() => scrollToAnchor("cake")}>
@@ -215,7 +175,6 @@ export default function AdminProductListPage() {
         </CategoryList>
         <AddBtn to="/admin/product">新增商品</AddBtn>
       </Category>
-
       <CategorySection>
         <CategoryTitle id="cake">常溫蛋糕</CategoryTitle>
         <ProductList>
