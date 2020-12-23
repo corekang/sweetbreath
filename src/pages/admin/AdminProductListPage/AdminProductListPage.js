@@ -2,15 +2,22 @@ import styled from "styled-components";
 import { MEDIA_QUERY, H1, H3, H4, H5 } from "../../../constants/style";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { scrollToAnchor } from "../../../components/Anchor";
 
 const Content = styled.div`
   max-width: 1280px;
-  margin: 40px 80px;
+  margin: 40px auto;
+  padding: 0 40px;
 `;
 
 const Category = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${MEDIA_QUERY} {
+    display: block;
+    justify-content: center;
+  }
 `;
 
 const CategoryName = styled(H5)`
@@ -22,18 +29,31 @@ const CategoryName = styled(H5)`
   & {
     margin-right: 20px;
   }
+  ${MEDIA_QUERY} {
+    margin: 10px;
+    justify-content: center;
+  }
 `;
 
 const CategorySection = styled.div`
-  ＆ {
+  & + & {
     margin: 80px 0;
   }
 `;
-const CategoryTitle = styled(H3)``;
+const CategoryTitle = styled(H3)`
+  margin: 60px 0 20px 0;
+`;
 const ProductList = styled.div`
   text-align: center;
   ${MEDIA_QUERY} {
     flex-direction: column;
+  }
+`;
+const ProductSetting = styled.div`
+  display: none;
+
+  ${MEDIA_QUERY} {
+    display: grid;
   }
 `;
 const Product = styled.div`
@@ -48,53 +68,19 @@ const Product = styled.div`
 
   :hover {
     box-shadow: 0 3px 22px 1px rgba(90, 92, 102, 0.06);
+    ${ProductSetting} {
+      display: flex;
+      ${MEDIA_QUERY} {
+        display: grid;
+      }
+    }
   }
-  ${MEDIA_QUERY} {
-    width: 300px;
-  }
-`;
-
-const Pointer = styled.div`
-  display: none;
-  position: absolute;
-  z-index: 1;
-  width: 46px;
-  height: 46px;
-  font-size: ${(props) => props.theme.fontSize.h4};
-  font-weight: bold;
-  top: 67%;
-  border-radius: 50%;
-  left: 76%;
-  color: ${(props) => props.theme.colors.neutralWhite};
-  background: ${(props) => props.theme.colors.mainPrimary};
-  ${MEDIA_QUERY} {
-    width: 60px;
-    height: 60px;
-    font-size: ${(props) => props.theme.fontSize.h3};
-  }
-`;
-
-const Up = styled(Pointer)`
-  width: 55px;
-  height: 55px;
-  cursor: pointer;
-  text-align: center;
-  display: flex;
-  position: fixed;
-  top: 80%;
-  left: 90%;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ProductItem = styled.div`
   display: flex;
-  &:hover {
-    ${Pointer} {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  ${MEDIA_QUERY} {
+    display: block;
   }
 `;
 
@@ -108,31 +94,35 @@ const ProductDesc = styled(H5)`
   color: ${(props) => props.theme.colors.neutralDarkGrey};
 `;
 
-const ProductSetting = styled.div`
-  display: flex;
-`;
-
 const SettingButton = styled(Link)`
+  display: flex;
+  margin: auto 10px;
+  align-items: center;
   font-size: ${(props) => props.theme.fontSize.button};
   line-height: 1.21;
   font-weight: 500;
   text-decoration: none;
   text-align: center;
-  padding: 10px 15px;
-  background: ${(props) => props.theme.colors.neutralDarkGrey};
+  padding: 15px 20px;
   border: none;
   border-radius: 4px;
   color: ${(props) => props.theme.colors.neutralWhite};
-  margin: auto 10px;
+  background: ${(props) => props.theme.colors.neutralDarkGrey};
   cursor: pointer;
   :hover {
     background: ${(props) => props.theme.colors.neutralGrey};
   }
+  ${MEDIA_QUERY} {
+    margin: 15px;
+    font-size: ${(props) => props.theme.fontSize.h5};
+  }
 `;
+
 const AddBtn = styled(SettingButton)`
   background: ${(props) => props.theme.colors.uiWarning};
   color: ${(props) => props.theme.colors.neutralBlack};
   font-weight: bold;
+  justify-content: center;
   :hover {
     color: ${(props) => props.theme.colors.neutralWhite};
   }
@@ -140,18 +130,23 @@ const AddBtn = styled(SettingButton)`
 
 const CategoryList = styled.div`
   display: flex;
+  ${MEDIA_QUERY} {
+    justify-content: center;
+  }
 `;
 
 const Products = ({ product }) => {
   return (
     <Product>
-      <ProductItem>
+      <div>
         <ProductName>{product.name}</ProductName>
-        <ProductDesc>原價：${product.price}</ProductDesc>
-        <ProductDesc>特價：${product.promoPrice}</ProductDesc>
-        <ProductDesc>庫存：{product.stock}</ProductDesc>
-        <ProductDesc>規格：{product.style}</ProductDesc>
-      </ProductItem>
+        <ProductItem>
+          <ProductDesc>原價：${product.price}</ProductDesc>
+          <ProductDesc>特價：${product.promoPrice}</ProductDesc>
+          <ProductDesc>庫存：{product.stock}</ProductDesc>
+          <ProductDesc>規格：{product.style}</ProductDesc>
+        </ProductItem>
+      </div>
       <ProductSetting>
         <SettingButton to={"/admin/product/" + product.id}>編輯</SettingButton>
         <SettingButton>刪除</SettingButton>
@@ -186,21 +181,10 @@ export default function AdminProductListPage() {
       style: "2",
     },
   ]);
-  const scrollToAnchor = (anchorName) => {
-    if (anchorName) {
-      let anchorElement = document.getElementById(anchorName);
-      if (anchorElement) {
-        anchorElement.scrollIntoView();
-      }
-    }
-  };
 
   return (
     <Content>
-      <H1 id="top">商品管理</H1>
-      <Up onClick={() => scrollToAnchor("top")}>
-        <span>⇧</span>
-      </Up>
+      <H1>商品管理</H1>
       <Category>
         <CategoryList>
           <CategoryName onClick={() => scrollToAnchor("cake")}>
@@ -215,7 +199,6 @@ export default function AdminProductListPage() {
         </CategoryList>
         <AddBtn to="/admin/product">新增商品</AddBtn>
       </Category>
-
       <CategorySection>
         <CategoryTitle id="cake">常溫蛋糕</CategoryTitle>
         <ProductList>
