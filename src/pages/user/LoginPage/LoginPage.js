@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { H3, Input, InputLine } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import google from "../../images/google.png";
-import facebook from "../../images/facebook.png";
+import googleLogin from "../../../components/icon/googleLogin.png";
+import facebookLogin from "../../../components/icon/facebookLogin.png";
 
 const PageContainer = styled.div`
   * {
@@ -87,8 +87,8 @@ export default function LoginPage() {
       <SocialLogin>
         <SocialLoginTitle>社群登入</SocialLoginTitle>
         <SocialLoginSite>
-          <SiteLogo src={google} to="#" />
-          <SiteLogo src={facebook} to="#" />
+          <SiteLogo src={googleLogin} to="#" />
+          <SiteLogo src={facebookLogin} to="#" />
         </SocialLoginSite>
       </SocialLogin>
     </PageContainer>
