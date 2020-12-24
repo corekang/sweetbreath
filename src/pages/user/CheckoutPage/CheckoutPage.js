@@ -15,7 +15,6 @@ import {
 } from "../../../constants/style";
 
 const CheckoutContainer = styled.div`
-  height: 100vh;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
