@@ -1,6 +1,13 @@
 import styled from "styled-components";
-import { H3, H5, InputLine, Textarea } from "../../../constants/style";
+import {
+  H3,
+  H5,
+  InputLine,
+  Textarea,
+  MEDIA_QUERY,
+} from "../../../constants/style";
 import { theme } from "../../../constants/theme";
+import { Map } from "../../../components/Map/Ｍap.js";
 
 const PageContainer = styled.div`
   * {
@@ -23,6 +30,11 @@ const ContactUsInfo = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 30px auto;
+
+  ${MEDIA_QUERY} {
+    display: grid;
+    justify-content: center;
+  }
 `;
 
 const ContactUsAbout = styled.div`
@@ -38,6 +50,11 @@ const ContactUsAboutItem = styled(H5)``;
 
 const ContactUsForm = styled.div`
   width: 350px;
+  ${MEDIA_QUERY} {
+    margin-top: 30px;
+    border-top: 1px solid ${theme.colors.neutralLightGrey};
+    padding-top: 40px;
+  }
 `;
 
 const ContactUsInput = styled(InputLine)`
@@ -63,7 +80,9 @@ const ContactUsButton = styled.button`
 export default function ContactUsPage() {
   return (
     <PageContainer>
-      <ContactUsMap></ContactUsMap>
+      <ContactUsMap>
+        <Map />
+      </ContactUsMap>
       <ContactUsInfo>
         <ContactUsAbout>
           <ContactUsPageTitle>聯絡我們</ContactUsPageTitle>
