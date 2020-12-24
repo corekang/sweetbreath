@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { H3, Input, InputLine } from "../../../constants/style";
+import { H3, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import googleLogin from "../../../components/icon/googleLogin.png";
 import facebookLogin from "../../../components/icon/facebookLogin.png";
@@ -81,7 +81,7 @@ export default function LoginPage() {
         <LoginButton>登入</LoginButton>
         <LoginRefer>
           <LoginReferLink to="#">忘記帳號密碼？</LoginReferLink>
-          <LoginReferLink to="#">還不是會員？加入會員</LoginReferLink>
+          <LoginReferLink to="/register">還不是會員？加入會員</LoginReferLink>
         </LoginRefer>
       </LoginForm>
       <SocialLogin>
