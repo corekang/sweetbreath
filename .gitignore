@@ -2,6 +2,10 @@
 
 .eslintcache
 
+/express/config/config.json
+
+key.js
+
 # dependencies
 /node_modules
 /.pnp
