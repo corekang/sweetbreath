@@ -18,7 +18,10 @@ export const Up = styled.div`
   color: ${(props) => props.theme.colors.neutralWhite};
   background: ${(props) => props.theme.colors.uiNegative};
   z-index: 5;
-
+  opacity: 0.6;
+  :hover {
+    opacity: 1;
+  }
   ${MEDIA_QUERY} {
     top: 85%;
     left: 75%;
