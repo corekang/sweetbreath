@@ -3,11 +3,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import { theme } from "../../../constants/theme";
-import { H2, H3, H4, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
+import { H1, H3, H4, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
 
 const CartContainer = styled.div`
-  height: 100vh;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 
@@ -28,7 +27,7 @@ const CartContainer = styled.div`
   }
 `;
 
-const CartTitle = styled(H2)`
+const CartTitle = styled(H1)`
   border-bottom: 1px solid ${theme.colors.neutralLightGrey};
   padding-bottom: 6px;
 `;
@@ -44,9 +43,9 @@ const CartContent = styled.div`
 `;
 
 const CartListContainer = styled.div`
-  width: 440px;
-  padding: 20px;
-  margin-right: 50px;
+  max-width: 460px;
+  padding: 24px 20px;
+  margin-right: 40px;
   border: 1px solid ${theme.colors.neutralLightGrey};
 
   ${MEDIA_QUERY} {
@@ -93,19 +92,19 @@ const CartItemNumber = styled(BodyLarge)`
   & div {
     padding: 0 16px;
   }
+`;
 
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    font-size: ${theme.fontSize.h3};
-    border-radius: 30px;
-    color: ${theme.colors.mainPrimary};
-    background: ${theme.colors.neutralPaleGrey};
-  }
+const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  font-size: ${theme.fontSize.h3};
+  border-radius: 50%;
+  color: ${theme.colors.mainPrimary};
+  background: ${theme.colors.neutralPaleGrey};
 `;
 
 const CartItemPrice = styled(BodyLarge)``;
@@ -187,7 +186,6 @@ function CartItem() {
   const handleClickDown = () => {
     if (itemCount < 1) return;
     setItemCount((preCount) => preCount - 1);
-    setItemPrice((prePrice) => prePrice * itemCount);
   };
   const handleClickUp = () => {
     setItemCount((preCount) => preCount + 1);
@@ -209,9 +207,9 @@ function CartItem() {
         </CartItemTitle>
         <OderItemDetails>
           <CartItemNumber>
-            <button onClick={handleClickDown}>-</button>
+            <Button onClick={handleClickDown}>-</Button>
             <div>{itemCount}</div>
-            <button onClick={handleClickUp}>+</button>
+            <Button onClick={handleClickUp}>+</Button>
           </CartItemNumber>
           <CartItemPrice>NT$ {itemPrice}</CartItemPrice>
         </OderItemDetails>
