@@ -126,9 +126,13 @@ const userController = {
         where: {
           username: user.username,
         },
+        attributes: ["username", "nickname", "email", "address", "birthday"],
       })
         .then((result) => {
-          return res.status(200).send(result);
+          return res.status(200).send({
+            ok: 1,
+            data: result,
+          });
         })
         .catch((error) => {
           return res.status(404).send({
@@ -141,7 +145,14 @@ const userController = {
 
   editUser: (req, res) => {
     const token = req.header("Authorization").replace("Bearer ", "");
-    const { nickname, email, address } = req.body;
+    const { nickname, email, address, birthday } = req.body;
+    if (!nickname || !email) {
+      return res.status(404).send({
+        ok: 0,
+        message: "Nickname 和 Email 為必填欄位",
+      });
+    }
+
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
         return res.status(404).send({
@@ -159,12 +170,13 @@ const userController = {
             nickname,
             email,
             address,
+            birthday,
           });
         })
         .then((result) => {
           return res.status(200).send({
-            ok: 0,
-            message: result,
+            ok: 1,
+            message: "編輯會員資料完成",
           });
         })
         .catch((error) => {
