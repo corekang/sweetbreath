@@ -61,6 +61,16 @@ const Product = styled.div`
   }
 `;
 
+const BlankCard = styled.div`
+  width: 260px;
+  position: relative;
+  display: inline-block;
+  margin: 20px;
+  ${MEDIA_QUERY} {
+    width: 300px;
+  }
+`;
+
 const Pointer = styled.div`
   display: none;
   position: absolute;
@@ -178,6 +188,8 @@ function Banner() {
           itemImg="https://imgur.com/lxWa1BS.png"
           itemName="可麗露"
         />
+        <BlankCard />
+        <BlankCard />
       </ProductRecommend>
     </HomePageContent>
   );
