@@ -12,8 +12,6 @@ const AboutContent = styled.div`
   }
 `;
 
-const AboutTitle = styled(H1)``;
-
 const AboutDescription = styled.div`
   display: flex;
   margin: 50px auto 0px;
@@ -26,6 +24,7 @@ const AboutDescription = styled.div`
 `;
 
 const Description = styled.div`
+  box-sizing: border-box;
   min-width: 50%;
   text-align: center;
   padding: 0px 90px;
@@ -36,8 +35,8 @@ const Description = styled.div`
 `;
 
 const DescriptionImg = styled.img`
-  width: 500px;
-  height: auto;
+  max-height: 700px;
+  margin: auto;
   @media screen and (max-width: 1200px) {
     display: block;
     margin: 0px auto;
@@ -58,7 +57,7 @@ const LogoImg = styled.img`
 export default function AboutPage() {
   return (
     <AboutContent>
-      <AboutTitle>關於我們</AboutTitle>
+      <H1>關於我們</H1>
       <AboutDescription>
         <DescriptionImg
           src="https://images.unsplash.com/photo-1506459225024-1428097a7e18?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80"

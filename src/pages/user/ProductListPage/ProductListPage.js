@@ -63,6 +63,16 @@ const Product = styled.div`
   }
 `;
 
+const BlankCard = styled.div`
+  width: 260px;
+  position: relative;
+  display: inline-block;
+  margin: 20px;
+  ${MEDIA_QUERY} {
+    width: 300px;
+  }
+`;
+
 const Pointer = styled.div`
   display: none;
   position: absolute;
@@ -193,6 +203,8 @@ export default function ProductListPage() {
           {products.map((product) => (
             <Products product={product} />
           ))}
+          <BlankCard />
+          <BlankCard />
         </ProductList>
       </CategorySection>
       <CategorySection>
@@ -201,6 +213,8 @@ export default function ProductListPage() {
           {products.map((product) => (
             <Products product={product} />
           ))}
+          <BlankCard />
+          <BlankCard />
         </ProductList>
       </CategorySection>
       <CategorySection>
@@ -209,6 +223,8 @@ export default function ProductListPage() {
           {products.map((product) => (
             <Products product={product} />
           ))}
+          <BlankCard />
+          <BlankCard />
         </ProductList>
       </CategorySection>
     </Content>
