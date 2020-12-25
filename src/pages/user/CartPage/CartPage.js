@@ -99,8 +99,8 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   font-size: ${theme.fontSize.h3};
   border-radius: 50%;
   color: ${theme.colors.mainPrimary};
