@@ -24,7 +24,7 @@ export const Up = styled.div`
   }
   ${MEDIA_QUERY} {
     top: 85%;
-    left: 75%;
+    left: 74%;
     width: 60px;
     height: 60px;
     font-size: ${(props) => props.theme.fontSize.h3};
