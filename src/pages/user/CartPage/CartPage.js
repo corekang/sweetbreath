@@ -86,25 +86,29 @@ const CartItemTitle = styled(BodyLarge)`
   }
 `;
 
-const CartItemNumber = styled(BodyLarge)`
+const CartItemNumber = styled(H4)`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
 
   & div {
     padding: 0 16px;
   }
-`;
 
-const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  font-size: ${theme.fontSize.h3};
-  border-radius: 50%;
-  color: ${theme.colors.mainPrimary};
-  background: ${theme.colors.neutralPaleGrey};
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    font-size: ${theme.fontSize.h3};
+    font-weight: 700;
+    border-radius: 50%;
+    color: ${theme.colors.mainPrimary};
+    background: ${theme.colors.neutralPaleGrey};
+  }
 `;
 
 const CartItemPrice = styled(BodyLarge)``;
@@ -207,9 +211,9 @@ function CartItem() {
         </CartItemTitle>
         <OderItemDetails>
           <CartItemNumber>
-            <Button onClick={handleClickDown}>-</Button>
+            <span onClick={handleClickDown}>-</span>
             <div>{itemCount}</div>
-            <Button onClick={handleClickUp}>+</Button>
+            <span onClick={handleClickUp}>+</span>
           </CartItemNumber>
           <CartItemPrice>NT$ {itemPrice}</CartItemPrice>
         </OderItemDetails>
