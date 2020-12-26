@@ -143,11 +143,9 @@ const productController = {
           message: "Unauthorized",
         });
       }
-
       User.findOne({
         where: {
           username: user.username,
-          is_admin: 1,
         },
       })
         .then((admin) => {
@@ -157,7 +155,8 @@ const productController = {
               message: "Unauthorized",
             });
           }
-          Product.Create({
+
+          Product.create({
             CategoryId,
             name,
             image,
@@ -183,6 +182,108 @@ const productController = {
           return res.status(404).send({
             ok: 0,
             message: (error, "User error"),
+          });
+        });
+    });
+  },
+
+  editProduct: (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(200).send({
+        ok: 1,
+        message: "請提供正確商品資訊",
+      });
+    }
+    const {
+      CategoryId,
+      name,
+      image,
+      price,
+      promo_price,
+      info,
+      status,
+    } = req.body;
+    if (!CategoryId || !name || !image || !price) {
+      return res.status(404).send({
+        ok: 0,
+        message: "請完成必填欄位資訊",
+      });
+    }
+    const authorization = req.header("Authorization");
+    if (!authorization) {
+      return res.status(404).send({
+        ok: 0,
+        message: "Authorized Token Missing!",
+      });
+    }
+    const token = req.header("Authorization").replace("Bearer ", "");
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+      User.findOne({
+        where: {
+          username: user.username,
+        },
+      })
+        .then((admin) => {
+          if (!admin) {
+            return res.status(404).send({
+              ok: 0,
+              message: "Unauthorized",
+            });
+          }
+
+          Product.findOne({
+            where: {
+              id,
+            },
+          })
+            .then((product) => {
+              if (!product) {
+                return res.status(404).send({
+                  ok: 0,
+                  message: "查無此商品資訊",
+                });
+              }
+              product
+                .update({
+                  CategoryId,
+                  name,
+                  image,
+                  price,
+                  promo_price,
+                  info,
+                  status,
+                })
+                .then(() => {
+                  return res.status(200).send({
+                    ok: 1,
+                    message: "商品編輯完成",
+                  });
+                })
+                .catch((productError) => {
+                  return res.status(404).send({
+                    ok: 0,
+                    message: productError,
+                  });
+                });
+            })
+            .catch((error) => {
+              return res.status(404).send({
+                ok: 0,
+                message: (error, "User error"),
+              });
+            });
+        })
+        .catch((userError) => {
+          return res.status(404).send({
+            ok: 0,
+            message: userError,
           });
         });
     });

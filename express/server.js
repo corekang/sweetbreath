@@ -22,6 +22,7 @@ app.get("/all_products", productController.getAllProducts);
 app.get("/products", productController.getProducts);
 app.get("/product/:id", productController.getProduct);
 app.post("/product", productController.addProduct);
+app.post("/product/:id", productController.editProduct);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
