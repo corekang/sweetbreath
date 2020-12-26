@@ -41,7 +41,8 @@ module.exports = {
           type: Sequelize.STRING,
         },
         status: {
-          type: Sequelize.TINYINT,
+          defaultValue: true,
+          type: Sequelize.BOOLEAN,
         },
         createdAt: {
           allowNull: false,
