@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { MEDIA_QUERY, H1, H3, H4, H5 } from "../../../constants/style";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { scrollToAnchor } from "../../../components/Anchor";
 
@@ -68,7 +67,11 @@ const MemberItem = styled.div`
 `;
 
 const MemberName = styled(H4)`
+  width: 100px;
   margin: 15px 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: left;
   line-height: 1em;
 `;
@@ -83,7 +86,7 @@ const MemberDesc = styled(H5)`
       : props.theme.colors.neutralDarkGrey};
 `;
 
-const SettingButton = styled(Link)`
+const SettingButton = styled.button`
   display: flex;
   margin: auto 10px;
   align-items: center;
@@ -112,7 +115,7 @@ const SettingButton = styled(Link)`
   }
 `;
 
-const Members = ({ member }) => {
+const Members = ({ member, handleUserStatusAPI }) => {
   return (
     <Member status={member.status}>
       <MemberInformation>
@@ -129,10 +132,20 @@ const Members = ({ member }) => {
         </MemberItem>
       </MemberInformation>
       <MemberSetting>
-        <SettingButton caution="true">
+        <SettingButton
+          caution="true"
+          onClick={() => {
+            handleUserStatusAPI(member, "is_admin");
+          }}
+        >
           {member["is_admin"] ? "取消權限" : "設為管理"}
         </SettingButton>
-        <SettingButton caution={member.status.toString()}>
+        <SettingButton
+          caution={member.status.toString()}
+          onClick={() => {
+            handleUserStatusAPI(member, "status");
+          }}
+        >
           {member.status ? "停權" : "恢復權限"}
         </SettingButton>
       </MemberSetting>
@@ -188,38 +201,11 @@ function SearchBar({
 }
 
 export default function AdminMemberPage() {
-  const [searchType, setSearchType] = useState("fullname");
+  const [searchType, setSearchType] = useState("id");
   const [searchText, setSearchText] = useState("");
-  const [members, setMembers] = useState([
-    {
-      id: 1,
-      username: "可麗露",
-      fullname: "280",
-      email: "1234@gmil.com",
-      address: "安安里安安路安安巷66號之6",
-      is_admin: true,
-      status: true,
-    },
-    {
-      id: 2,
-      username: "蘿蔔糕",
-      fullname: "蘿蔔糕加蛋",
-      email: "1234@gmil.com",
-      address: "安安里安安路安安巷66號之6",
-      is_admin: false,
-      status: true,
-    },
-    {
-      id: 3,
-      username: "蘿蔔糕2",
-      fullname: "蘿蔔糕加蛋2",
-      email: "1234@gmil.com",
-      address:
-        "安安里安安路安安巷66號之6安里安安路安安巷66號之6安里安安路安安巷66號之6",
-      is_admin: false,
-      status: false,
-    },
-  ]);
+  const [rawData, setRawData] = useState([]);
+  const [members, setMembers] = useState([]);
+  const authToken = localStorage.getItem("token");
 
   const handleSearchType = (type) => {
     setSearchType(type);
@@ -230,12 +216,55 @@ export default function AdminMemberPage() {
   };
 
   const handleSearch = () => {
-    console.log(searchText);
+    const result = rawData.filter(
+      (member) =>
+        String(member[String(searchType)]).indexOf(String(searchText)) === 0
+    );
+    setMembers(result);
+  };
+
+  const handleGetUserAPI = () => {
+    fetch("/api/users", {
+      method: "GET",
+      headers: {
+        authorization: authToken,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setMembers(res.data);
+        setRawData(res.data);
+      });
+  };
+
+  const handleUserStatusAPI = ({ id, is_admin, status }, type) => {
+    type === "is_admin" ? (is_admin = !is_admin) : (status = !status);
+    //改畫面
+    const NewMembers = members.map((member) => {
+      if (member.id !== id) {
+        return member;
+      }
+      return { ...member, is_admin, status };
+    });
+    setMembers(NewMembers);
+    //改資料庫
+    fetch(`/api/users/${id}`, {
+      method: "POST",
+      headers: {
+        authorization: authToken,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        is_admin,
+        status,
+      }),
+    }).then((res) => res.json());
   };
 
   useEffect(() => {
-    console.log(searchText);
-  }, [searchType]);
+    handleGetUserAPI();
+  }, []);
+
   return (
     <Content>
       <H1>權限管理</H1>
@@ -248,9 +277,14 @@ export default function AdminMemberPage() {
       />
       <MemberSection>
         <MemberList>
-          {members.map((member) => (
-            <Members member={member} key={member.id} />
-          ))}
+          {members !== "noData" &&
+            members.map((member) => (
+              <Members
+                member={member}
+                handleUserStatusAPI={handleUserStatusAPI}
+                key={member.id}
+              />
+            ))}
         </MemberList>
       </MemberSection>
     </Content>
