@@ -71,7 +71,14 @@ const userController = {
         if (!user) {
           return res.status(404).send({
             ok: 0,
-            token: "帳號或密碼輸入錯誤",
+            message: "帳號或密碼輸入錯誤",
+          });
+        }
+
+        if (!user.status) {
+          return res.status(404).send({
+            ok: 0,
+            message: "你被 BAN 惹哭哭",
           });
         }
 
@@ -98,7 +105,14 @@ const userController = {
   },
 
   getMe: (req, res) => {
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const authorization = req.header("Authorization");
+    if (!authorization) {
+      return res.status(404).send({
+        ok: 0,
+        message: "Authorized Token Missing!",
+      });
+    }
+    const token = authorization.replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, payload) => {
       if (err) {
         return res.status(404).send({
@@ -114,6 +128,13 @@ const userController = {
   },
 
   getUser: (req, res) => {
+    const authorization = req.header("Authorization");
+    if (!authorization) {
+      return res.status(404).send({
+        ok: 0,
+        message: "Authorized Token Missing!",
+      });
+    }
     const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
@@ -144,6 +165,13 @@ const userController = {
   },
 
   editUser: (req, res) => {
+    const authorization = req.header("Authorization");
+    if (!authorization) {
+      return res.status(404).send({
+        ok: 0,
+        message: "Authorized Token Missing!",
+      });
+    }
     const token = req.header("Authorization").replace("Bearer ", "");
     const { nickname, email, address, birthday } = req.body;
     if (!nickname || !email) {
@@ -178,6 +206,140 @@ const userController = {
             ok: 1,
             message: "編輯會員資料完成",
           });
+        })
+        .catch((error) => {
+          return res.status(404).send({
+            ok: 0,
+            message: error,
+          });
+        });
+    });
+  },
+
+  admin: (req, res) => {
+    const authorization = req.header("Authorization");
+    if (!authorization) {
+      return res.status(404).send({
+        ok: 0,
+        message: "Authorized Token Missing!",
+      });
+    }
+    const token = req.header("Authorization").replace("Bearer ", "");
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
+      User.findOne({
+        where: {
+          username: user.username,
+          is_admin: 1,
+        },
+      })
+        .then((admin) => {
+          if (!admin) {
+            return res.status(404).send({
+              ok: 0,
+              data: "Unauthorized",
+            });
+          }
+          User.findAll({
+            attributes: [
+              "id",
+              "username",
+              "nickname",
+              "email",
+              "address",
+              "birthday",
+              "is_admin",
+              "status",
+            ],
+          })
+            .then((users) => {
+              return res.status(200).send({
+                ok: 1,
+                data: users,
+              });
+            })
+            .catch((error) => {
+              return res.status(404).send({
+                ok: 0,
+                message: error,
+              });
+            });
+        })
+        .catch((error) => {
+          return res.status(404).send({
+            ok: 0,
+            message: error,
+          });
+        });
+    });
+  },
+
+  adminEditUsers: (req, res) => {
+    const authorization = req.header("Authorization");
+    if (!authorization) {
+      return res.status(404).send({
+        ok: 0,
+        message: "Authorized Token Missing!",
+      });
+    }
+    const token = req.header("Authorization").replace("Bearer ", "");
+    const { id, is_admin, status } = req.body;
+    if (!id) {
+      return res.status(404).send({
+        ok: 0,
+        message: "請確認編輯對象 id 欄位",
+      });
+    }
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
+      User.findOne({
+        where: {
+          username: user.username,
+          is_admin: 1,
+        },
+      })
+        .then((admin) => {
+          if (!admin) {
+            return res.status(404).send({
+              ok: 0,
+              message: "Unauthorized",
+            });
+          }
+          User.findOne({
+            where: {
+              id,
+            },
+          })
+            .then((person) => {
+              person.update({
+                is_admin,
+                status,
+              });
+            })
+            .then(() => {
+              return res.status(200).send({
+                ok: 1,
+                message: "編輯會員權限完成",
+              });
+            })
+            .catch((editError) => {
+              return res.status(404).send({
+                ok: 0,
+                message: editError,
+              });
+            });
         })
         .catch((error) => {
           return res.status(404).send({
