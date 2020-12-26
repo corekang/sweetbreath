@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.SBP_User;
+const User = db.User;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
