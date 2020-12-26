@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { H3, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import googleLogin from "../../../components/icon/googleLogin.png";
 import facebookLogin from "../../../components/icon/facebookLogin.png";
-import { login } from "../../../ＷebAPI";
+import { login, getMe } from "../../../ＷebAPI";
 import { setAuthToken } from "../../../utils";
 import { useHistory } from "react-router-dom";
+import AuthContext from "../../../contexts";
 
 const PageContainer = styled.div`
   * {
@@ -81,6 +82,7 @@ const ErrorMessage = styled.div`
 `;
 
 export default function LoginPage() {
+  const { setUser } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState();
@@ -95,7 +97,15 @@ export default function LoginPage() {
         return setErrorMessage(data.message);
       }
       setAuthToken(data.token);
-      history.push("/");
+
+      getMe().then((response) => {
+        if (response.ok !== 1) {
+          setAuthToken(null);
+          return setErrorMessage(response.toString());
+        }
+        setUser(response.data);
+        history.push("/");
+      });
     });
   };
   return (
