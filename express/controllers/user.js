@@ -32,7 +32,7 @@ const userController = {
         birthday,
       })
         .then(() => {
-          const token = jwt.sign({ username: username }, SECRET);
+          const token = jwt.sign({ username: username, is_admin: 0 }, SECRET);
           return res.status(200).send({
             ok: 1,
             token,
@@ -84,7 +84,10 @@ const userController = {
 
         bcrypt.compare(password, user.password, (err, result) => {
           if (result) {
-            const token = jwt.sign({ username: user.username }, SECRET);
+            const token = jwt.sign(
+              { username: user.username, is_admin: user.is_admin },
+              SECRET
+            );
             return res.status(200).send({
               ok: 1,
               token,
@@ -104,15 +107,9 @@ const userController = {
       });
   },
 
-  getMe: (req, res) => {
-    const authorization = req.header("Authorization");
-    if (!authorization) {
-      return res.status(404).send({
-        ok: 0,
-        message: "Authorized Token Missing!",
-      });
-    }
-    const token = authorization.replace("Bearer ", "");
+  getMe: (req, res, checkAuthorization) => {
+    checkAuthorization();
+    const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, payload) => {
       if (err) {
         return res.status(404).send({
@@ -127,14 +124,8 @@ const userController = {
     });
   },
 
-  getUser: (req, res) => {
-    const authorization = req.header("Authorization");
-    if (!authorization) {
-      return res.status(404).send({
-        ok: 0,
-        message: "Authorized Token Missing!",
-      });
-    }
+  getUser: (req, res, checkAuthorization) => {
+    checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
@@ -143,6 +134,7 @@ const userController = {
           message: "Unauthorized",
         });
       }
+
       User.findOne({
         where: {
           username: user.username,
@@ -164,14 +156,8 @@ const userController = {
     });
   },
 
-  editUser: (req, res) => {
-    const authorization = req.header("Authorization");
-    if (!authorization) {
-      return res.status(404).send({
-        ok: 0,
-        message: "Authorized Token Missing!",
-      });
-    }
+  editUser: (req, res, checkAuthorization) => {
+    checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
     const { fullname, email, address, birthday } = req.body;
     if (!fullname || !email) {
@@ -216,14 +202,8 @@ const userController = {
     });
   },
 
-  admin: (req, res) => {
-    const authorization = req.header("Authorization");
-    if (!authorization) {
-      return res.status(404).send({
-        ok: 0,
-        message: "Authorized Token Missing!",
-      });
-    }
+  admin: (req, res, checkAuthorization) => {
+    checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
@@ -233,43 +213,30 @@ const userController = {
         });
       }
 
-      User.findOne({
-        where: {
-          username: user.username,
-          is_admin: 1,
-        },
+      if (!user.is_admin) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
+      User.findAll({
+        attributes: [
+          "id",
+          "username",
+          "fullname",
+          "email",
+          "address",
+          "birthday",
+          "is_admin",
+          "status",
+        ],
       })
-        .then((admin) => {
-          if (!admin) {
-            return res.status(404).send({
-              ok: 0,
-              data: "Unauthorized",
-            });
-          }
-          User.findAll({
-            attributes: [
-              "id",
-              "username",
-              "fullname",
-              "email",
-              "address",
-              "birthday",
-              "is_admin",
-              "status",
-            ],
-          })
-            .then((users) => {
-              return res.status(200).send({
-                ok: 1,
-                data: users,
-              });
-            })
-            .catch((error) => {
-              return res.status(404).send({
-                ok: 0,
-                message: error,
-              });
-            });
+        .then((users) => {
+          return res.status(200).send({
+            ok: 1,
+            data: users,
+          });
         })
         .catch((error) => {
           return res.status(404).send({
@@ -280,22 +247,11 @@ const userController = {
     });
   },
 
-  adminEditUsers: (req, res) => {
-    const authorization = req.header("Authorization");
-    if (!authorization) {
-      return res.status(404).send({
-        ok: 0,
-        message: "Authorized Token Missing!",
-      });
-    }
+  adminEditUsers: (req, res, checkAuthorization) => {
+    checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
-    const { id, is_admin, status } = req.body;
-    if (!id) {
-      return res.status(404).send({
-        ok: 0,
-        message: "請確認編輯對象 id 欄位",
-      });
-    }
+    const { id } = req.params;
+    const { is_admin, status } = req.body;
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
         return res.status(404).send({
@@ -304,42 +260,29 @@ const userController = {
         });
       }
 
+      if (!user.is_admin) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
       User.findOne({
         where: {
-          username: user.username,
-          is_admin: 1,
+          id,
         },
       })
-        .then((admin) => {
-          if (!admin) {
-            return res.status(404).send({
-              ok: 0,
-              message: "Unauthorized",
-            });
-          }
-          User.findOne({
-            where: {
-              id,
-            },
-          })
-            .then((person) => {
-              person.update({
-                is_admin,
-                status,
-              });
-            })
-            .then(() => {
-              return res.status(200).send({
-                ok: 1,
-                message: "編輯會員權限完成",
-              });
-            })
-            .catch((editError) => {
-              return res.status(404).send({
-                ok: 0,
-                message: editError,
-              });
-            });
+        .then((person) => {
+          person.update({
+            is_admin,
+            status,
+          });
+        })
+        .then(() => {
+          return res.status(200).send({
+            ok: 1,
+            message: "編輯會員權限完成",
+          });
         })
         .catch((error) => {
           return res.status(404).send({
