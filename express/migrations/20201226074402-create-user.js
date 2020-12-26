@@ -2,7 +2,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      "SBP_Users",
+      "Users",
       {
         id: {
           allowNull: false,
@@ -19,7 +19,7 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        nickname: {
+        fullname: {
           allowNull: false,
           type: Sequelize.STRING,
         },
@@ -30,18 +30,19 @@ module.exports = {
         address: {
           type: Sequelize.STRING,
         },
+        birthday: {
+          type: Sequelize.DATE,
+        },
         is_admin: {
           defaultValue: false,
           type: Sequelize.BOOLEAN,
         },
-        birthday: {
-          type: Sequelize.DATE,
+        status: {
+          defaultValue: true,
+          type: Sequelize.BOOLEAN,
         },
         socialmedia_id: {
           type: Sequelize.STRING,
-        },
-        status: {
-          type: Sequelize.TINYINT,
         },
         createdAt: {
           allowNull: false,
@@ -59,6 +60,6 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("SBP_Users");
+    await queryInterface.dropTable("Users");
   },
 };

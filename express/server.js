@@ -13,6 +13,8 @@ app.post("/login", userControlloer.login);
 app.get("/me", userControlloer.getMe);
 app.get("/user", userControlloer.getUser);
 app.post("/user", userControlloer.editUser);
+app.get("/users", userControlloer.admin);
+app.post("/users", userControlloer.adminEditUsers);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
