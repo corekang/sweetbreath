@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.SBP_User;
+const User = db.User;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
@@ -7,8 +7,8 @@ const SECRET = "sweetbreathyumyum";
 
 const userController = {
   register: (req, res) => {
-    const { username, password, nickname, email, address, birthday } = req.body;
-    if (!username || !password || !nickname || !email) {
+    const { username, password, fullname, email, address, birthday } = req.body;
+    if (!username || !password || !fullname || !email) {
       return res.status(404).send({
         ok: 0,
         message: "資料未填寫完成",
@@ -26,7 +26,7 @@ const userController = {
       User.create({
         username,
         password: hash,
-        nickname,
+        fullname,
         email,
         address,
         birthday,
@@ -147,7 +147,7 @@ const userController = {
         where: {
           username: user.username,
         },
-        attributes: ["username", "nickname", "email", "address", "birthday"],
+        attributes: ["username", "fullname", "email", "address", "birthday"],
       })
         .then((result) => {
           return res.status(200).send({
@@ -173,8 +173,8 @@ const userController = {
       });
     }
     const token = req.header("Authorization").replace("Bearer ", "");
-    const { nickname, email, address, birthday } = req.body;
-    if (!nickname || !email) {
+    const { fullname, email, address, birthday } = req.body;
+    if (!fullname || !email) {
       return res.status(404).send({
         ok: 0,
         message: "Nickname 和 Email 為必填欄位",
@@ -195,7 +195,7 @@ const userController = {
       })
         .then((person) => {
           person.update({
-            nickname,
+            fullname,
             email,
             address,
             birthday,
@@ -250,7 +250,7 @@ const userController = {
             attributes: [
               "id",
               "username",
-              "nickname",
+              "fullname",
               "email",
               "address",
               "birthday",
