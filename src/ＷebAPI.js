@@ -24,7 +24,6 @@ export const getMe = () => {
     headers: {
       authorization: `Bearer ${token}`,
     },
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+  }).then((res) => res.json());
+  // .then((data) => console.log(data));
 };

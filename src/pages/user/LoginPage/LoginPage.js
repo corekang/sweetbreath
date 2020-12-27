@@ -82,7 +82,7 @@ const ErrorMessage = styled.div`
 `;
 
 export default function LoginPage() {
-  const { setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState();
@@ -94,6 +94,7 @@ export default function LoginPage() {
     login(username, password).then((data) => {
       // console.log(data);
       if (data.ok === 0) {
+        console.log(user);
         return setErrorMessage(data.message);
       }
       setAuthToken(data.token);
@@ -105,6 +106,7 @@ export default function LoginPage() {
         }
         setUser(response.data);
         history.push("/");
+        console.log(user);
       });
     });
   };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { Up, scrollToAnchor } from "../Anchor";
 import Navbar from "../Navbar";
@@ -27,21 +27,32 @@ import {
   AdminCategoryPage,
 } from "../../pages";
 import AuthContext from "../../contexts";
+import { getMe } from "../../ＷebAPI";
+import { getAuthToken } from "../../utils";
 
 function App() {
   const [user, setUser] = useState(null); // useState("customer")
+
+  useEffect(() => {
+    if (getAuthToken()) {
+      getMe().then((response) => {
+        if (response.ok) {
+          setUser(response.data);
+        }
+      });
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <Router>
         {
-          user === "admin" ? (
-            <AdminNavbar />
-          ) : (
+          !user ? (
             <Navbar />
+          ) : (
+            <AdminNavbar />
           ) /* {user === "customer" ? <Navbar /> : <AdminNavbar />} */
         }
-
         <Up onClick={() => scrollToAnchor("top")}>
           <span>⇧</span>
         </Up>

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { BodyLarge, MEDIA_QUERY } from "../../constants/style";
 import { Link } from "react-router-dom";
