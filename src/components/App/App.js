@@ -28,7 +28,7 @@ import {
 } from "../../pages";
 
 function App() {
-  const [user, setUser] = useState("customer");
+  const [user, setUser] = useState("admin");
 
   return (
     <Router>

@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.SBP_User;
+const User = db.User;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
@@ -7,8 +7,8 @@ const SECRET = "sweetbreathyumyum";
 
 const userController = {
   register: (req, res) => {
-    const { username, password, nickname, email, address, birthday } = req.body;
-    if (!username || !password || !nickname || !email) {
+    const { username, password, fullname, email, address, birthday } = req.body;
+    if (!username || !password || !fullname || !email) {
       return res.status(404).send({
         ok: 0,
         message: "資料未填寫完成",
@@ -26,13 +26,13 @@ const userController = {
       User.create({
         username,
         password: hash,
-        nickname,
+        fullname,
         email,
         address,
         birthday,
       })
         .then(() => {
-          const token = jwt.sign({ username: username }, SECRET);
+          const token = jwt.sign({ username: username, is_admin: 0 }, SECRET);
           return res.status(200).send({
             ok: 1,
             token,
@@ -71,13 +71,23 @@ const userController = {
         if (!user) {
           return res.status(404).send({
             ok: 0,
-            token: "帳號或密碼輸入錯誤",
+            message: "帳號或密碼輸入錯誤",
+          });
+        }
+
+        if (!user.status) {
+          return res.status(404).send({
+            ok: 0,
+            message: "你被 BAN 惹哭哭",
           });
         }
 
         bcrypt.compare(password, user.password, (err, result) => {
           if (result) {
-            const token = jwt.sign({ username: user.username }, SECRET);
+            const token = jwt.sign(
+              { username: user.username, is_admin: user.is_admin },
+              SECRET
+            );
             return res.status(200).send({
               ok: 1,
               token,
@@ -97,7 +107,8 @@ const userController = {
       });
   },
 
-  getMe: (req, res) => {
+  getMe: (req, res, checkAuthorization) => {
+    checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, payload) => {
       if (err) {
@@ -113,7 +124,8 @@ const userController = {
     });
   },
 
-  getUser: (req, res) => {
+  getUser: (req, res, checkAuthorization) => {
+    checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
@@ -122,11 +134,12 @@ const userController = {
           message: "Unauthorized",
         });
       }
+
       User.findOne({
         where: {
           username: user.username,
         },
-        attributes: ["username", "nickname", "email", "address", "birthday"],
+        attributes: ["username", "fullname", "email", "address", "birthday"],
       })
         .then((result) => {
           return res.status(200).send({
@@ -143,10 +156,11 @@ const userController = {
     });
   },
 
-  editUser: (req, res) => {
+  editUser: (req, res, checkAuthorization) => {
+    checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
-    const { nickname, email, address, birthday } = req.body;
-    if (!nickname || !email) {
+    const { fullname, email, address, birthday } = req.body;
+    if (!fullname || !email) {
       return res.status(404).send({
         ok: 0,
         message: "Nickname 和 Email 為必填欄位",
@@ -167,7 +181,7 @@ const userController = {
       })
         .then((person) => {
           person.update({
-            nickname,
+            fullname,
             email,
             address,
             birthday,
@@ -177,6 +191,97 @@ const userController = {
           return res.status(200).send({
             ok: 1,
             message: "編輯會員資料完成",
+          });
+        })
+        .catch((error) => {
+          return res.status(404).send({
+            ok: 0,
+            message: error,
+          });
+        });
+    });
+  },
+
+  admin: (req, res, checkAuthorization) => {
+    checkAuthorization();
+    const token = req.header("Authorization").replace("Bearer ", "");
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
+      if (!user.is_admin) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
+      User.findAll({
+        attributes: [
+          "id",
+          "username",
+          "fullname",
+          "email",
+          "address",
+          "birthday",
+          "is_admin",
+          "status",
+        ],
+      })
+        .then((users) => {
+          return res.status(200).send({
+            ok: 1,
+            data: users,
+          });
+        })
+        .catch((error) => {
+          return res.status(404).send({
+            ok: 0,
+            message: error,
+          });
+        });
+    });
+  },
+
+  adminEditUsers: (req, res, checkAuthorization) => {
+    checkAuthorization();
+    const token = req.header("Authorization").replace("Bearer ", "");
+    const { id } = req.params;
+    const { is_admin, status } = req.body;
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
+      if (!user.is_admin) {
+        return res.status(404).send({
+          ok: 0,
+          message: "Unauthorized",
+        });
+      }
+
+      User.findOne({
+        where: {
+          id,
+        },
+      })
+        .then((person) => {
+          person.update({
+            is_admin,
+            status,
+          });
+        })
+        .then(() => {
+          return res.status(200).send({
+            ok: 1,
+            message: "編輯會員權限完成",
           });
         })
         .catch((error) => {
