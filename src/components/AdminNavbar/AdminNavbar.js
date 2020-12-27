@@ -35,7 +35,6 @@ const NavbarContent = styled.div`
 const ButtonContent = styled(Link)`
   box-sizing: border-box;
   min-width: 78px;
-  height: 38px;
   border-radius: 5px;
   color: ${(props) => props.theme.colors.neutralBlack};
   text-align: center;
