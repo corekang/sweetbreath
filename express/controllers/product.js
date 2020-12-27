@@ -1,6 +1,7 @@
 const db = require("../models");
 const Product = db.Product;
 const Category = db.Category;
+const Feature = db.Feature;
 const jwt = require("jsonwebtoken");
 const SECRET = "sweetbreathyumyum";
 
@@ -27,6 +28,12 @@ const productController = {
         where: {
           is_deleted: false,
         },
+        include: [
+          {
+            model: Feature,
+            where: { is_deleted: false },
+          },
+        ],
       })
         .then((products) => {
           return res.status(200).send({
@@ -49,6 +56,12 @@ const productController = {
         is_deleted: false,
         status: 1,
       },
+      include: [
+        {
+          model: Feature,
+          where: { is_deleted: false },
+        },
+      ],
     })
       .then((products) => {
         return res.status(200).send({
@@ -71,7 +84,12 @@ const productController = {
         id,
         is_deleted: false,
       },
-      include: Category,
+      include: [
+        {
+          model: Feature,
+          where: { is_deleted: false },
+        },
+      ],
     })
       .then((product) => {
         if (!product) {
@@ -94,8 +112,18 @@ const productController = {
   },
 
   addProduct: (req, res, checkAuthorization) => {
-    const { CategoryId, name, image, info, status } = req.body;
-    if (!CategoryId || !name || !image) {
+    const {
+      CategoryId,
+      name,
+      image,
+      info,
+      status,
+      feature_name,
+      price,
+      promo_price,
+      stock,
+    } = req.body;
+    if (!CategoryId || !name || !image || !feature_name || !price || !stock) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -125,11 +153,26 @@ const productController = {
         info,
         status,
       })
-        .then(() => {
-          return res.status(200).send({
-            ok: 1,
-            message: "商品新增完成",
-          });
+        .then((product) => {
+          Feature.create({
+            ProductId: product.id,
+            name: feature_name,
+            price,
+            promo_price,
+            stock,
+          })
+            .then((result) => {
+              return res.status(200).send({
+                ok: 1,
+                message: "商品新增完成",
+              });
+            })
+            .catch((error) => {
+              return res.status(404).send({
+                ok: 0,
+                message: error,
+              });
+            });
         })
         .catch((productError) => {
           return res.status(404).send({

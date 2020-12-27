@@ -1,34 +1,13 @@
 const db = require("../models");
 const Feature = db.Feature;
-const Product = db.Product;
 const jwt = require("jsonwebtoken");
 const SECRET = "sweetbreathyumyum";
 
 const featureController = {
-  getFeature: (req, res) => {
-    Product.findAll({
-      where: {
-        is_deleted: false,
-      },
-    })
-      .then((categories) => {
-        return res.status(200).send({
-          ok: 1,
-          data: categories,
-        });
-      })
-      .catch((err) => {
-        return res.status(404).send({
-          ok: 0,
-          message: err,
-        });
-      });
-  },
-
   addFeature: (req, res, checkAuthorization) => {
-    const { id } = req.params;
-    const { ProductId, name, price, promo_price, stock } = req.body;
-    if (!name || !ProductId || !stock || !price) {
+    const { id } = req.params; //Product_id
+    const { name, price, promo_price, stock } = req.body;
+    if (!name || !stock || !price) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -74,7 +53,7 @@ const featureController = {
   },
 
   editFeature: (req, res, checkAuthorization) => {
-    const { id } = req.params;
+    const { id } = req.params; // Feature_id
     const { name, stock, price, promo_price } = req.body;
     if (!name || !stock || !price) {
       return res.status(404).send({
@@ -134,7 +113,7 @@ const featureController = {
   },
 
   deleteFeature: (req, res, checkAuthorization) => {
-    const { id } = req.params;
+    const { id } = req.params; //Feature_id
     checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, user) => {
@@ -151,6 +130,7 @@ const featureController = {
           message: "Unauthorized",
         });
       }
+
       Feature.findOne({
         where: {
           id,

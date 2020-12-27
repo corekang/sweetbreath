@@ -26,7 +26,7 @@ app.post("/register", userControlloer.register);
 app.post("/login", userControlloer.login);
 app.get("/me", userControlloer.getMe, checkAuthorization);
 app.get("/user", userControlloer.getUser, checkAuthorization);
-app.post("/user", userControlloer.editUser, checkAuthorization);
+app.put("/user", userControlloer.editUser, checkAuthorization);
 app.get("/users", userControlloer.admin, checkAuthorization);
 app.post("/users/:id", userControlloer.adminEditUsers, checkAuthorization);
 
@@ -35,13 +35,13 @@ app.get("/all_products", productController.getAllProducts, checkAuthorization);
 app.get("/products", productController.getProducts);
 app.get("/product/:id", productController.getProduct);
 app.post("/product", productController.addProduct, checkAuthorization);
-app.post("/product/:id", productController.editProduct, checkAuthorization);
+app.put("/product/:id", productController.editProduct, checkAuthorization);
 app.delete("/product/:id", productController.deleteProduct, checkAuthorization);
 
 // category
 app.get("/category", categoryController.getCategory);
 app.post("/category", categoryController.addCategory, checkAuthorization);
-app.post("/category/:id", categoryController.editCategory, checkAuthorization);
+app.put("/category/:id", categoryController.editCategory, checkAuthorization);
 app.delete(
   "/category/:id",
   categoryController.deleteCategory,
@@ -49,9 +49,8 @@ app.delete(
 );
 
 // Feature
-app.get("/feature", featureController.getFeature);
-app.post("/feature", featureController.addFeature, checkAuthorization);
-app.post("/feature/:id", featureController.editFeature, checkAuthorization);
+app.post("/feature/:id", featureController.addFeature, checkAuthorization);
+app.put("/feature/:id", featureController.editFeature, checkAuthorization);
 app.delete("/feature/:id", featureController.deleteFeature, checkAuthorization);
 
 app.listen(port, () => {

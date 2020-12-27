@@ -10,6 +10,7 @@ const categoryController = {
       where: {
         is_deleted: false,
       },
+      include: Product,
     })
       .then((categories) => {
         return res.status(200).send({
