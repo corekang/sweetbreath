@@ -94,16 +94,8 @@ const productController = {
   },
 
   addProduct: (req, res, checkAuthorization) => {
-    const {
-      CategoryId,
-      name,
-      image,
-      price,
-      promo_price,
-      info,
-      status,
-    } = req.body;
-    if (!CategoryId || !name || !image || !price) {
+    const { CategoryId, name, image, info, status } = req.body;
+    if (!CategoryId || !name || !image) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -130,8 +122,6 @@ const productController = {
         CategoryId,
         name,
         image,
-        price,
-        promo_price,
         info,
         status,
       })
@@ -152,16 +142,8 @@ const productController = {
 
   editProduct: (req, res, checkAuthorization) => {
     const { id } = req.params;
-    const {
-      CategoryId,
-      name,
-      image,
-      price,
-      promo_price,
-      info,
-      status,
-    } = req.body;
-    if (!CategoryId || !name || !image || !price) {
+    const { CategoryId, name, image, info, status } = req.body;
+    if (!CategoryId || !name || !image) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -200,8 +182,6 @@ const productController = {
             CategoryId,
             name,
             image,
-            price,
-            promo_price,
             info,
             status,
           })

@@ -1,11 +1,11 @@
 const db = require("../models");
-const Model = db.Model;
+const Feature = db.Feature;
 const Product = db.Product;
 const jwt = require("jsonwebtoken");
 const SECRET = "sweetbreathyumyum";
 
-const modelController = {
-  getModel: (req, res) => {
+const featureController = {
+  getFeature: (req, res) => {
     Product.findAll({
       where: {
         is_deleted: false,
@@ -25,10 +25,10 @@ const modelController = {
       });
   },
 
-  addModel: (req, res, checkAuthorization) => {
+  addFeature: (req, res, checkAuthorization) => {
     const { id } = req.params;
-    const { ProductId, name, stock } = req.body;
-    if (!name || !ProductId || !stock) {
+    const { ProductId, name, price, promo_price, stock } = req.body;
+    if (!name || !ProductId || !stock || !price) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -51,9 +51,11 @@ const modelController = {
         });
       }
 
-      Model.create({
+      Feature.create({
         ProductId: id,
         name,
+        price,
+        promo_price,
         stock,
       })
         .then(() => {
@@ -71,10 +73,10 @@ const modelController = {
     });
   },
 
-  editModel: (req, res, checkAuthorization) => {
+  editFeature: (req, res, checkAuthorization) => {
     const { id } = req.params;
-    const { name, stock } = req.body;
-    if (!name || !stock) {
+    const { name, stock, price, promo_price } = req.body;
+    if (!name || !stock || !price) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -97,21 +99,23 @@ const modelController = {
         });
       }
 
-      Model.findOne({
+      Feature.findOne({
         where: {
           id,
         },
-      }).then((model) => {
-        if (!model) {
+      }).then((feature) => {
+        if (!feature) {
           return res.status(404).send({
             ok: 0,
             message: "查無此分類資訊",
           });
         }
-        model
+        feature
           .update({
             name,
             stock,
+            price,
+            promo_price,
           })
           .then(() => {
             return res.status(200).send({
@@ -129,7 +133,7 @@ const modelController = {
     });
   },
 
-  deleteModel: (req, res, checkAuthorization) => {
+  deleteFeature: (req, res, checkAuthorization) => {
     const { id } = req.params;
     checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
@@ -147,18 +151,18 @@ const modelController = {
           message: "Unauthorized",
         });
       }
-      Model.findOne({
+      Feature.findOne({
         where: {
           id,
         },
-      }).then((model) => {
-        if (!model) {
+      }).then((feature) => {
+        if (!feature) {
           return res.status(404).send({
             ok: 0,
             message: "查無此規格資訊",
           });
         }
-        model
+        feature
           .update({
             is_deleted: true,
           })
@@ -179,4 +183,4 @@ const modelController = {
   },
 };
 
-module.exports = modelController;
+module.exports = featureController;
