@@ -1,34 +1,13 @@
 const db = require("../models");
-const Product = db.Product;
-const Category = db.Category;
+const Feature = db.Feature;
 const jwt = require("jsonwebtoken");
 const SECRET = "sweetbreathyumyum";
 
-const categoryController = {
-  getCategory: (req, res) => {
-    Category.findAll({
-      where: {
-        is_deleted: false,
-      },
-      include: Product,
-    })
-      .then((categories) => {
-        return res.status(200).send({
-          ok: 1,
-          data: categories,
-        });
-      })
-      .catch((err) => {
-        return res.status(404).send({
-          ok: 0,
-          message: err,
-        });
-      });
-  },
-
-  addCategory: (req, res, checkAuthorization) => {
-    const { name } = req.body;
-    if (!name) {
+const featureController = {
+  addFeature: (req, res, checkAuthorization) => {
+    const { id } = req.params; //Product_id
+    const { name, price, promo_price, stock } = req.body;
+    if (!name || !stock || !price) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -51,13 +30,17 @@ const categoryController = {
         });
       }
 
-      Category.create({
+      Feature.create({
+        ProductId: id,
         name,
+        price,
+        promo_price,
+        stock,
       })
         .then(() => {
           return res.status(200).send({
             ok: 1,
-            message: "分類新增完成",
+            message: "規格新增完成",
           });
         })
         .catch((error) => {
@@ -69,10 +52,10 @@ const categoryController = {
     });
   },
 
-  editCategory: (req, res, checkAuthorization) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    if (!name) {
+  editFeature: (req, res, checkAuthorization) => {
+    const { id } = req.params; // Feature_id
+    const { name, stock, price, promo_price } = req.body;
+    if (!name || !stock || !price) {
       return res.status(404).send({
         ok: 0,
         message: "請完成必填欄位資訊",
@@ -95,39 +78,42 @@ const categoryController = {
         });
       }
 
-      Category.findOne({
+      Feature.findOne({
         where: {
           id,
         },
-      }).then((category) => {
-        if (!category) {
+      }).then((feature) => {
+        if (!feature) {
           return res.status(404).send({
             ok: 0,
             message: "查無此分類資訊",
           });
         }
-        category
+        feature
           .update({
             name,
+            stock,
+            price,
+            promo_price,
           })
           .then(() => {
             return res.status(200).send({
               ok: 1,
-              message: "分類編輯完成",
+              message: "規格編輯完成",
             });
           })
-          .catch((productError) => {
+          .catch((error) => {
             return res.status(404).send({
               ok: 0,
-              message: productError,
+              message: error,
             });
           });
       });
     });
   },
 
-  deleteCategory: (req, res, checkAuthorization) => {
-    const { id } = req.params;
+  deleteFeature: (req, res, checkAuthorization) => {
+    const { id } = req.params; //Feature_id
     checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
     jwt.verify(token, SECRET, (err, user) => {
@@ -144,25 +130,26 @@ const categoryController = {
           message: "Unauthorized",
         });
       }
-      Category.findOne({
+
+      Feature.findOne({
         where: {
           id,
         },
-      }).then((category) => {
-        if (!category) {
+      }).then((feature) => {
+        if (!feature) {
           return res.status(404).send({
             ok: 0,
-            message: "查無此分類資訊",
+            message: "查無此規格資訊",
           });
         }
-        category
+        feature
           .update({
             is_deleted: true,
           })
           .then(() => {
             return res.status(200).send({
               ok: 1,
-              message: "分類刪除完成",
+              message: "規格刪除完成",
             });
           })
           .catch((error) => {
@@ -176,4 +163,4 @@ const categoryController = {
   },
 };
 
-module.exports = categoryController;
+module.exports = featureController;
