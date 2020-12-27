@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/sweetbreath/static/css/main.a1d870e4.chunk.css",
-    "main.js": "/sweetbreath/static/js/main.a6dd1a83.chunk.js",
-    "main.js.map": "/sweetbreath/static/js/main.a6dd1a83.chunk.js.map",
+    "main.js": "/sweetbreath/static/js/main.20f7341e.chunk.js",
+    "main.js.map": "/sweetbreath/static/js/main.20f7341e.chunk.js.map",
     "runtime-main.js": "/sweetbreath/static/js/runtime-main.0018e6a0.js",
     "runtime-main.js.map": "/sweetbreath/static/js/runtime-main.0018e6a0.js.map",
     "static/css/2.4f3280a4.chunk.css": "/sweetbreath/static/css/2.4f3280a4.chunk.css",
@@ -28,6 +28,6 @@
     "static/css/2.4f3280a4.chunk.css",
     "static/js/2.cbd2f7e1.chunk.js",
     "static/css/main.a1d870e4.chunk.css",
-    "static/js/main.a6dd1a83.chunk.js"
+    "static/js/main.20f7341e.chunk.js"
   ]
 }
