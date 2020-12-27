@@ -1,3 +1,4 @@
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { H3, Input } from "../../../constants/style";
@@ -24,7 +25,7 @@ const LoginPageTitle = styled(H3)`
   text-align: center;
 `;
 
-const LoginForm = styled.div`
+const LoginForm = styled.form`
   width: 350px;
 `;
 
@@ -41,6 +42,7 @@ const LoginButton = styled.button`
   background-color: ${theme.colors.mainPrimary};
   border: 0;
   color: #ffffff;
+  cursor: pointer;
 `;
 
 const LoginRefer = styled.div`
@@ -75,13 +77,62 @@ const SiteLogo = styled.img`
   height: 60px;
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  text-align: center;
+`;
+
 export default function LoginPage() {
+  const { setUser } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
+  const history = useHistory();
+  const handleSubmit = (e) => {
+    // e.preventDefault();
+    // alert(username);
+    setErrorMessage(null);
+    login(username, password).then((data) => {
+      // console.log(data);
+      if (data.ok === 0) {
+        setUsername("");
+        setPassword("");
+        return setErrorMessage(data.message);
+      }
+      setAuthToken(data.token);
+
+      getMe().then((response) => {
+        if (response.ok !== 1) {
+          setAuthToken(null);
+          return setErrorMessage(response.toString());
+        }
+        setUser(response.data);
+        history.push("/");
+      });
+    });
+  };
+  const handleInputFocus = () => {
+    setErrorMessage(null);
+    setPassword("");
+  };
   return (
     <PageContainer>
       <LoginPageTitle>會員登入</LoginPageTitle>
-      <LoginForm>
-        <LoginInput placeholder="帳號" />
-        <LoginInput type="password" placeholder="密碼" />
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <LoginForm onSubmit={handleSubmit}>
+        <LoginInput
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          onFocus={handleInputFocus}
+          placeholder="帳號"
+        />
+        <LoginInput
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onFocus={handleInputFocus}
+          type="password"
+          placeholder="密碼"
+        />
         <LoginButton>登入</LoginButton>
         <LoginRefer>
           <LoginReferLink to="#">忘記帳號密碼？</LoginReferLink>
