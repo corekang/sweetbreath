@@ -16,7 +16,7 @@ export const theme = {
     mainPrimary: "#6e70ff",
     mainSecondary: "#adaef9",
     mainPrimaryDark: "#292bb4",
-    uiPositive: "#6e70ff",
+    uiPositive: "#00cb6f",
     uiWarning: "#ffbc2c",
     uiNegative: "#ee7764",
     uiActive: "#6e70ff",

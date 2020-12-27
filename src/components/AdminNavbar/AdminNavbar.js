@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BodyLarge } from "../../constants/style";
+import { BodyLarge, MEDIA_QUERY } from "../../constants/style";
 import { Link } from "react-router-dom";
 import sweetBreath from "../icon/sweetBreath_line.png";
 
@@ -17,7 +17,7 @@ const NavbarContent = styled.div`
   display: flex;
   box-sizing: border-box;
   height: 86px;
-  padding: 27px;
+  padding: 30px;
   box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${(props) => props.theme.colors.neutralWhite};
   align-items: center;
@@ -36,12 +36,14 @@ const ButtonContent = styled(Link)`
   box-sizing: border-box;
   min-width: 78px;
   height: 38px;
-  padding: 7px;
   border-radius: 5px;
   color: ${(props) => props.theme.colors.neutralBlack};
   text-align: center;
   text-decoration: none;
   font-weight: 500;
+  ${MEDIA_QUERY} {
+    min-width: 65px;
+  }
   :hover {
     background-color: ${(props) => props.theme.colors.neutralGrey};
     color: ${(props) => props.theme.colors.neutralSnow};
@@ -53,6 +55,9 @@ const ButtonContent = styled(Link)`
     margin-left: 60px;
     @media screen and (max-width: 1400px) {
       margin-left: 30px;
+    }
+    ${MEDIA_QUERY} {
+      margin-left: 10px;
     }
   }
 `;
@@ -131,6 +136,7 @@ export default function AdminNavbar() {
         <NavButton route="/admin/products" title={"商品管理"} />
         <NavButton route="/admin/category" title={"分類管理"} />
         <NavButton route="/admin/member" title={"權限管理"} />
+        <NavButton route="/admin/orders" title={"訂單管理"} />
         <NavButton route="/logout" title={"登出"} />
       </FunctionBar>
     </NavbarContent>

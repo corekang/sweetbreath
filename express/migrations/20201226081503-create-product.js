@@ -2,7 +2,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      "SBP_Users",
+      "Products",
       {
         id: {
           allowNull: false,
@@ -10,38 +10,35 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        username: {
-          unique: true,
+        CategoryId: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        name: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        password: {
+        image: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        nickname: {
+        price: {
           allowNull: false,
-          type: Sequelize.STRING,
+          type: Sequelize.INTEGER,
         },
-        email: {
-          allowNull: false,
-          type: Sequelize.STRING,
+        promo_price: {
+          type: Sequelize.INTEGER,
         },
-        address: {
-          type: Sequelize.STRING,
-        },
-        is_admin: {
-          defaultValue: false,
-          type: Sequelize.BOOLEAN,
-        },
-        birthday: {
-          type: Sequelize.DATE,
-        },
-        socialmedia_id: {
-          type: Sequelize.STRING,
+        info: {
+          type: Sequelize.TEXT,
         },
         status: {
+          defaultValue: 1,
           type: Sequelize.TINYINT,
+        },
+        is_deleted: {
+          defaultValue: false,
+          type: Sequelize.BOOLEAN,
         },
         createdAt: {
           allowNull: false,
@@ -59,6 +56,6 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("SBP_Users");
+    await queryInterface.dropTable("Products");
   },
 };
