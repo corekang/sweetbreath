@@ -27,7 +27,7 @@ import {
   AdminCategoryPage,
 } from "../../pages";
 import AuthContext from "../../contexts";
-import { getMe } from "../../ＷebAPI";
+import { getMe } from "../../WebAPI";
 import { getAuthToken } from "../../utils";
 
 function App() {

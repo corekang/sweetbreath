@@ -233,8 +233,10 @@ function CartList({ cartItem }) {
         style={{ backgroundImage: `url(${cartItem.img})` }}
       ></ImgLink>
       <CartItemContent>
-        <CartItemTitle to={`/product/${cartItem.id}`} target="_blank">
-          <Link>{cartItem.productName}</Link>
+        <CartItemTitle>
+          <Link to={`/product/${cartItem.id}`} target="_blank">
+            {cartItem.productName}
+          </Link>
         </CartItemTitle>
         <OderItemDetails>
           <CounterArea>

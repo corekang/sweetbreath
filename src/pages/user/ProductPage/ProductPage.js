@@ -232,7 +232,7 @@ export default function ProductPage() {
     },
     {
       id: 4,
-      name: "可麗露",
+      name: "可不可麗露",
       CategoryId: 1,
       info: `濃郁抹茶派皮，搭配新鮮抹茶生巧克力，等待熟成的時間到來在嘴裡化開，空氣中飄著陣陣茶香，看似單純的結合卻營造出有深度的層次感，您一定不能錯過！
             
@@ -242,8 +242,8 @@ export default function ProductPage() {
             滿 50 盒打 95 折+免運一個地址
             滿 100 盒打 9 折+免運兩個地址，建議可以統一寄送到同一個地址再分送喔！
        `,
-      price: "280",
-      promoPrice: "180",
+      price: "380",
+      promoPrice: "250",
       img: "https://imgur.com/lxWa1BS.png",
     },
   ]);
