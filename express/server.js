@@ -4,6 +4,7 @@ const port = 5000;
 const bodyParser = require("body-parser");
 const userControlloer = require("./controllers/user");
 const productController = require("./controllers/product");
+const categoryController = require("./controllers/category");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -35,6 +36,16 @@ app.get("/product/:id", productController.getProduct);
 app.post("/product", productController.addProduct, checkAuthorization);
 app.post("/product/:id", productController.editProduct, checkAuthorization);
 app.delete("/product/:id", productController.deleteProduct, checkAuthorization);
+
+// category
+app.get("/category", categoryController.getCategory);
+app.post("/category", categoryController.addCategory, checkAuthorization);
+app.post("/category/:id", categoryController.editCategory, checkAuthorization);
+app.delete(
+  "/category/:id",
+  categoryController.deleteCategory,
+  checkAuthorization
+);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
