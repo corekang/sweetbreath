@@ -123,6 +123,7 @@ const InstagramImg = styled.img`
   width: 27px;
   height: 27px;
 `;
+
 const LogOutImg = styled.img`
   width: 22px;
   height: 23px;
@@ -173,18 +174,23 @@ const InstagramButton = (props) => {
   );
 };
 
-const LogOutButton = (props) => {
+/* const LogOutButton = (props) => {
   return (
     <IconContent to={props.route}>
       <LogOutImg src={props.icon} />
     </IconContent>
   );
-};
+}; */
+
+const LogOutButton = styled.button`
+  border: 0;
+  background: none;
+`;
 
 export default function Navbar() {
-  const { user, setUser } = useContext(AuthContext);
   const location = useLocation();
   const history = useHistory();
+  const { user, setUser } = useContext(AuthContext);
   const handleLogout = () => {
     setAuthToken("");
     setUser(null);
@@ -213,9 +219,13 @@ export default function Navbar() {
         {!user && <IconButton route="/login" icon={member} />}
         {user && (
           <LogOutButton
-            /* route="/logout" */ icon={logout}
+            /* route="/logout" icon={logout} */ src={logout}
             onClick={handleLogout}
-          />
+          >
+            <IconContent>
+              <LogOutImg src={logout} />
+            </IconContent>
+          </LogOutButton>
         )}
       </IconBar>
     </NavbarContent>

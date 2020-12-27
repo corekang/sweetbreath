@@ -31,7 +31,11 @@ import { getMe } from "../../WebAPI";
 import { getAuthToken } from "../../utils";
 
 function App() {
-  const [user, setUser] = useState(false); // useState("customer")
+  const [user, setUser] = useState(null); // useState("customer")
+
+  const userPermission = getMe().then((response) => {
+    console.log(response);
+  });
 
   useEffect(() => {
     if (getAuthToken()) {
@@ -47,11 +51,8 @@ function App() {
     <AuthContext.Provider value={{ user, setUser }}>
       <Router>
         {
-          user ? (
-            <Navbar />
-          ) : (
-            <AdminNavbar />
-          ) /* {user === "customer" ? <Navbar /> : <AdminNavbar />} */
+          !user || !userPermission ? <Navbar /> : <AdminNavbar />
+          /* {user === "customer" ? <Navbar /> : <AdminNavbar />} */
         }
         <Up onClick={() => scrollToAnchor("top")}>
           <span>⇧</span>

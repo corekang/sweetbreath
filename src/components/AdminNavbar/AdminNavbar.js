@@ -2,6 +2,11 @@ import styled from "styled-components";
 import { BodyLarge, MEDIA_QUERY } from "../../constants/style";
 import { Link } from "react-router-dom";
 import sweetBreath from "../icon/sweetBreath_line.png";
+import React, { useContext } from "react";
+import { useLocation, useHistory } from "react-router-dom";
+import AuthContext from "../../contexts";
+import { setAuthToken } from "../../utils";
+import logout from "../icon/logout.png";
 
 const LogoContent = styled.div`
   display: flex;
@@ -118,7 +123,31 @@ const NavButton = (props) => {
   );
 };
 
+const LogoutButton = styled.button`
+  border: 0;
+  background: none;
+  cursor: pointer;
+  margin-left: 20px;
+  outline: none;
+
+  img {
+    width: 22px;
+    height: 23px;
+  }
+`;
+
 export default function AdminNavbar() {
+  const location = useLocation();
+  const history = useHistory();
+  const { user, setUser } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    setAuthToken("");
+    setUser(null);
+    if (location.pathname !== "/") {
+      history.push("/");
+    }
+  };
   return (
     <NavbarContent id="top">
       <Logo>
@@ -136,7 +165,9 @@ export default function AdminNavbar() {
         <NavButton route="/admin/category" title={"分類管理"} />
         <NavButton route="/admin/member" title={"權限管理"} />
         <NavButton route="/admin/orders" title={"訂單管理"} />
-        <NavButton route="/logout" title={"登出"} />
+        <LogoutButton onClick={handleLogout}>
+          <img src={logout} />
+        </LogoutButton>
       </FunctionBar>
     </NavbarContent>
   );
