@@ -5,7 +5,7 @@ import { H3, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import googleLogin from "../../../components/icon/googleLogin.png";
 import facebookLogin from "../../../components/icon/facebookLogin.png";
-import { login, getMe } from "../../../ＷebAPI";
+import { login, getMe } from "../../../WebAPI";
 import { setAuthToken } from "../../../utils";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../../contexts";
