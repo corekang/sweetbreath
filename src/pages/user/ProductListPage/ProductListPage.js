@@ -13,10 +13,11 @@ import { scrollToAnchor } from "../../../components/Anchor";
 
 const Content = styled.div`
   max-width: 1280px;
-  margin: 40px auto;
-  padding: 0 40px;
+  margin: 0 auto;
+  padding: 40px 60px;
+
   ${MEDIA_QUERY} {
-    padding: 0 20px;
+    padding: 20px;
   }
 `;
 
@@ -96,10 +97,20 @@ const ProductLink = styled(Link)`
   }
 `;
 
-const ProductImage = styled.img`
-  width: 100%;
+const ProductImage = styled.div`
+  width: 260px;
+  height: 260px;
   border-radius: 5px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+
+  ${MEDIA_QUERY} {
+    width: 300px;
+    height: 300px;
+  }
 `;
+
 const ProductName = styled(BodyLarge)`
   padding: 15px 20px 0 20px;
   background: ${(props) => props.theme.colors.neutralWhite};
@@ -128,7 +139,9 @@ const Products = ({ product }) => {
   return (
     <Product>
       <ProductLink to={"/product/" + product.id}>
-        <ProductImage src={product.img}></ProductImage>
+        <ProductImage
+          style={{ backgroundImage: `url(${product.img})` }}
+        ></ProductImage>
         <Pointer>
           <span>➜</span>
         </Pointer>
@@ -146,29 +159,35 @@ export default function ProductListPage() {
     {
       id: 1,
       name: "可麗露",
+      CategoryId: 1,
       price: "280",
       promoPrice: "180",
       img: "https://imgur.com/lxWa1BS.png",
     },
     {
-      id: 1,
-      name: "可麗露",
-      price: "280",
-      promoPrice: "180",
-      img: "https://imgur.com/lxWa1BS.png",
+      id: 2,
+      name: "經典草莓蛋糕聖誕特別版",
+      CategoryId: 3,
+      price: "1888",
+      promoPrice: "666",
+      img:
+        "https://images.unsplash.com/photo-1589119908995-c6837fa14848?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
     },
     {
-      id: 1,
-      name: "可麗露",
-      price: "280",
-      promoPrice: "180",
-      img: "https://imgur.com/lxWa1BS.png",
+      id: 3,
+      name: "滿滿的草莓塔",
+      CategoryId: 2,
+      price: "350",
+      promoPrice: "288",
+      img:
+        "https://images.unsplash.com/photo-1558231728-b4e138755840?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=673&q=80",
     },
     {
-      id: 1,
-      name: "可麗露",
-      price: "280",
-      promoPrice: "180",
+      id: 4,
+      name: "可不可麗露",
+      CategoryId: 1,
+      price: "380",
+      promoPrice: "250",
       img: "https://imgur.com/lxWa1BS.png",
     },
   ]);
@@ -190,25 +209,34 @@ export default function ProductListPage() {
       <CategorySection>
         <CategoryTitle id="cake">常溫蛋糕</CategoryTitle>
         <ProductList>
-          {products.map((product) => (
-            <Products product={product} />
-          ))}
+          {products.map(
+            (product) =>
+              product.CategoryId === 1 && (
+                <Products key={product.id} product={product} />
+              )
+          )}
         </ProductList>
       </CategorySection>
       <CategorySection>
         <CategoryTitle id="pie">家常塔派</CategoryTitle>
         <ProductList>
-          {products.map((product) => (
-            <Products product={product} />
-          ))}
+          {products.map(
+            (product) =>
+              product.CategoryId === 2 && (
+                <Products key={product.id} product={product} />
+              )
+          )}
         </ProductList>
       </CategorySection>
       <CategorySection>
         <CategoryTitle id="house">招牌蛋糕</CategoryTitle>
         <ProductList>
-          {products.map((product) => (
-            <Products product={product} />
-          ))}
+          {products.map(
+            (product) =>
+              product.CategoryId === 3 && (
+                <Products key={product.id} product={product} />
+              )
+          )}
         </ProductList>
       </CategorySection>
     </Content>
