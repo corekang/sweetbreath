@@ -31,7 +31,7 @@ import { getMe } from "../../WebAPI";
 import { getAuthToken } from "../../utils";
 
 function App() {
-  const [user, setUser] = useState(null); // useState("customer")
+  const [user, setUser] = useState(false); // useState("customer")
 
   useEffect(() => {
     if (getAuthToken()) {
@@ -47,7 +47,7 @@ function App() {
     <AuthContext.Provider value={{ user, setUser }}>
       <Router>
         {
-          !user ? (
+          user ? (
             <Navbar />
           ) : (
             <AdminNavbar />

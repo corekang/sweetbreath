@@ -110,7 +110,7 @@ const userController = {
   getMe: (req, res, checkAuthorization) => {
     checkAuthorization();
     const token = req.header("Authorization").replace("Bearer ", "");
-    jwt.verify(token, SECRET, (err, payload) => {
+    jwt.verify(token, SECRET, (err, data) => {
       if (err) {
         return res.status(404).send({
           ok: 0,
@@ -119,7 +119,7 @@ const userController = {
       }
       return res.status(200).send({
         ok: 1,
-        payload,
+        data,
       });
     });
   },
