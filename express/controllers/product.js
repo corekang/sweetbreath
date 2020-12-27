@@ -1,5 +1,6 @@
 const db = require("../models");
 const Product = db.Product;
+const Category = db.Category;
 const jwt = require("jsonwebtoken");
 const SECRET = "sweetbreathyumyum";
 
@@ -70,6 +71,7 @@ const productController = {
         id,
         is_deleted: false,
       },
+      include: Category,
     })
       .then((product) => {
         if (!product) {
