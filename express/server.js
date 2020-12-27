@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const userControlloer = require("./controllers/user");
 const productController = require("./controllers/product");
 const categoryController = require("./controllers/category");
+const modelController = require("./controllers/model");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -47,6 +48,15 @@ app.delete(
   checkAuthorization
 );
 
+// model
+app.get("/model", modelController.getModel);
+app.post("/category", categoryController.addCategory, checkAuthorization);
+app.post("/category/:id", categoryController.editCategory, checkAuthorization);
+app.delete(
+  "/category/:id",
+  categoryController.deleteCategory,
+  checkAuthorization
+);
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
