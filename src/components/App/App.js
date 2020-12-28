@@ -28,7 +28,7 @@ import {
 } from "../../pages";
 import AuthContext from "../../contexts";
 import { getMe } from "../../WebAPI";
-import { getAuthToken } from "../../utils";
+import { getAuthToken, ScrollToTop } from "../../utils";
 
 function App() {
   const [user, setUser] = useState(null); // useState("customer")
@@ -54,6 +54,7 @@ function App() {
           !user || !userPermission ? <Navbar /> : <AdminNavbar />
           /* {user === "customer" ? <Navbar /> : <AdminNavbar />} */
         }
+        <ScrollToTop />
         <Up onClick={() => scrollToAnchor("top")}>
           <span>⇧</span>
         </Up>
