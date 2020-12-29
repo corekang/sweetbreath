@@ -9,7 +9,7 @@ import {
   MEDIA_QUERY,
   Caption1,
   Caption2,
-  H2,
+  H5,
   H4,
   H3,
   Button,
@@ -64,6 +64,19 @@ const ProductDesc = styled.div`
   }
 `;
 const ProductHead = styled.div``;
+const FeatureList = styled.div`
+  margin-top: 10px;
+  padding: 5px 20px;
+  border-radius: 10px;
+
+  :hover {
+    border: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
+  }
+`;
+const Feature = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const ProductTitle = styled.div`
   display: flex;
@@ -74,6 +87,8 @@ const ProductTitle = styled.div`
 const ProductName = styled(H3)`
   margin: 0;
 `;
+
+const FeatureName = styled(H4)``;
 
 const AddToLove = styled.div`
   display: flex;
@@ -104,7 +119,7 @@ const ProductPrices = styled.div`
   align-items: center;
 `;
 
-const ProductPromoPrice = styled(H2)``;
+const ProductPromoPrice = styled(H3)``;
 
 const ProductPrice = styled(H4)`
   margin-left: 20px;
@@ -116,8 +131,7 @@ const ProductContent = styled(Body)`
   word-break: break-all;
   white-space: pre-line;
   line-height: 2;
-  padding: 20px 0;
-  border-top: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
+  padding: 40px 0 20px 0;
   border-bottom: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
 
   ${MEDIA_QUERY} {
@@ -126,6 +140,7 @@ const ProductContent = styled(Body)`
 `;
 
 const ProductStorage = styled.div`
+  font-size: ${(props) => props.theme.fontSize.h5};
   text-align: right;
 `;
 
@@ -133,7 +148,7 @@ const ProductCounter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  padding-bottom: 25px;
   font-size: ${(props) => props.theme.fontSize.h4};
 `;
 
@@ -162,6 +177,7 @@ const CounterIcon = styled(Icon)`
 const AddToCart = styled.div`
   display: flex;
   justify-content: center;
+  margin: 20px 0;
 
   button {
     cursor: pointer;
@@ -174,97 +190,40 @@ const AddToCart = styled.div`
   }
 `;
 
+const getProduct = (productId) => {
+  return fetch(`/api/product/${productId}`).then((res) => res.json());
+};
+
+const getCategory = () => {
+  return fetch(`/api/category`).then((res) => res.json());
+};
 export default function ProductPage() {
   const history = useHistory();
   const { id } = useParams();
 
-  const [itemCount, setItemCount] = useState(1);
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "可麗露",
-      CategoryId: 1,
-      info: `濃郁抹茶派皮，搭配新鮮抹茶生巧克力，等待熟成的時間到來在嘴裡化開，空氣中飄著陣陣茶香，看似單純的結合卻營造出有深度的層次感，您一定不能錯過！
-            
-            /保存方式/
-            蛋糕可常溫保存 14 天
-            /優惠/
-            滿 50 盒打 95 折+免運一個地址
-            滿 100 盒打 9 折+免運兩個地址，建議可以統一寄送到同一個地址再分送喔！
-       `,
-      price: "280",
-      promoPrice: "180",
-      img: "https://imgur.com/lxWa1BS.png",
-    },
-    {
-      id: 2,
-      name: "經典草莓蛋糕聖誕特別版",
-      CategoryId: 3,
-      info: `冬天來臨，又到了一年一度的草莓季，鮮嫩欲滴的草莓搭配柔軟滑順的蛋糕體，送禮自用兩相宜，您一定要來好好品嚐！
-
-              /保存方式/
-              蛋糕需冷藏，請在 3 天內食用風味最佳
-              /優惠/
-              滿 50 盒打 95 折+免運一個地址
-              滿 100 盒打 9 折+免運兩個地址，建議可以統一寄送到同一個地址再分送喔！
-        `,
-      price: "1888",
-      promoPrice: "666",
-      img:
-        "https://images.unsplash.com/photo-1589119908995-c6837fa14848?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    },
-    {
-      id: 3,
-      name: "滿滿的草莓塔",
-      CategoryId: 2,
-      info: `冬天來臨，又到了一年一度的草莓季，鮮嫩欲滴的草莓搭配柔軟滑順的蛋糕體，送禮自用兩相宜，您一定要來好好品嚐！
-
-              /保存方式/
-              蛋糕需冷藏，請在 3 天內食用風味最佳
-              /優惠/
-              滿 50 盒打 95 折+免運一個地址
-              滿 100 盒打 9 折+免運兩個地址，建議可以統一寄送到同一個地址再分送喔！
-        `,
-      price: "350",
-      promoPrice: "288",
-      img:
-        "https://images.unsplash.com/photo-1558231728-b4e138755840?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=673&q=80",
-    },
-    {
-      id: 4,
-      name: "可不可麗露",
-      CategoryId: 1,
-      info: `濃郁抹茶派皮，搭配新鮮抹茶生巧克力，等待熟成的時間到來在嘴裡化開，空氣中飄著陣陣茶香，看似單純的結合卻營造出有深度的層次感，您一定不能錯過！
-            
-            /保存方式/
-            蛋糕可常溫保存 14 天
-            /優惠/
-            滿 50 盒打 95 折+免運一個地址
-            滿 100 盒打 9 折+免運兩個地址，建議可以統一寄送到同一個地址再分送喔！
-       `,
-      price: "380",
-      promoPrice: "250",
-      img: "https://imgur.com/lxWa1BS.png",
-    },
-  ]);
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      name: "常溫蛋糕",
-    },
-    {
-      id: 2,
-      name: "家常塔派",
-    },
-    {
-      id: 3,
-      name: "招牌蛋糕",
-    },
-  ]);
-
-  const [product, setProduct] = useState(products[id - 1]);
+  const [itemCount, setItemCount] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [product, setProduct] = useState();
   const [cart, setCart] = useState([]);
+  const [feature, setFeature] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [ccart, setCcart] = useState([{}, {}]);
+
+  useEffect(() => {
+    getCategory().then((ans) => {
+      setCategories(ans.data);
+    });
+    getProduct(id).then((res) => {
+      const features = res.data.Features.map((feature) => {
+        feature.number = 0;
+        return feature;
+      });
+      const { CategoryId, id, image, info, name } = res.data;
+      setProduct({ CategoryId, id, image, info, name });
+      setFeature(features);
+    });
+  }, []);
 
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("cart")) || [];
@@ -273,74 +232,123 @@ export default function ProductPage() {
     }
   }, []);
 
-  const handleClickDown = () => {
-    if (itemCount === 1) return;
-    setItemCount((preCount) => preCount - 1);
+  const handleClickDown = (id) => {
+    const newFeature = feature.map((item) => {
+      let newItem = item;
+      if (newItem.id === id) {
+        if (newItem.number !== 0) {
+          newItem.number = newItem.number - 1;
+        }
+      }
+      return newItem;
+    });
+    setFeature(newFeature);
   };
 
-  const handleClickUp = () => {
-    setItemCount((preCount) => preCount + 1);
+  const handleClickUp = (id) => {
+    const newFeature = feature.map((item) => {
+      let newItem = item;
+      if (newItem.id === id) {
+        newItem.number = newItem.number + 1;
+      }
+      return newItem;
+    });
+    setFeature(newFeature);
   };
 
   const handleAddToCart = () => {
-    let cartItem = {
-      id: product.id,
-      productName: product.name,
-      count: itemCount,
-      promoPrice: product.promoPrice,
-      subTotal: itemCount * product.promoPrice,
-      img: product.img,
-    };
-    setCart([...cart, cartItem]);
-    cart.push(cartItem);
+    let newCart = cart;
+    let featureList = feature.filter((item) => item.number !== 0);
+    featureList.map((item) => {
+      newCart.push({
+        id: product.id,
+        productName: product.name,
+        feature: item.name,
+        count: item.number,
+        promoPrice: item.promo_price,
+        subTotal: item.number * item.promo_price,
+        img: product.image,
+      });
+      return newCart;
+    });
+    setCart(newCart);
     localStorage.setItem("cart", JSON.stringify(cart));
-
     history.push("/cart");
   };
 
   return (
     <Content>
-      <CategoryBar>
-        <Caption1>{categories[product.CategoryId - 1].name} /</Caption1>
-        <Caption2>{product.name}</Caption2>
-      </CategoryBar>
-      <Product>
-        <ProductImage>
-          <img src={product.img} alt="product"></img>
-        </ProductImage>
-        <ProductDesc>
-          <ProductHead>
-            <ProductTitle>
-              <ProductName>{product.name}</ProductName>
-              <AddToLove>
-                <span>❤</span>
-              </AddToLove>
-            </ProductTitle>
-            <ProductPrices>
-              <ProductPromoPrice>${product.promoPrice}</ProductPromoPrice>
-              <ProductPrice>${product.price}</ProductPrice>
-            </ProductPrices>
-          </ProductHead>
-          <ProductContent>{product.info}</ProductContent>
-          <ProductCounter>
-            <ProductStorage>庫存：10</ProductStorage>
-            <CounterArea>
-              <CounterIcon
-                icon={minusCircleOutlined}
-                onClick={handleClickDown}
-              ></CounterIcon>
-              <span>{itemCount}</span>
-              <CounterIcon
-                icon={plusCircleOutlined}
-                onClick={handleClickUp}
-              ></CounterIcon>
-            </CounterArea>
-          </ProductCounter>
-          <AddToCart>
-            <Button onClick={handleAddToCart}>加入購物車</Button>
-          </AddToCart>
-        </ProductDesc>
-      </Product>
+      {product && (
+        <CategoryBar>
+          <Caption1>
+            {categories.length > 0 &&
+              categories.filter(
+                (category) => category.id === product.CategoryId
+              )[0].name}
+          </Caption1>
+          <Caption2>{product.name}</Caption2>
+        </CategoryBar>
+      )}
+      {product && (
+        <Product>
+          <ProductImage>
+            <img src={product.image} alt="product"></img>
+          </ProductImage>
+          <ProductDesc>
+            <ProductHead>
+              <ProductTitle>
+                <ProductName>{product.name}</ProductName>
+                <AddToLove>
+                  <span>❤</span>
+                </AddToLove>
+              </ProductTitle>
+              <ProductContent>{product.info}</ProductContent>
+            </ProductHead>
+            {feature.map((featureItem) => (
+              <FeatureList>
+                <Feature>
+                  <FeatureName>{featureItem.name}</FeatureName>
+                  <ProductPrices>
+                    <ProductPromoPrice>
+                      {featureItem.promo_price
+                        ? "$" + featureItem.promo_price
+                        : "$" + featureItem.price}
+                    </ProductPromoPrice>
+                    {featureItem.promo_price ? (
+                      <ProductPrice>${featureItem.price} </ProductPrice>
+                    ) : (
+                      ""
+                    )}
+                  </ProductPrices>
+                </Feature>
+                <ProductCounter>
+                  <ProductStorage>庫存：{featureItem.stock}</ProductStorage>
+                  <CounterArea>
+                    <CounterIcon
+                      icon={minusCircleOutlined}
+                      onClick={() => {
+                        handleClickDown(featureItem.id);
+                      }}
+                    ></CounterIcon>
+                    <span>{featureItem.number}</span>
+                    <CounterIcon
+                      icon={plusCircleOutlined}
+                      onClick={() => {
+                        console.log(featureItem.id);
+                        handleClickUp(featureItem.id);
+                      }}
+                    ></CounterIcon>
+                  </CounterArea>
+                </ProductCounter>
+              </FeatureList>
+            ))}
+
+            <AddToCart>
+              <Button onClick={handleAddToCart}>加入購物車</Button>
+            </AddToCart>
+          </ProductDesc>
+        </Product>
+      )}
     </Content>
   );
 }
