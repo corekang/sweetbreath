@@ -18,10 +18,13 @@ export const Up = styled.div`
   color: ${(props) => props.theme.colors.neutralWhite};
   background: ${(props) => props.theme.colors.uiNegative};
   z-index: 5;
-
+  opacity: 0.6;
+  :hover {
+    opacity: 1;
+  }
   ${MEDIA_QUERY} {
     top: 85%;
-    left: 75%;
+    left: 74%;
     width: 60px;
     height: 60px;
     font-size: ${(props) => props.theme.fontSize.h3};

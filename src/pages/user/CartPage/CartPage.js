@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react";
+import plusCircleOutlined from "@iconify-icons/ant-design/plus-circle-outlined";
+import minusCircleOutlined from "@iconify-icons/ant-design/minus-circle-outlined";
 
 import { theme } from "../../../constants/theme";
-import { H2, H3, H4, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
+import { H1, H3, H4, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
 
 const CartContainer = styled.div`
-  height: 100vh;
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 20px;
 
@@ -28,7 +30,7 @@ const CartContainer = styled.div`
   }
 `;
 
-const CartTitle = styled(H2)`
+const CartTitle = styled(H1)`
   border-bottom: 1px solid ${theme.colors.neutralLightGrey};
   padding-bottom: 6px;
 `;
@@ -36,6 +38,7 @@ const CartTitle = styled(H2)`
 const CartContent = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 30px;
 
   ${MEDIA_QUERY} {
     flex-direction: column;
@@ -44,9 +47,9 @@ const CartContent = styled.div`
 `;
 
 const CartListContainer = styled.div`
-  width: 440px;
-  padding: 20px;
-  margin-right: 50px;
+  min-width: 440px;
+  height: 100%;
+  padding: 30px;
   border: 1px solid ${theme.colors.neutralLightGrey};
 
   ${MEDIA_QUERY} {
@@ -56,28 +59,36 @@ const CartListContainer = styled.div`
 
 const CartItemContainer = styled.div`
   display: flex;
+  align-items: center;
   margin-bottom: 10px;
+`;
 
-  img {
-    width: 90px;
-    height: 90px;
-  }
+const ImgLink = styled(Link)`
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 `;
 
 const CartItemContent = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+
   margin-left: 20px;
+  flex: 1;
 `;
 
 const OderItemDetails = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const CartItemTitle = styled(BodyLarge)`
+  padding: 10px 0;
+
   a {
     color: ${theme.colors.neutralBlack};
   }
@@ -87,25 +98,31 @@ const CartItemTitle = styled(BodyLarge)`
   }
 `;
 
-const CartItemNumber = styled(BodyLarge)`
+const CounterArea = styled(H4)`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
 
   & div {
     padding: 0 16px;
   }
 
-  button {
+  span {
+    width: 40px;
+    height: 40px;
+    padding: 0 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    font-size: ${theme.fontSize.h3};
-    border-radius: 30px;
-    color: ${theme.colors.mainPrimary};
-    background: ${theme.colors.neutralPaleGrey};
   }
+`;
+
+const CounterIcon = styled(Icon)`
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  color: ${(props) => props.theme.colors.mainPrimary};
 `;
 
 const CartItemPrice = styled(BodyLarge)``;
@@ -114,8 +131,11 @@ const CartSummaryContainer = styled.div`
   width: 360px;
   height: 300px;
   border: 1px solid ${theme.colors.neutralLightGrey};
-  margin-top: 30px;
   padding: 10px 20px;
+
+  ${MEDIA_QUERY} {
+    margin-top: 30px;
+  }
 `;
 
 const Subtotal = styled(BodyLarge)`
@@ -158,6 +178,20 @@ const SubmitButton = styled(Link)`
   }
 `;
 
+const CartEmpty = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BackToHome = styled(SubmitButton)`
+  border-radius: 4px;
+  padding: 10px 32px;
+  font-size: ${theme.fontSize.button};
+  transition: ease-in-out 0.1s;
+`;
+
 function CartSummary() {
   return (
     <CartSummaryContainer>
@@ -180,14 +214,12 @@ function CartSummary() {
   );
 }
 
-function CartItem() {
-  const [itemCount, setItemCount] = useState(1);
-  const [itemPrice, setItemPrice] = useState(100);
-
+function CartList({ cartItem }) {
+  const [itemCount, setItemCount] = useState(cartItem.count);
+  const [itemPrice, setItemPrice] = useState(cartItem.promoPrice);
   const handleClickDown = () => {
     if (itemCount < 1) return;
     setItemCount((preCount) => preCount - 1);
-    setItemPrice((prePrice) => prePrice * itemCount);
   };
   const handleClickUp = () => {
     setItemCount((preCount) => preCount + 1);
@@ -195,24 +227,29 @@ function CartItem() {
 
   return (
     <CartItemContainer>
-      <Link to="/product/1" target="_blank">
-        <img
-          src="https://img2.momoshop.com.tw/goodsimg/0007/249/953/7249953_L.jpg?t=1608292496"
-          alt="product"
-        ></img>
-      </Link>
+      <ImgLink
+        to={`/product/${cartItem.id}`}
+        target="_blank"
+        style={{ backgroundImage: `url(${cartItem.img})` }}
+      ></ImgLink>
       <CartItemContent>
         <CartItemTitle>
-          <Link to="/product/1" target="_blank">
-            商品名稱商品名稱商品名稱商品名稱商品名稱商品名稱
+          <Link to={`/product/${cartItem.id}`} target="_blank">
+            {cartItem.productName}
           </Link>
         </CartItemTitle>
         <OderItemDetails>
-          <CartItemNumber>
-            <button onClick={handleClickDown}>-</button>
-            <div>{itemCount}</div>
-            <button onClick={handleClickUp}>+</button>
-          </CartItemNumber>
+          <CounterArea>
+            <CounterIcon
+              icon={minusCircleOutlined}
+              onClick={handleClickDown}
+            ></CounterIcon>
+            <span>{itemCount}</span>
+            <CounterIcon
+              icon={plusCircleOutlined}
+              onClick={handleClickUp}
+            ></CounterIcon>
+          </CounterArea>
           <CartItemPrice>NT$ {itemPrice}</CartItemPrice>
         </OderItemDetails>
       </CartItemContent>
@@ -220,25 +257,37 @@ function CartItem() {
   );
 }
 
-function CartList() {
-  return (
-    <CartListContainer>
-      <CartItem />
-      <CartItem />
-      <CartItem />
-      <CartItem />
-    </CartListContainer>
-  );
-}
-
 export default function CartPage() {
+  const [subTotal, setSubTotal] = useState();
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("cart")) || [];
+    if (data) {
+      setCart(data);
+    }
+  }, []);
+
   return (
     <CartContainer>
       <CartTitle>購物車</CartTitle>
-      <CartContent>
-        <CartList />
-        <CartSummary />
-      </CartContent>
+      {cart.length > 0 ? (
+        <>
+          <CartContent>
+            <CartListContainer>
+              {cart.map((cartItem) => (
+                <CartList key={cartItem.id} cartItem={cartItem} />
+              ))}
+            </CartListContainer>
+            <CartSummary />
+          </CartContent>
+        </>
+      ) : (
+        <CartEmpty>
+          <H3>購物車目前沒有商品唷！</H3>
+          <BackToHome to="/products">回商品頁逛逛</BackToHome>
+        </CartEmpty>
+      )}
     </CartContainer>
   );
 }
