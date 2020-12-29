@@ -1,14 +1,7 @@
 import styled from "styled-components";
-import {
-  MEDIA_QUERY,
-  H1,
-  H3,
-  H5,
-  BodyLarge,
-  Body,
-} from "../../../constants/style";
+import { MEDIA_QUERY, H1, H3, H5, BodyLarge } from "../../../constants/style";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { scrollToAnchor } from "../../../components/Anchor";
 
 const Content = styled.div`
@@ -82,7 +75,7 @@ const Pointer = styled.div`
   height: 46px;
   font-size: ${(props) => props.theme.fontSize.h4};
   font-weight: bold;
-  top: 67%;
+  top: 70%;
   border-radius: 50%;
   left: 76%;
   color: ${(props) => props.theme.colors.neutralWhite};
@@ -122,7 +115,7 @@ const ProductImage = styled.div`
 `;
 
 const ProductName = styled(BodyLarge)`
-  padding: 15px 20px 0 20px;
+  padding: 15px 20px;
   background: ${(props) => props.theme.colors.neutralWhite};
   z-index: 1;
   position: relative;
@@ -130,125 +123,55 @@ const ProductName = styled(BodyLarge)`
   text-align: left;
 `;
 
-const ProductPrices = styled.div`
-  display: flex;
-  margin: 0px 20px 15px 20px;
-`;
-const ProductPromoPrice = styled(Body)`
-  text-align: left;
-  font-weight: 500;
-`;
-const ProductPrice = styled(Body)`
-  text-align: left;
-  margin-left: 10px;
-  text-decoration: line-through;
-  color: ${(props) => props.theme.colors.neutralGrey};
-`;
-
-const Products = ({ product }) => {
-  return (
+const Products = ({ products }) => {
+  return products.map((product) => (
     <Product>
       <ProductLink to={"/product/" + product.id}>
         <ProductImage
-          style={{ backgroundImage: `url(${product.img})` }}
+          style={{ backgroundImage: `url(${product.image})` }}
         ></ProductImage>
         <Pointer>
           <span>➜</span>
         </Pointer>
         <ProductName>{product.name}</ProductName>
-        <ProductPrices>
-          <ProductPromoPrice>${product.promoPrice}</ProductPromoPrice>
-          <ProductPrice>${product.price}</ProductPrice>
-        </ProductPrices>
       </ProductLink>
     </Product>
-  );
+  ));
 };
+
+const getCategory = () => {
+  return fetch(`/api/category`).then((res) => res.json());
+};
+
 export default function ProductListPage() {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "可麗露",
-      CategoryId: 1,
-      price: "280",
-      promoPrice: "180",
-      img: "https://imgur.com/lxWa1BS.png",
-    },
-    {
-      id: 2,
-      name: "經典草莓蛋糕聖誕特別版",
-      CategoryId: 3,
-      price: "1888",
-      promoPrice: "666",
-      img:
-        "https://images.unsplash.com/photo-1589119908995-c6837fa14848?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    },
-    {
-      id: 3,
-      name: "滿滿的草莓塔",
-      CategoryId: 2,
-      price: "350",
-      promoPrice: "288",
-      img:
-        "https://images.unsplash.com/photo-1558231728-b4e138755840?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=673&q=80",
-    },
-    {
-      id: 4,
-      name: "可不可麗露",
-      CategoryId: 1,
-      price: "380",
-      promoPrice: "250",
-      img: "https://imgur.com/lxWa1BS.png",
-    },
-  ]);
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    getCategory().then((res) => {
+      setCategories(res.data);
+    });
+  }, []);
 
   return (
     <Content>
       <H1>MENU</H1>
       <Category>
-        <CategoryName onClick={() => scrollToAnchor("cake")}>
-          常溫蛋糕
-        </CategoryName>
-        <CategoryName onClick={() => scrollToAnchor("pie")}>
-          家常塔派
-        </CategoryName>
-        <CategoryName onClick={() => scrollToAnchor("house")}>
-          招牌蛋糕
-        </CategoryName>
+        {categories.map((category) => (
+          <CategoryName onClick={() => scrollToAnchor(category.id)}>
+            {category.name}
+          </CategoryName>
+        ))}
       </Category>
-      <CategorySection>
-        <CategoryTitle id="cake">常溫蛋糕</CategoryTitle>
-        <ProductList>
-          {products.map(
-            (product) =>
-              product.CategoryId === 1 && (
-                <Products key={product.id} product={product} />
-              )
-          )}
-        </ProductList>
-      </CategorySection>
-      <CategorySection>
-        <CategoryTitle id="pie">家常塔派</CategoryTitle>
-        <ProductList>
-          {products.map(
-            (product) =>
-              product.CategoryId === 2 && (
-                <Products key={product.id} product={product} />
-              )
-          )}
-        </ProductList>
-      </CategorySection>
-      <CategorySection>
-        <CategoryTitle id="house">招牌蛋糕</CategoryTitle>
-        <ProductList>
-          {products.map(
-            (product) =>
-              product.CategoryId === 3 && (
-                <Products key={product.id} product={product} />
-              )
-          )}
-        </ProductList>
-      </CategorySection>
+
+      {categories.map((category) => (
+        <CategorySection>
+          <CategoryTitle id={category.id}>{category.name}</CategoryTitle>
+          <ProductList>
+            <Products products={category.Products} />
+            <BlankCard />
+            <BlankCard />
+          </ProductList>
+        </CategorySection>
+      ))}
     </Content>
   );
 }
