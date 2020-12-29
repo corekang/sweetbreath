@@ -40,7 +40,8 @@ app.put("/product/:id", productController.editProduct, checkAuthorization); // �
 app.delete("/product/:id", productController.deleteProduct, checkAuthorization); // 管理員刪除產品
 
 // category
-app.get("/category", categoryController.getCategory); // 撈取分類
+app.get("/category", categoryController.getCategoryName); // 撈取分類
+app.get("/category/product", categoryController.getCategory); // 以分類撈取產品
 app.post("/category", categoryController.addCategory, checkAuthorization); // 管理員新增分類
 app.put("/category/:id", categoryController.editCategory, checkAuthorization); // 管理員編輯分類
 app.delete(

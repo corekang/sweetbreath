@@ -225,7 +225,7 @@ export default function AdminCategory() {
 
   // 讀取所有分類 API
   const getCategories = () => {
-    return fetch(`/api/category`).then((res) => res.json());
+    return fetch(`/api/category/product`).then((res) => res.json());
   };
 
   // 新增分類 API
