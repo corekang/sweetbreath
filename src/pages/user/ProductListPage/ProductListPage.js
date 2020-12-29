@@ -140,7 +140,7 @@ const Products = ({ products }) => {
 };
 
 const getCategory = () => {
-  return fetch(`/api/category`).then((res) => res.json());
+  return fetch(`/api/category/product`).then((res) => res.json());
 };
 
 export default function ProductListPage() {
