@@ -7,7 +7,7 @@ import {
   MEDIA_QUERY,
 } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import { Map } from "../../../components/Map/Ｍap.js";
+import { Map } from "../../../components/Map/Map.js";
 
 const PageContainer = styled.div`
   * {
