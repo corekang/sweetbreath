@@ -55,9 +55,9 @@ app.put("/feature/:id", featureController.editFeature, checkAuthorization); // �
 app.delete("/feature/:id", featureController.deleteFeature, checkAuthorization); // 管理員刪除產品
 
 //Order
-app.post("/orders", orderController.createOrder); //生成訂單
+app.post("/orders", orderController.createOrder, checkAuthorization); //生成訂單
 app.get("/orders", orderController.getOrderList, checkAuthorization); //取得訂單清單
-app.get("/order/:user_id", orderController.getUserOrder); //取得特定買家訂單
+app.get("/order/:user_id", orderController.getUserOrder, checkAuthorization); //取得特定買家訂單
 app.get("/order_item/:order_number", orderController.getOrderItem); //取得特定訂單品項
 app.put(
   "/order/:order_number",
