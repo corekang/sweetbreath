@@ -30,12 +30,15 @@ import AuthContext from "../../contexts";
 import { getMe } from "../../WebAPI";
 import { getAuthToken } from "../../utils";
 
+function Navbars({ user }) {
+  if (!user || !user.is_admin) {
+    return <Navbar />;
+  }
+  return <AdminNavbar />;
+}
+
 function App() {
   const [user, setUser] = useState(null); // useState("customer")
-
-  const userPermission = getMe().then((response) => {
-    console.log(response);
-  });
 
   useEffect(() => {
     if (getAuthToken()) {
@@ -50,10 +53,8 @@ function App() {
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <Router>
-        {
-          !user || !userPermission ? <Navbar /> : <AdminNavbar />
-          /* {user === "customer" ? <Navbar /> : <AdminNavbar />} */
-        }
+        {/* {user === "customer" ? <Navbar /> : <AdminNavbar />} */}
+        <Navbars user={user} />
         <Up onClick={() => scrollToAnchor("top")}>
           <span>⇧</span>
         </Up>
