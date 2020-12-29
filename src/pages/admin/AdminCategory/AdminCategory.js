@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { HashLink as Link } from "react-router-hash-link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { MEDIA_QUERY, H1, Input } from "../../../constants/style";
+import { MEDIA_QUERY, H1, H4, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
+import { getAuthToken } from "../../../utils";
 
 const Content = styled.div`
   max-width: 900px;
@@ -24,7 +25,7 @@ const CategorySection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 20px;
+  padding: 0 20px;
   border-bottom: 1px solid ${theme.colors.neutralLightGrey};
   background: ${theme.colors.neutralWhite};
 
@@ -68,6 +69,8 @@ const SettingButton = styled.button`
   margin-left: 20px;
   border-radius: 4px;
   font-size: ${theme.fontSize.bodyLarge};
+  color: ${(props) => props.theme.colors.neutralWhite};
+  background: ${(props) => props.theme.colors.neutralDarkGrey};
   color: ${theme.colors.neutralPaleGrey};
   background: ${theme.colors.neutralDarkGrey};
   cursor: pointer;
@@ -107,71 +110,165 @@ const AddButton = styled(SettingButton)`
   background: ${theme.colors.uiWarning};
 `;
 
-function Category({ category }) {
-  const [inputValue, setInputValue] = useState("");
-  const [categoryName, setCategoryName] = useState(`${category.categoryName}`);
+const ErrorMessage = styled(H4)`
+  margin: 0;
+  padding: 0 20px;
+  text-align: right;
+  font-weight: 700;
+  color: ${theme.colors.uiNegative};
+`;
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleSettingClick = () => {
-    setCategoryName(inputValue);
-  };
-
-  const handleDeleteClick = () => {};
-
+function Category({
+  category,
+  editInputValue,
+  handleEditInputChange,
+  handleEditInputFocus,
+  handleEditClick,
+  handleDeleteClick,
+}) {
   return (
     <CategorySection>
-      <CategoryNameLink to={`/admin/products#${category.categoryId}`}>
-        {category.categoryName}
+      <CategoryNameLink to={`/admin/products#${category.id}`}>
+        {category.name} ({category.Products.length})
       </CategoryNameLink>
       <Setting>
         <SettingInput
           type="text"
           placeholder="修改分類名稱..."
-          value={inputValue}
-          onChange={handleInputChange}
+          value={editInputValue}
+          onChange={handleEditInputChange}
+          onFocus={handleEditInputFocus}
         ></SettingInput>
-        <SettingButton onClick={handleSettingClick}>修改</SettingButton>
-        <SettingButton onClick={handleDeleteClick}>刪除</SettingButton>
+        <SettingButton onClick={() => handleEditClick(category.id)}>
+          修改
+        </SettingButton>
+        <SettingButton onClick={() => handleDeleteClick(category.id)}>
+          刪除
+        </SettingButton>
       </Setting>
     </CategorySection>
   );
 }
 
 export default function AdminCategory() {
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      categoryName: "常溫蛋糕",
-      categoryId: "cake",
-      categoryStatus: true,
-      createdAt: "2020/12/24 00:00:00",
-    },
-    {
-      id: 2,
-      categoryName: "家常塔派",
-      categoryId: "pie",
-      categoryStatus: true,
-      createdAt: "2020/12/24 00:00:00",
-    },
-    {
-      id: 3,
-      categoryName: "招牌蛋糕",
-      categoryId: "house",
-      categoryStatus: true,
-      createdAt: "2020/12/24 00:00:00",
-    },
-  ]);
-
+  const [categories, setCategories] = useState([]);
   const [addInputValue, setAddInputValue] = useState("");
+  const [editInputValue, setEditInputValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
 
+  useEffect(() => {
+    getCategories().then((res) => setCategories(res.data));
+  }, []);
+
+  // 讀取 add input 值
   const handleAddInputChange = (e) => {
     setAddInputValue(e.target.value);
   };
 
-  const handleAddClick = () => {};
+  const handleAddInputFocus = () => {
+    setErrorMessage(null);
+  };
+
+  // 讀取 edit input 值
+  const handleEditInputChange = (e) => {
+    setEditInputValue(e.target.value);
+  };
+
+  const handleEditInputFocus = () => {
+    setErrorMessage(null);
+  };
+
+  // 新增分類
+  const handleAddClick = () => {
+    if (!addInputValue) return;
+
+    addCategory(addInputValue).then((res) => {
+      if (res.ok === 0) {
+        setErrorMessage(res.message);
+        return;
+      }
+      setAddInputValue("");
+      getCategories().then((res) => setCategories(res.data));
+    });
+  };
+
+  // 編輯分類
+  const handleEditClick = (id) => {
+    if (!editInputValue) return;
+    // 改畫面
+    setCategories(
+      categories.map((category) => {
+        if (category.id !== id) return category;
+        return { ...category, name: editInputValue };
+      })
+    );
+
+    // 改資料庫
+    editCategory(id, editInputValue).then((res) => {
+      if (res.ok === 0) {
+        setErrorMessage(res.message);
+        return;
+      }
+    });
+  };
+
+  // 刪除分類
+  const handleDeleteClick = (id) => {
+    deleteCategory(id).then((res) => {
+      if (res.ok === 0) {
+        setErrorMessage(res.message);
+        return;
+      }
+      getCategories().then((res) => setCategories(res.data));
+    });
+  };
+
+  // 讀取所有分類 API
+  const getCategories = () => {
+    return fetch(`/api/category/product`).then((res) => res.json());
+  };
+
+  // 新增分類 API
+  const addCategory = () => {
+    const token = getAuthToken();
+    return fetch(`/api/category`, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name: addInputValue,
+      }),
+    }).then((res) => res.json());
+  };
+
+  // 編輯分類 API
+  const editCategory = (id, name) => {
+    const token = getAuthToken();
+    return fetch(`/api/category/${id}`, {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name: `${name}`,
+      }),
+    }).then((res) => res.json());
+  };
+
+  // 刪除分類 API
+  const deleteCategory = (id) => {
+    const token = getAuthToken();
+    return fetch(`/api/category/${id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+    }).then((res) => res.json());
+  };
 
   return (
     <Content>
@@ -181,13 +278,22 @@ export default function AdminCategory() {
           type="text"
           placeholder="輸入分類名稱"
           onChange={handleAddInputChange}
+          onFocus={handleAddInputFocus}
           value={addInputValue}
         ></AddInput>
         <AddButton onClick={handleAddClick}>新增分類</AddButton>
       </AddCategoryContainer>
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <CategoryContainer>
         {categories.map((category) => (
-          <Category key={category.id} category={category} />
+          <Category
+            key={category.id}
+            category={category}
+            handleEditClick={handleEditClick}
+            handleEditInputChange={handleEditInputChange}
+            handleEditInputFocus={handleEditInputFocus}
+            handleDeleteClick={handleDeleteClick}
+          />
         ))}
       </CategoryContainer>
     </Content>

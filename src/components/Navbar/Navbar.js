@@ -1,3 +1,5 @@
+import React, { useContext } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { BodyLarge, MEDIA_QUERY } from "../../constants/style";
 import { Link } from "react-router-dom";
@@ -8,6 +10,8 @@ import facebook from "../icon/facebook.png";
 import instagram from "../icon/instagram.png";
 import sweetBreath from "../icon/sweetBreath_line.png";
 import logout from "../icon/logout.png";
+import AuthContext from "../../contexts";
+import { setAuthToken } from "../../utils";
 
 const LogoContent = styled.div`
   display: flex;
@@ -119,6 +123,7 @@ const InstagramImg = styled.img`
   width: 27px;
   height: 27px;
 `;
+
 const LogOutImg = styled.img`
   width: 22px;
   height: 23px;
@@ -169,15 +174,30 @@ const InstagramButton = (props) => {
   );
 };
 
-const LogOutButton = (props) => {
+/* const LogOutButton = (props) => {
   return (
     <IconContent to={props.route}>
       <LogOutImg src={props.icon} />
     </IconContent>
   );
-};
+}; */
+
+const LogOutButton = styled.button`
+  border: 0;
+  background: none;
+`;
 
 export default function Navbar() {
+  const location = useLocation();
+  const history = useHistory();
+  const { user, setUser } = useContext(AuthContext);
+  const handleLogout = () => {
+    setAuthToken("");
+    setUser(null);
+    if (location.pathname !== "/") {
+      history.push("/");
+    }
+  };
   return (
     <NavbarContent id="top">
       <Logo>
@@ -196,8 +216,17 @@ export default function Navbar() {
       </IconBar>
       <IconBar>
         <IconButton route="/cart" icon={cart} />
-        <IconButton route="/login" icon={member} />
-        <LogOutButton route="/logout" icon={logout} />
+        {!user && <IconButton route="/login" icon={member} />}
+        {user && (
+          <LogOutButton
+            /* route="/logout" icon={logout} */ src={logout}
+            onClick={handleLogout}
+          >
+            <IconContent>
+              <LogOutImg src={logout} />
+            </IconContent>
+          </LogOutButton>
+        )}
       </IconBar>
     </NavbarContent>
   );

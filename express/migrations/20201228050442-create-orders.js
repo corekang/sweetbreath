@@ -2,7 +2,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      "SBP_Users",
+      "Orders",
       {
         id: {
           allowNull: false,
@@ -10,39 +10,48 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        username: {
-          unique: true,
+        UserId: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        order_number: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        password: {
+        buyer_fullname: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        nickname: {
+        buyer_email: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        email: {
+        buyer_phone: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        postal_code: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
+        buyer_adress: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        address: {
-          type: Sequelize.STRING,
-        },
-        is_admin: {
-          defaultValue: false,
+        is_paid: {
           type: Sequelize.BOOLEAN,
         },
-        birthday: {
-          type: Sequelize.DATE,
+        is_sent: {
+          type: Sequelize.BOOLEAN,
         },
-        socialmedia_id: {
-          type: Sequelize.STRING,
+        is_done: {
+          type: Sequelize.BOOLEAN,
+        },
+        is_cancel: {
+          type: Sequelize.BOOLEAN,
         },
         status: {
-          defaultValue: true,
-          type: Sequelize.BOOLEAN,
+          type: Sequelize.STRING,
         },
         createdAt: {
           allowNull: false,
@@ -60,6 +69,6 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("SBP_Users");
+    await queryInterface.dropTable("Orders");
   },
 };

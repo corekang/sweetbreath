@@ -1,10 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-.eslintcache
+*.eslintcache
 
 /express/config/config.json
 
 key.js
+
+/key.js
 
 # dependencies
 /node_modules
