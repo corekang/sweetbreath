@@ -249,7 +249,7 @@ export default function AdminMemberPage() {
     setMembers(NewMembers);
     //改資料庫
     fetch(`/api/users/${id}`, {
-      method: "POST",
+      method: "PUT",
       headers: {
         authorization: authToken,
         "content-type": "application/json",

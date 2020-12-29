@@ -28,7 +28,7 @@ import {
 } from "../../pages";
 import AuthContext from "../../contexts";
 import { getMe } from "../../WebAPI";
-import { getAuthToken } from "../../utils";
+import { getAuthToken, ScrollToTop } from "../../utils";
 
 function Navbars({ user }) {
   if (!user || !user.is_admin) {
@@ -53,8 +53,8 @@ function App() {
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <Router>
-        {/* {user === "customer" ? <Navbar /> : <AdminNavbar />} */}
         <Navbars user={user} />
+        <ScrollToTop />
         <Up onClick={() => scrollToAnchor("top")}>
           <span>⇧</span>
         </Up>
