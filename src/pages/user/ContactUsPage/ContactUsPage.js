@@ -75,6 +75,7 @@ const ContactUsButton = styled.button`
   background-color: ${theme.colors.mainPrimary};
   border: 0;
   color: #ffffff;
+  cursor: pointer;
 `;
 
 export default function ContactUsPage() {
