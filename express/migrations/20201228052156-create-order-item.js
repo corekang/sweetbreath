@@ -2,7 +2,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable(
-      "Products",
+      "OrderItems",
       {
         id: {
           allowNull: false,
@@ -10,28 +10,29 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        CategoryId: {
+        OrderId: {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
-        name: {
+        order_number: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        image: {
+        product_name: {
           allowNull: false,
           type: Sequelize.STRING,
         },
-        info: {
-          type: Sequelize.TEXT,
+        product_feature: {
+          allowNull: false,
+          type: Sequelize.STRING,
         },
-        status: {
-          defaultValue: 1,
-          type: Sequelize.TINYINT,
+        product_price: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
         },
-        is_deleted: {
-          defaultValue: false,
-          type: Sequelize.BOOLEAN,
+        product_quantity: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
         },
         createdAt: {
           allowNull: false,
@@ -49,6 +50,6 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Products");
+    await queryInterface.dropTable("OrderItems");
   },
 };
