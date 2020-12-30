@@ -89,7 +89,7 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState();
   const history = useHistory();
   const handleSubmit = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     // alert(username);
     setErrorMessage(null);
     login(username, password).then((data) => {
