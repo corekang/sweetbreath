@@ -68,7 +68,7 @@ const SettingButton = styled.button`
   padding: 6px 10px;
   margin-left: 20px;
   border-radius: 4px;
-  font-size: ${theme.fontSize.bodyLarge};
+  font-size: ${theme.fontSize.button};
   color: ${(props) => props.theme.colors.neutralWhite};
   background: ${(props) => props.theme.colors.neutralDarkGrey};
   color: ${theme.colors.neutralPaleGrey};
