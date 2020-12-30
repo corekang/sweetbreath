@@ -26,7 +26,7 @@ const orderController = {
       buyer_email,
       buyer_phone,
       postal_code,
-      buyer_adress,
+      buyer_address,
       order_items,
     } = req.body;
     const checkList = [
@@ -35,7 +35,7 @@ const orderController = {
       "buyer_email",
       "buyer_phone",
       "postal_code",
-      "buyer_adress",
+      "buyer_address",
       "order_items",
     ];
     judgeObj(req.body, checkList, res, "運送資料尚未填寫完成");
@@ -60,7 +60,7 @@ const orderController = {
       buyer_email,
       buyer_phone,
       postal_code,
-      buyer_adress,
+      buyer_address,
     }).then((res) => {
       const OrderId = res.id;
       order_items.map((order) => {
@@ -103,7 +103,19 @@ const orderController = {
           message: "Unauthorized",
         });
       }
-      Orders.findAll()
+      Orders.findAll({
+        include: [
+          {
+            model: OrderItem,
+            attributes: [
+              "product_name",
+              "product_feature",
+              "product_price",
+              "product_quantity",
+            ],
+          },
+        ],
+      })
         .then((data) => {
           return res.status(200).send({
             ok: 1,
@@ -133,6 +145,17 @@ const orderController = {
         where: {
           UserId: user_id,
         },
+        include: [
+          {
+            model: OrderItem,
+            attributes: [
+              "product_name",
+              "product_feature",
+              "product_price",
+              "product_quantity",
+            ],
+          },
+        ],
       })
         .then((data) => {
           return res.status(200).send({
@@ -154,6 +177,17 @@ const orderController = {
       where: {
         order_number,
       },
+      include: [
+        {
+          model: OrderItem,
+          attributes: [
+            "product_name",
+            "product_feature",
+            "product_price",
+            "product_quantity",
+          ],
+        },
+      ],
     })
       .then((data) => {
         return res.status(200).send({
