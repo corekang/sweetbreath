@@ -42,6 +42,7 @@ app.delete("/product/:id", productController.deleteProduct, checkAuthorization);
 // category
 app.get("/category", categoryController.getCategoryName); // 撈取分類
 app.get("/category/product", categoryController.getCategory); // 以分類撈取產品
+app.get("/category/products", categoryController.getAllCategory); // 以所有分類撈取所有產品
 app.post("/category", categoryController.addCategory, checkAuthorization); // 管理員新增分類
 app.put("/category/:id", categoryController.editCategory, checkAuthorization); // 管理員編輯分類
 app.delete(
