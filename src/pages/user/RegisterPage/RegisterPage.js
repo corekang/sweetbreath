@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { H3, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
+import React, { useState, useContext } from "react";
+import { register } from "../../../WebAPI";
+import { setAuthToken } from "../../../utils";
+import { useHistory } from "react-router-dom";
+import AuthContext from "../../../contexts";
 
 const PageContainer = styled.div`
   * {
@@ -17,7 +22,7 @@ const RegisterPageTitle = styled(H3)`
   text-align: center;
 `;
 
-const RegisterForm = styled.div`
+const RegisterForm = styled.form`
   width: 350px;
 `;
 
@@ -34,18 +39,82 @@ const RegisterButton = styled.button`
   background-color: ${theme.colors.mainPrimary};
   border: 0;
   color: #ffffff;
+  cursor: pointer;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  text-align: center;
 `;
 
 export default function RegisterPage() {
+  const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
+  const history = useHistory();
+  const handleSubmit = (e) => {
+    setErrorMessage(null);
+    register(fullname, username, email, password).then((data) => {
+      console.log(data);
+      if (data.ok !== 1) {
+        setFullname("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        return setErrorMessage(data.message);
+      }
+      setAuthToken(data.token);
+      history.push("/login");
+    });
+  };
+  const handleEmail = (value) => {
+    if (
+      !/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
+        value
+      )
+    ) {
+      console.log("請輸入正確 Email");
+    }
+  };
+  const handleInputFocus = () => {
+    setErrorMessage(null);
+  };
   return (
     <PageContainer>
       <RegisterPageTitle>加入會員</RegisterPageTitle>
-      <RegisterForm>
-        <RegisterInput placeholder="帳號" />
-        <RegisterInput placeholder="電子郵件" />
-        <RegisterInput placeholder="手機號碼" />
-        <RegisterInput type="password" placeholder="密碼" />
-        <RegisterInput type="password" placeholder="再次輸入密碼" />
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <RegisterForm onSubmit={handleSubmit}>
+        <RegisterInput
+          value={fullname}
+          onChange={(e) => setFullname(e.target.value)}
+          onFocus={handleInputFocus}
+          placeholder="全名"
+        />
+        <RegisterInput
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          onFocus={handleInputFocus}
+          placeholder="帳號"
+        />
+        <RegisterInput
+          value={email}
+          onChange={(e) => {
+            handleEmail(e.target.value);
+            setEmail(e.target.value);
+          }}
+          onFocus={handleInputFocus}
+          type="text"
+          placeholder="電子郵件"
+        />
+        <RegisterInput
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onFocus={handleInputFocus}
+          type="password"
+          placeholder="密碼"
+        />
         <RegisterButton>註冊</RegisterButton>
       </RegisterForm>
     </PageContainer>

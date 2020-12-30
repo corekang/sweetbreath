@@ -7,7 +7,7 @@ import {
   MEDIA_QUERY,
 } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import { Map } from "../../../components/Map/Ｍap.js";
+import { Map } from "../../../components/Map/Map.js";
 
 const PageContainer = styled.div`
   * {
@@ -75,6 +75,7 @@ const ContactUsButton = styled.button`
   background-color: ${theme.colors.mainPrimary};
   border: 0;
   color: #ffffff;
+  cursor: pointer;
 `;
 
 export default function ContactUsPage() {
