@@ -190,6 +190,15 @@ const AddToCart = styled.div`
   }
 `;
 
+const Error = styled(H4)`
+  display: flex;
+  font-weight: bold;
+  margin: 10px 0;
+  visibility: ${(props) => (props.errorMessage ? "visible" : "hidden")};
+  color: ${(props) => props.theme.colors.uiWarning};
+  justify-content: center;
+`;
+
 const getProduct = (productId) => {
   return fetch(`/api/product/${productId}`).then((res) => res.json());
 };
@@ -200,15 +209,11 @@ const getCategory = () => {
 export default function ProductPage() {
   const history = useHistory();
   const { id } = useParams();
-
-  const [itemCount, setItemCount] = useState(0);
-  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState();
   const [cart, setCart] = useState([]);
   const [feature, setFeature] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
-  const [ccart, setCcart] = useState([{}, {}]);
+  const [errorMessage, setErrorMessage] = useState(false);
 
   useEffect(() => {
     getCategory().then((ans) => {
@@ -259,21 +264,27 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     let newCart = cart;
     let featureList = feature.filter((item) => item.number !== 0);
-    featureList.map((item) => {
-      newCart.push({
-        id: product.id,
-        productName: product.name,
-        feature: item.name,
-        count: item.number,
-        promoPrice: item.promo_price,
-        subTotal: item.number * item.promo_price,
-        img: product.image,
+    if (featureList.length !== 0) {
+      featureList.map((item) => {
+        newCart.push({
+          id: product.id,
+          productName: product.name,
+          feature: item.name,
+          count: item.number,
+          price: item.promo_price ? item.promo_price : item.price,
+          subTotal: item.promo_price
+            ? item.number * item.promo_price
+            : item.number * item.price,
+          image: product.image,
+        });
+        return newCart;
       });
-      return newCart;
-    });
-    setCart(newCart);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    history.push("/cart");
+      setCart(newCart);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      history.push("/cart");
+    } else {
+      return setErrorMessage(true);
+    }
   };
 
   return (
@@ -342,7 +353,7 @@ export default function ProductPage() {
                 </ProductCounter>
               </FeatureList>
             ))}
-
+            <Error errorMessage={errorMessage}>請輸入數量</Error>
             <AddToCart>
               <Button onClick={handleAddToCart}>加入購物車</Button>
             </AddToCart>
