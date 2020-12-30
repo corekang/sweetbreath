@@ -17,13 +17,13 @@ const CategoryHeader = styled.div`
   justify-content: space-between;
 
   ${MEDIA_QUERY} {
-    display: block;
     justify-content: center;
   }
 `;
 
 const CategoryList = styled.div`
   display: flex;
+  align-items: center;
   ${MEDIA_QUERY} {
     justify-content: center;
   }
@@ -51,7 +51,7 @@ const CategorySection = styled.div`
   }
 `;
 const CategoryTitle = styled(H3)`
-  margin: 60px 0 20px 0;
+  margin: 30px 0;
 `;
 const ProductList = styled.div`
   text-align: center;
@@ -132,7 +132,7 @@ const AddBtn = styled(SettingButton)`
   background: ${(props) => props.theme.colors.uiWarning};
   color: ${(props) => props.theme.colors.neutralBlack};
   font-weight: bold;
-  justify-content: center;
+
   :hover {
     color: ${(props) => props.theme.colors.neutralWhite};
   }
@@ -168,7 +168,12 @@ const deleteProduct = (featureId) => {
   }).then((res) => res.json());
 };
 
-const ProductItems = ({ productId, setErrorMessage }) => {
+const ProductItems = ({
+  productId,
+  setErrorMessage,
+  getCategory,
+  setCategories,
+}) => {
   const [features, setFeatures] = useState([]);
 
   // 從 productId 撈取商品規格: 回傳 Features 陣列
@@ -178,6 +183,9 @@ const ProductItems = ({ productId, setErrorMessage }) => {
         return feature;
       });
       setFeatures(features);
+    });
+    getCategory().then((ans) => {
+      setCategories(ans.data);
     });
   }, []);
 
@@ -211,7 +219,12 @@ const ProductItems = ({ productId, setErrorMessage }) => {
   ));
 };
 
-const Products = ({ products, setErrorMessage }) => {
+const Products = ({
+  products,
+  setErrorMessage,
+  getCategory,
+  setCategories,
+}) => {
   return products.map((product) => (
     <ProductContainer>
       <ProductName>{product.name}</ProductName>
@@ -219,6 +232,8 @@ const Products = ({ products, setErrorMessage }) => {
         key={product.id}
         productId={product.id}
         setErrorMessage={setErrorMessage}
+        getCategory={getCategory}
+        setCategories={setCategories}
       />
     </ProductContainer>
   ));
@@ -245,7 +260,7 @@ export default function AdminProductListPage() {
               key={category.id}
               onClick={() => scrollToAnchor(category.id)}
             >
-              {category.name}
+              {category.name} ({category.Products.length})
             </CategoryName>
           ))}
         </CategoryList>
@@ -256,11 +271,15 @@ export default function AdminProductListPage() {
       </ErrorMessage>
       {categories.map((category) => (
         <CategorySection>
-          <CategoryTitle id={category.id}>{category.name}</CategoryTitle>
+          <CategoryTitle id={category.id}>
+            {category.name}({category.Products.length})
+          </CategoryTitle>
           <ProductList>
             <Products
               products={category.Products}
               setErrorMessage={setErrorMessage}
+              getCategory={getCategory}
+              setCategories={setCategories}
             />
           </ProductList>
         </CategorySection>
