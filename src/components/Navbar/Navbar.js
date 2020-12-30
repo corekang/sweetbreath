@@ -216,7 +216,11 @@ export default function Navbar() {
       </IconBar>
       <IconBar>
         <IconButton route="/cart" icon={cart} />
-        {!user && <IconButton route="/login" icon={member} />}
+        {user ? (
+          <IconButton route="/member" icon={member} />
+        ) : (
+          <IconButton route="/login" icon={member} />
+        )}
         {user && (
           <LogOutButton
             /* route="/logout" icon={logout} */ src={logout}
