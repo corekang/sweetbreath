@@ -157,7 +157,7 @@ const getProduct = (productId) => {
 };
 
 // 刪除商品規格 API
-const deleteProduct = (featureId) => {
+const deleteFeature = (featureId) => {
   const token = getAuthToken();
   return fetch(`/api/feature/${featureId}`, {
     method: "DELETE",
@@ -179,19 +179,17 @@ const ProductItems = ({
   // 從 productId 撈取商品規格: 回傳 Features 陣列
   useEffect(() => {
     getProduct(productId).then((res) => {
+      if (!res.data.Features) return;
       const features = res.data.Features.map((feature) => {
         return feature;
       });
       setFeatures(features);
     });
-    getCategory().then((ans) => {
-      setCategories(ans.data);
-    });
   }, []);
 
   // 刪除分類
   const handleDeleteClick = (id) => {
-    deleteProduct(id).then((res) => {
+    deleteFeature(id).then((res) => {
       if (res.ok === 0) {
         setErrorMessage(res.message);
         return;
