@@ -250,11 +250,13 @@ export default function ProductPage() {
     setFeature(newFeature);
   };
 
-  const handleClickUp = (id) => {
+  const handleClickUp = (id, stock) => {
     const newFeature = feature.map((item) => {
       let newItem = item;
       if (newItem.id === id) {
-        newItem.number = newItem.number + 1;
+        if (newItem.number < stock) {
+          newItem.number = newItem.number + 1;
+        }
       }
       return newItem;
     });
@@ -276,6 +278,7 @@ export default function ProductPage() {
             ? item.number * item.promo_price
             : item.number * item.price,
           image: product.image,
+          stock: item.stock,
         });
         return newCart;
       });
@@ -346,7 +349,7 @@ export default function ProductPage() {
                       icon={plusCircleOutlined}
                       onClick={() => {
                         console.log(featureItem.id);
-                        handleClickUp(featureItem.id);
+                        handleClickUp(featureItem.id, featureItem.stock);
                       }}
                     ></CounterIcon>
                   </CounterArea>
