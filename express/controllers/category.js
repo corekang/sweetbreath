@@ -5,6 +5,25 @@ const jwt = require("jsonwebtoken");
 const SECRET = "sweetbreathyumyum";
 
 const categoryController = {
+  getCategoryName: (req, res) => {
+    Category.findAll({
+      where: {
+        is_deleted: false,
+      },
+    })
+      .then((categories) => {
+        return res.status(200).send({
+          ok: 1,
+          data: categories,
+        });
+      })
+      .catch((err) => {
+        return res.status(404).send({
+          ok: 0,
+          message: err,
+        });
+      });
+  },
   getCategory: (req, res) => {
     Category.findAll({
       where: {
@@ -14,6 +33,33 @@ const categoryController = {
         {
           model: Product,
           where: { is_deleted: false },
+        },
+      ],
+    })
+      .then((categories) => {
+        return res.status(200).send({
+          ok: 1,
+          data: categories,
+        });
+      })
+      .catch((err) => {
+        return res.status(404).send({
+          ok: 0,
+          message: err,
+        });
+      });
+  },
+
+  getAllCategory: (req, res) => {
+    Category.findAll({
+      where: {
+        is_deleted: false,
+      },
+      include: [
+        {
+          model: Product,
+          where: { is_deleted: false },
+          required: false,
         },
       ],
     })

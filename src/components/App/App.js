@@ -16,7 +16,7 @@ import {
   ContactUsPage,
   CartPage,
   CheckoutPage,
-  OrderListPage,
+  OrderConfirmPage,
   MemberPage,
   AdminPage,
   AdminProductListPage,
@@ -25,17 +25,21 @@ import {
   AdminOrderListPage,
   AdminNewsPage,
   AdminCategoryPage,
+  OrderListPage,
 } from "../../pages";
 import AuthContext from "../../contexts";
 import { getMe } from "../../WebAPI";
 import { getAuthToken, ScrollToTop } from "../../utils";
 
+function Navbars({ user }) {
+  if (!user || !user.is_admin) {
+    return <Navbar />;
+  }
+  return <AdminNavbar />;
+}
+
 function App() {
   const [user, setUser] = useState(null); // useState("customer")
-
-  const userPermission = getMe().then((response) => {
-    console.log(response);
-  });
 
   useEffect(() => {
     if (getAuthToken()) {
@@ -50,10 +54,7 @@ function App() {
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <Router>
-        {
-          !user || !userPermission ? <Navbar /> : <AdminNavbar />
-          /* {user === "customer" ? <Navbar /> : <AdminNavbar />} */
-        }
+        <Navbars user={user} />
         <ScrollToTop />
         <Up onClick={() => scrollToAnchor("top")}>
           <span>⇧</span>
@@ -91,6 +92,9 @@ function App() {
           </Route>
           <Route exact path="/checkout">
             <CheckoutPage />
+          </Route>
+          <Route exact path="/order">
+            <OrderConfirmPage />
           </Route>
           <Route exact path="/orders">
             <OrderListPage />

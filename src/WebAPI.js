@@ -1,8 +1,20 @@
 import { getAuthToken } from "./utils";
 const BASE_URL = "/api"; // Domain Name
 
-export const getPosts = () => {
-  return fetch(`${BASE_URL}/api/register`).then((res) => res.json());
+export const register = (fullname, username, email, password) => {
+  return fetch(`${BASE_URL}/register`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      fullname,
+      username,
+      email,
+      password,
+    }),
+  }).then((res) => res.json());
+  // .then((data) => console.log(data));
 };
 
 export const login = (username, password) => {

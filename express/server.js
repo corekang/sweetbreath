@@ -6,6 +6,7 @@ const userControlloer = require("./controllers/user");
 const productController = require("./controllers/product");
 const categoryController = require("./controllers/category");
 const featureController = require("./controllers/feature");
+const orderController = require("./controllers/order");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -39,7 +40,9 @@ app.put("/product/:id", productController.editProduct, checkAuthorization); // �
 app.delete("/product/:id", productController.deleteProduct, checkAuthorization); // 管理員刪除產品
 
 // category
-app.get("/category", categoryController.getCategory); // 撈取分類
+app.get("/category", categoryController.getCategoryName); // 撈取分類
+app.get("/category/product", categoryController.getCategory); // 以分類撈取產品
+app.get("/category/products", categoryController.getAllCategory); // 以所有分類撈取所有產品
 app.post("/category", categoryController.addCategory, checkAuthorization); // 管理員新增分類
 app.put("/category/:id", categoryController.editCategory, checkAuthorization); // 管理員編輯分類
 app.delete(
@@ -52,6 +55,17 @@ app.delete(
 app.post("/feature/:id", featureController.addFeature, checkAuthorization); // 管理員新增規格
 app.put("/feature/:id", featureController.editFeature, checkAuthorization); // 管理員編輯規格
 app.delete("/feature/:id", featureController.deleteFeature, checkAuthorization); // 管理員刪除產品
+
+//Order
+app.post("/orders", orderController.createOrder, checkAuthorization); //生成訂單
+app.get("/orders", orderController.getOrderList, checkAuthorization); //取得訂單清單
+app.get("/order/:user_id", orderController.getUserOrder, checkAuthorization); //取得特定買家訂單
+app.get("/order_item/:order_number", orderController.getOrderItem); //取得特定訂單品項
+app.put(
+  "/order/:order_number",
+  orderController.editOrderStatus,
+  checkAuthorization
+); ////編輯訂單狀態
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
