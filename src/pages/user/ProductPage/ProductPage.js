@@ -265,29 +265,43 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     let newCart = cart;
-    let featureList = feature.filter((item) => item.number !== 0);
-    if (featureList.length !== 0) {
-      featureList.map((item) => {
-        newCart.push({
-          id: product.id,
-          productName: product.name,
-          feature: item.name,
-          count: item.number,
-          price: item.promo_price ? item.promo_price : item.price,
-          subTotal: item.promo_price
-            ? item.number * item.promo_price
-            : item.number * item.price,
-          image: product.image,
-          stock: item.stock,
-        });
-        return newCart;
+    let addFeatureList = feature.filter((item) => item.number !== 0);
+
+    // 判斷新增商品數量是否為 0
+    if (addFeatureList.length === 0) return setErrorMessage(true);
+
+    addFeatureList.map((newItem) => {
+      // 判斷是否有相同商品
+      let sameItem = cart.find((cartItem) => {
+        return (
+          cartItem.id === newItem.ProductId && cartItem.feature === newItem.name
+        );
       });
-      setCart(newCart);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      history.push("/cart");
-    } else {
-      return setErrorMessage(true);
-    }
+
+      if (sameItem) {
+        // true: 詢問要不要前往 CartPage
+        if (window.confirm("您的購物車已經有相同物品囉！要前往購物車頁面嗎？"))
+          history.push("/cart");
+      } else {
+        // false: 直接新增
+        setCart(
+          cart.push({
+            id: product.id,
+            productName: product.name,
+            feature: newItem.name,
+            count: newItem.number,
+            price: newItem.promo_price ? newItem.promo_price : newItem.price,
+            subTotal: newItem.promo_price
+              ? newItem.number * newItem.promo_price
+              : newItem.number * newItem.price,
+            image: product.image,
+            stock: newItem.stock,
+          })
+        );
+        localStorage.setItem("cart", JSON.stringify(cart));
+        history.push("/cart");
+      }
+    });
   };
 
   return (

@@ -93,6 +93,7 @@ const OderItemDetails = styled.div`
 `;
 
 const CartItemTitle = styled(Link)`
+  margin-bottom: 5px;
   span {
     color: ${(props) => props.theme.colors.neutralBlack};
     font-size: ${(props) => props.theme.fontSize.h4};
@@ -107,7 +108,7 @@ const CartItemTitle = styled(Link)`
 `;
 
 const CartItemFeature = styled(H5)`
-  margin: 6px 0;
+  margin: 4px 0;
   color: ${(props) => props.theme.colors.neutralDarkGrey};
 `;
 
@@ -116,10 +117,6 @@ const CounterArea = styled(H4)`
   justify-content: center;
   align-items: center;
   margin: 0;
-
-  & div {
-    padding: 0 16px;
-  }
 
   span {
     width: 40px;
@@ -134,6 +131,7 @@ const CounterArea = styled(H4)`
 const CounterIcon = styled(Icon)`
   width: 32px;
   height: 32px;
+  padding: 2px;
   cursor: pointer;
   color: ${(props) => props.theme.colors.mainPrimary};
 `;
@@ -250,13 +248,14 @@ function CartList({ cartItem, cart, setCart }) {
         if (
           newCartItem.id !== cartItem.id ||
           newCartItem.feature !== cartItem.feature
-        )
+        ) {
           return newCartItem;
+        }
         // 要改變的商品的 count 和 subTotal
         return {
           ...newCartItem,
           count: newCartItem.count - 1,
-          subTotal: newCartItem.count * newCartItem.price,
+          subTotal: (newCartItem.count - 1) * newCartItem.price,
         };
       })
     );
@@ -274,12 +273,13 @@ function CartList({ cartItem, cart, setCart }) {
         if (
           newCartItem.id !== cartItem.id ||
           newCartItem.feature !== cartItem.feature
-        )
+        ) {
           return newCartItem;
+        }
         return {
           ...newCartItem,
           count: newCartItem.count + 1,
-          subTotal: newCartItem.count * newCartItem.price,
+          subTotal: (newCartItem.count + 1) * newCartItem.price,
         };
       })
     );
