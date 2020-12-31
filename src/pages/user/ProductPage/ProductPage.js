@@ -9,7 +9,6 @@ import {
   MEDIA_QUERY,
   Caption1,
   Caption2,
-  H5,
   H4,
   H3,
   Button,
@@ -264,7 +263,6 @@ export default function ProductPage() {
   };
 
   const handleAddToCart = () => {
-    let newCart = cart;
     let addFeatureList = feature.filter((item) => item.number !== 0);
 
     // 判斷新增商品數量是否為 0
@@ -280,7 +278,9 @@ export default function ProductPage() {
 
       if (sameItem) {
         // true: 詢問要不要前往 CartPage
-        if (window.confirm("您的購物車已經有相同物品囉！要前往購物車頁面嗎？"))
+        if (
+          window.confirm("您的購物車已經有相同物品囉！要前往購物車頁面修改嗎？")
+        )
           history.push("/cart");
       } else {
         // false: 直接新增
