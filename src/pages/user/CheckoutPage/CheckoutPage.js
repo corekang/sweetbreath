@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
-
+import { creatOrder } from "../../../WebAPI";
 import { theme } from "../../../constants/theme";
 import {
   H2,
@@ -217,73 +217,127 @@ const OrderTotalPrice = styled(H4)`
   margin: 20px 0;
 `;
 
-function OrderItem() {
+function OrderItem({ item }) {
   return (
     <OrderItemContainer>
-      <Link to="/product/1" target="_blank">
-        <img
-          src="https://img2.momoshop.com.tw/goodsimg/0007/249/953/7249953_L.jpg?t=1608292496"
-          alt="product"
-        ></img>
+      <Link to={`/product/${item.id}`} target="_blank">
+        <img src={item.image} alt={item.productName}></img>
       </Link>
       <OrderItemContent>
         <OrderItemTitle>
-          <Link to="/product/1" target="_blank">
-            商品名稱商品名稱商品名稱商品名稱商品名稱商品名稱
+          <Link to={`/product/${item.id}`} target="_blank">
+            {item.productName + " - " + item.feature}
           </Link>
         </OrderItemTitle>
         <OderItemDetails>
-          <OrderItemNumber>X1</OrderItemNumber>
-          <OrderItemPrice>NT$ 100</OrderItemPrice>
+          <OrderItemNumber>{"x " + item.count}</OrderItemNumber>
+          <OrderItemPrice>{item.price + " NT"}</OrderItemPrice>
         </OderItemDetails>
       </OrderItemContent>
     </OrderItemContainer>
   );
 }
 
-function OrderList() {
+function OrderList({ orderItem, totalPrice }) {
   return (
     <OrderListContainer>
       <H3>商品總計</H3>
       <OrderItemsContainer>
-        <OrderItem />
-        <OrderItem />
-        <OrderItem />
+        {orderItem ? (
+          orderItem.map((item) => (
+            <OrderItem item={item} key={item.productName + item.feature} />
+          ))
+        ) : (
+          <p>還沒有商品喔！</p>
+        )}
       </OrderItemsContainer>
       <OrderTotalPrice>
-        總付款金額：<b>NT$ 200</b>
+        總付款金額：<b>NT$ {totalPrice}</b>
       </OrderTotalPrice>
     </OrderListContainer>
   );
 }
 
-function CheckoutList() {
-  const history = useHistory();
-
-  const handleSubmit = (e) => {
+function CheckoutList({
+  history,
+  handleFullName,
+  handlePostalCode,
+  handleAddress,
+  handlePhone,
+  handleEmail,
+  fullName,
+  postalCode,
+  address,
+  phone,
+  orderItem,
+  email,
+  userId,
+}) {
+  const handleSubmit = (e, orderItem) => {
     e.preventDefault();
+    let emptyList = [];
+    !fullName && emptyList.push("收件人姓名 ");
+    !postalCode && emptyList.push("郵遞區號 ");
+    !address && emptyList.push("收件地址 ");
+    !phone && emptyList.push("電話號碼 ");
+    !email && emptyList.push("電子信箱 ");
+    if (emptyList.length > 0) {
+      return alert(`${emptyList} 還沒填喔！`);
+    }
+
+    if (orderItem.length === 0) {
+      return alert(`購物車還沒有商品喔！`);
+    }
+    ///////訂單建立
+    let order_items = [];
+    for (let i = 0; i < orderItem.length; i++) {
+      order_items.push({
+        product_name: orderItem[i].productName,
+        product_feature: orderItem[i].feature,
+        product_price: orderItem[i].price,
+        product_quantity: orderItem[i].count,
+      });
+    }
+    const finalOrder = {
+      UserId: userId,
+      buyer_fullname: fullName,
+      buyer_email: email,
+      buyer_phone: phone,
+      postal_code: postalCode,
+      buyer_address: address,
+      order_items,
+    };
+    creatOrder(finalOrder);
     alert(`下單成功，感謝您的購買`);
-    history.push("/orders");
+    //history.push("/orders");
   };
 
   return (
-    <CheckoutForm onSubmit={handleSubmit}>
+    <CheckoutForm
+      onSubmit={(e) => {
+        handleSubmit(e, orderItem);
+      }}
+    >
       <>
         <InputContainer>
           <H5>收件人姓名</H5>
-          <Input type="text" />
-        </InputContainer>
-        <InputContainer>
-          <H5>收件地址</H5>
-          <Input type="text" />
+          <Input type="text" value={fullName} onChange={handleFullName} />
         </InputContainer>
         <InputContainer>
           <H5>郵遞區號</H5>
-          <Input type="text" />
+          <Input type="text" value={postalCode} onChange={handlePostalCode} />
+        </InputContainer>
+        <InputContainer>
+          <H5>收件地址</H5>
+          <Input type="text" value={address} onChange={handleAddress} />
         </InputContainer>
         <InputContainer>
           <H5>電話號碼</H5>
-          <Input type="text" />
+          <Input type="text" value={phone} onChange={handlePhone} />
+        </InputContainer>
+        <InputContainer>
+          <H5>電子信箱</H5>
+          <Input type="email" value={email} onChange={handleEmail} />
         </InputContainer>
       </>
       <ButtonContainer>
@@ -311,6 +365,72 @@ function ProgressBar() {
 }
 
 export default function CheckoutPage() {
+  const history = useHistory();
+  const [userId, serUserId] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [orderItem, setOrderItem] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const token = localStorage.getItem("token");
+  const cart = JSON.parse(localStorage.getItem("cart"));
+
+  function handleFullName(e) {
+    setFullName(e.target.value);
+  }
+  function handlePostalCode(e) {
+    if (isNaN(e.target.value)) {
+      return;
+    }
+    setPostalCode(e.target.value);
+  }
+  function handleAddress(e) {
+    setAddress(e.target.value);
+  }
+  function handlePhone(e) {
+    if (isNaN(e.target.value)) {
+      return;
+    }
+    setPhone(e.target.value);
+  }
+  function handleEmail(e) {
+    setEmail(e.target.value);
+  }
+
+  useEffect(() => {
+    //讀取購物車
+    if (cart) {
+      setOrderItem(cart);
+      let currentTotal = 0;
+      for (let i = 0; i < cart.length; i++) {
+        currentTotal += cart[i].price * cart[i].count;
+        setTotalPrice(currentTotal);
+      }
+    }
+    //驗證登入
+    if (!token) {
+      alert("請先登入喔");
+      history.push("/login");
+    } else {
+      //撈會員資料
+      fetch("/api/user", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          const data = res.data;
+          data.fullname && setFullName(data.fullname);
+          data.adress && setAddress(data.adress);
+          data.email && setEmail(data.email);
+          serUserId(data.id);
+        });
+    }
+  }, []);
+
   return (
     <CheckoutContainer>
       <CheckoutHeader>
@@ -318,8 +438,22 @@ export default function CheckoutPage() {
         <ProgressBar />
       </CheckoutHeader>
       <CheckoutContent>
-        <CheckoutList />
-        <OrderList />
+        <CheckoutList
+          history={history}
+          handleFullName={handleFullName}
+          handlePostalCode={handlePostalCode}
+          handleAddress={handleAddress}
+          handlePhone={handlePhone}
+          handleEmail={handleEmail}
+          fullName={fullName}
+          postalCode={postalCode}
+          address={address}
+          phone={phone}
+          orderItem={orderItem}
+          email={email}
+          userId={userId}
+        />
+        <OrderList orderItem={orderItem} totalPrice={totalPrice} />
       </CheckoutContent>
     </CheckoutContainer>
   );
