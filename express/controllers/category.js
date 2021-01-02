@@ -50,6 +50,33 @@ const categoryController = {
       });
   },
 
+  getAllCategory: (req, res) => {
+    Category.findAll({
+      where: {
+        is_deleted: false,
+      },
+      include: [
+        {
+          model: Product,
+          where: { is_deleted: false },
+          required: false,
+        },
+      ],
+    })
+      .then((categories) => {
+        return res.status(200).send({
+          ok: 1,
+          data: categories,
+        });
+      })
+      .catch((err) => {
+        return res.status(404).send({
+          ok: 0,
+          message: err,
+        });
+      });
+  },
+
   addCategory: (req, res, checkAuthorization) => {
     const { name } = req.body;
     if (!name) {

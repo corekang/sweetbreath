@@ -9,7 +9,7 @@ import NewsPage from "./user/NewsPage";
 import ContactUsPage from "./user/ContactUsPage";
 import CartPage from "./user/CartPage";
 import CheckoutPage from "./user/CheckoutPage";
-import OrderListPage from "./user/OrderListPage";
+import OrderConfirmPage from "./user/OrderConfirmPage";
 import MemberPage from "./user/MemberPage";
 import AdminPage from "./admin/AdminPage";
 import AdminProductListPage from "./admin/AdminProductListPage";
@@ -18,6 +18,7 @@ import AdminMemberPage from "./admin/AdminMemberPage";
 import AdminOrderListPage from "./admin/AdminOrderListPage";
 import AdminNewsPage from "./admin/AdminNewsPage";
 import AdminCategoryPage from "./admin/AdminCategory";
+import OrderListPage from "./user/OrderListPage";
 
 export {
   HomePage,
@@ -31,7 +32,7 @@ export {
   ContactUsPage,
   CartPage,
   CheckoutPage,
-  OrderListPage,
+  OrderConfirmPage,
   MemberPage,
   AdminPage,
   AdminProductListPage,
@@ -40,4 +41,5 @@ export {
   AdminOrderListPage,
   AdminNewsPage,
   AdminCategoryPage,
+  OrderListPage,
 };

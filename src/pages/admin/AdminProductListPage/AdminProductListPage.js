@@ -61,15 +61,6 @@ const ProductList = styled.div`
   }
 `;
 
-const ProductContainer = styled.div`
-  border-bottom: 1px solid ${(props) => props.theme.colors.neutralGrey};
-`;
-
-const ProductName = styled(H4)`
-  margin: 20px 0;
-  text-align: left;
-`;
-
 const ProductSetting = styled.div`
   display: none;
 
@@ -78,18 +69,32 @@ const ProductSetting = styled.div`
   }
 `;
 
-const ProductItemContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 20px;
+const ProductContainer = styled.div`
+  border-bottom: 1px solid ${(props) => props.theme.colors.neutralGrey};
 
   :hover {
-    background: ${(props) => props.theme.colors.neutralSnow};
     ${ProductSetting} {
       display: flex;
       align-items: center;
     }
   }
+`;
+
+const ProductTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ProductName = styled(H4)`
+  margin: 20px 0;
+  text-align: left;
+`;
+
+const ProductItemContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 20px;
 
   ${MEDIA_QUERY} {
     display: block;
@@ -156,10 +161,10 @@ const getProduct = (productId) => {
   return fetch(`/api/product/${productId}`).then((res) => res.json());
 };
 
-// 刪除商品規格 API
-const deleteFeature = (featureId) => {
+// 刪除商品 API
+const deleteProduct = (productId) => {
   const token = getAuthToken();
-  return fetch(`/api/feature/${featureId}`, {
+  return fetch(`/api/product/${productId}`, {
     method: "DELETE",
     headers: {
       authorization: `Bearer ${token}`,
@@ -187,16 +192,6 @@ const ProductItems = ({
     });
   }, []);
 
-  // 刪除分類
-  const handleDeleteClick = (id) => {
-    deleteFeature(id).then((res) => {
-      if (res.ok === 0) {
-        setErrorMessage(res.message);
-        return;
-      }
-    });
-  };
-
   return features.map((feature) => (
     <ProductItemContainer key={feature.id}>
       <ProductDescContainer>
@@ -205,14 +200,6 @@ const ProductItems = ({
         <ProductDesc>庫存：{feature.stock}</ProductDesc>
         <ProductDesc>規格：{feature.name}</ProductDesc>
       </ProductDescContainer>
-      <ProductSetting>
-        <SettingButton to={"/admin/product/" + feature.ProductId}>
-          編輯
-        </SettingButton>
-        <SettingButton onClick={() => handleDeleteClick(feature.id)}>
-          刪除
-        </SettingButton>
-      </ProductSetting>
     </ProductItemContainer>
   ));
 };
@@ -223,9 +210,32 @@ const Products = ({
   getCategory,
   setCategories,
 }) => {
+  // 刪除分類
+  const handleDeleteClick = (id) => {
+    deleteProduct(id).then((res) => {
+      if (res.ok === 0) {
+        setErrorMessage(res.message);
+        return;
+      }
+      getCategory().then((ans) => {
+        setCategories(ans.data);
+      });
+    });
+  };
+
   return products.map((product) => (
     <ProductContainer>
-      <ProductName>{product.name}</ProductName>
+      <ProductTitle>
+        <ProductName>{product.name}</ProductName>
+        <ProductSetting>
+          <SettingButton to={"/admin/product/" + product.id}>
+            編輯
+          </SettingButton>
+          <SettingButton onClick={() => handleDeleteClick(product.id)}>
+            刪除
+          </SettingButton>
+        </ProductSetting>
+      </ProductTitle>
       <ProductItems
         key={product.id}
         productId={product.id}

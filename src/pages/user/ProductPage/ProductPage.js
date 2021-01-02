@@ -9,7 +9,6 @@ import {
   MEDIA_QUERY,
   Caption1,
   Caption2,
-  H5,
   H4,
   H3,
   Button,
@@ -190,6 +189,15 @@ const AddToCart = styled.div`
   }
 `;
 
+const Error = styled(H4)`
+  display: flex;
+  font-weight: bold;
+  margin: 10px 0;
+  visibility: ${(props) => (props.errorMessage ? "visible" : "hidden")};
+  color: ${(props) => props.theme.colors.uiWarning};
+  justify-content: center;
+`;
+
 const getProduct = (productId) => {
   return fetch(`/api/product/${productId}`).then((res) => res.json());
 };
@@ -200,15 +208,11 @@ const getCategory = () => {
 export default function ProductPage() {
   const history = useHistory();
   const { id } = useParams();
-
-  const [itemCount, setItemCount] = useState(0);
-  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState();
   const [cart, setCart] = useState([]);
   const [feature, setFeature] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
-  const [ccart, setCcart] = useState([{}, {}]);
+  const [errorMessage, setErrorMessage] = useState(false);
 
   useEffect(() => {
     getCategory().then((ans) => {
@@ -245,11 +249,13 @@ export default function ProductPage() {
     setFeature(newFeature);
   };
 
-  const handleClickUp = (id) => {
+  const handleClickUp = (id, stock) => {
     const newFeature = feature.map((item) => {
       let newItem = item;
       if (newItem.id === id) {
-        newItem.number = newItem.number + 1;
+        if (newItem.number < stock) {
+          newItem.number = newItem.number + 1;
+        }
       }
       return newItem;
     });
@@ -257,23 +263,45 @@ export default function ProductPage() {
   };
 
   const handleAddToCart = () => {
-    let newCart = cart;
-    let featureList = feature.filter((item) => item.number !== 0);
-    featureList.map((item) => {
-      newCart.push({
-        id: product.id,
-        productName: product.name,
-        feature: item.name,
-        count: item.number,
-        promoPrice: item.promo_price,
-        subTotal: item.number * item.promo_price,
-        img: product.image,
+    let addFeatureList = feature.filter((item) => item.number !== 0);
+
+    // 判斷新增商品數量是否為 0
+    if (addFeatureList.length === 0) return setErrorMessage(true);
+
+    addFeatureList.map((newItem) => {
+      // 判斷是否有相同商品
+      let sameItem = cart.find((cartItem) => {
+        return (
+          cartItem.id === newItem.ProductId && cartItem.feature === newItem.name
+        );
       });
-      return newCart;
+
+      if (sameItem) {
+        // true: 詢問要不要前往 CartPage
+        if (
+          window.confirm("您的購物車已經有相同物品囉！要前往購物車頁面修改嗎？")
+        )
+          history.push("/cart");
+      } else {
+        // false: 直接新增
+        setCart(
+          cart.push({
+            id: product.id,
+            productName: product.name,
+            feature: newItem.name,
+            count: newItem.number,
+            price: newItem.promo_price ? newItem.promo_price : newItem.price,
+            subTotal: newItem.promo_price
+              ? newItem.number * newItem.promo_price
+              : newItem.number * newItem.price,
+            image: product.image,
+            stock: newItem.stock,
+          })
+        );
+        localStorage.setItem("cart", JSON.stringify(cart));
+        history.push("/cart");
+      }
     });
-    setCart(newCart);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    history.push("/cart");
   };
 
   return (
@@ -335,14 +363,14 @@ export default function ProductPage() {
                       icon={plusCircleOutlined}
                       onClick={() => {
                         console.log(featureItem.id);
-                        handleClickUp(featureItem.id);
+                        handleClickUp(featureItem.id, featureItem.stock);
                       }}
                     ></CounterIcon>
                   </CounterArea>
                 </ProductCounter>
               </FeatureList>
             ))}
-
+            <Error errorMessage={errorMessage}>請輸入數量</Error>
             <AddToCart>
               <Button onClick={handleAddToCart}>加入購物車</Button>
             </AddToCart>

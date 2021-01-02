@@ -34,7 +34,7 @@ module.exports = {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
-        buyer_adress: {
+        buyer_address: {
           allowNull: false,
           type: Sequelize.STRING,
         },

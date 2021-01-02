@@ -38,6 +38,7 @@ const NavbarContent = styled.div`
 `;
 
 const ButtonContent = styled(Link)`
+  padding: 5px 0px;
   box-sizing: border-box;
   min-width: 78px;
   border-radius: 5px;
@@ -166,7 +167,7 @@ export default function AdminNavbar() {
         <NavButton route="/admin/member" title={"權限管理"} />
         <NavButton route="/admin/orders" title={"訂單管理"} />
         <LogoutButton onClick={handleLogout}>
-          <img src={logout} />
+          <img src={logout} alt="logout" />
         </LogoutButton>
       </FunctionBar>
     </NavbarContent>
