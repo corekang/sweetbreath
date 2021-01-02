@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { H3, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { register } from "../../../WebAPI";
 import { setAuthToken } from "../../../utils";
 import { useHistory } from "react-router-dom";
-import AuthContext from "../../../contexts";
 
 const PageContainer = styled.div`
   * {
@@ -45,6 +44,9 @@ const RegisterButton = styled.button`
 const ErrorMessage = styled.div`
   color: red;
   text-align: center;
+  word-wrap: break-word;
+  width: 350px;
+  margin: 0 auto;
 `;
 
 export default function RegisterPage() {
@@ -55,6 +57,7 @@ export default function RegisterPage() {
   const [errorMessage, setErrorMessage] = useState();
   const history = useHistory();
   const handleSubmit = (e) => {
+    e.preventDefault();
     setErrorMessage(null);
     register(fullname, username, email, password).then((data) => {
       console.log(data);
@@ -71,12 +74,16 @@ export default function RegisterPage() {
   };
   const handleEmail = (value) => {
     if (
-      !/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
+      !/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/.test(
         value
       )
     ) {
       console.log("請輸入正確 Email");
+      return setErrorMessage(
+        "@ 前後可以是英文、數字與「-」、「.」組合，但「-」、「.」不能連續出現，@ 之後必須是英文、數字與「.」組合，最末個「.」之後為英文"
+      );
     }
+    return setErrorMessage(null);
   };
   const handleInputFocus = () => {
     setErrorMessage(null);
@@ -85,6 +92,7 @@ export default function RegisterPage() {
     <PageContainer>
       <RegisterPageTitle>加入會員</RegisterPageTitle>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <ErrorMessage></ErrorMessage>
       <RegisterForm onSubmit={handleSubmit}>
         <RegisterInput
           value={fullname}
@@ -105,7 +113,7 @@ export default function RegisterPage() {
             setEmail(e.target.value);
           }}
           onFocus={handleInputFocus}
-          type="text"
+          type="email"
           placeholder="電子郵件"
         />
         <RegisterInput
