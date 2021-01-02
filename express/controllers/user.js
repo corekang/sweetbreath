@@ -139,7 +139,14 @@ const userController = {
         where: {
           username: user.username,
         },
-        attributes: ["username", "fullname", "email", "address", "birthday"],
+        attributes: [
+          "id",
+          "username",
+          "fullname",
+          "email",
+          "address",
+          "birthday",
+        ],
       })
         .then((result) => {
           return res.status(200).send({
