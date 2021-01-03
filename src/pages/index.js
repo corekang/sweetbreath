@@ -14,6 +14,7 @@ import MemberPage from "./user/MemberPage";
 import AdminPage from "./admin/AdminPage";
 import AdminProductListPage from "./admin/AdminProductListPage";
 import AdminProductPage from "./admin/AdminProductPage";
+import AdminEditProductPage from "./admin/AdminEditProductPage";
 import AdminMemberPage from "./admin/AdminMemberPage";
 import AdminOrderListPage from "./admin/AdminOrderListPage";
 import AdminNewsPage from "./admin/AdminNewsPage";
@@ -37,6 +38,7 @@ export {
   AdminPage,
   AdminProductListPage,
   AdminProductPage,
+  AdminEditProductPage,
   AdminMemberPage,
   AdminOrderListPage,
   AdminNewsPage,

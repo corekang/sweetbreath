@@ -32,7 +32,7 @@ const categoryController = {
       include: [
         {
           model: Product,
-          where: { is_deleted: false },
+          where: { is_deleted: false, status: 1 },
         },
       ],
     })
