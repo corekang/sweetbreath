@@ -29,7 +29,7 @@ import {
   OrderListPage,
 } from "../../pages";
 import AuthContext from "../../contexts";
-import { getMe } from "../../WebAPI";
+import { getMe } from "../../webAPI/userAPI";
 import { getAuthToken, ScrollToTop } from "../../utils";
 
 function Navbars({ user }) {
