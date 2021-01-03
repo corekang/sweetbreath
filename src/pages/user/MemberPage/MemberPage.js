@@ -4,7 +4,7 @@ import { theme } from "../../../constants/theme";
 import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Content } from "../../../components/Tab/Tab.js";
 import Table from "../../../components/Table/Table.js";
-import { getUser, editUser, getUserOrders } from "../../../WebAPI";
+import { getUser, editUser, getUserOrders } from "../../../webAPI/userAPI";
 
 const Container = styled.div`
   * {
