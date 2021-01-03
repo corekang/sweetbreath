@@ -21,6 +21,7 @@ import {
   AdminPage,
   AdminProductListPage,
   AdminProductPage,
+  AdminEditProductPage,
   AdminMemberPage,
   AdminOrderListPage,
   AdminNewsPage,
@@ -108,8 +109,11 @@ function App() {
           <Route exact path="/admin/products">
             <AdminProductListPage />
           </Route>
-          <Route path="/admin/product/">
+          <Route exact path="/admin/product">
             <AdminProductPage />
+          </Route>
+          <Route exact path="/admin/product/:id">
+            <AdminEditProductPage />
           </Route>
           <Route path="/admin/category/">
             <AdminCategoryPage />

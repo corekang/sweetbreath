@@ -153,7 +153,7 @@ const ErrorMessage = styled(H4)`
 
 // 以分類撈取所有產品 API
 const getCategory = () => {
-  return fetch(`/api/category/product`).then((res) => res.json());
+  return fetch(`/api/category/products`).then((res) => res.json());
 };
 
 // 撈取單一商品規格 API
@@ -253,8 +253,11 @@ export default function AdminProductListPage() {
 
   // 撈取所有分類
   useEffect(() => {
-    getCategory().then((ans) => {
-      setCategories(ans.data);
+    getCategory().then((res) => {
+      let newCategory = res.data.filter(
+        (category) => category.Products.length !== 0
+      );
+      setCategories(newCategory);
     });
   }, []);
 

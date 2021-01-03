@@ -2,12 +2,16 @@ import styled from "styled-components";
 import {
   MEDIA_QUERY,
   H3,
+  H4,
   Button,
   Body,
   BodyLarge,
   Input,
   Textarea,
 } from "../../../constants/style";
+import { useHistory, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getAuthToken } from "../../../utils";
 
 const Content = styled.div`
   margin: 40px auto;
@@ -114,6 +118,15 @@ const AdminBtn = styled.div`
     justify-content: left;
   }
 `;
+const Error = styled(H4)`
+  display: flex;
+  height: 1em;
+  font-weight: bold;
+  margin: 10px 0;
+  visibility: ${(props) => (props.error ? "visible" : "hidden")};
+  color: ${(props) => props.theme.colors.uiWarning};
+  justify-content: center;
+`;
 
 const Selector = styled.select`
   margin: 10px 5px;
@@ -137,57 +150,241 @@ const Selector = styled.select`
   }
 `;
 
-const Question = ({ name }) => {
+const getCategory = () => {
+  return fetch(`/api/category`).then((res) => res.json());
+};
+
+const addProduct = (
+  name,
+  image,
+  info,
+  CategoryId,
+  feature,
+  price,
+  promo_price,
+  stock
+) => {
+  const token = getAuthToken();
+  return fetch(`/api/product`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      image,
+      info,
+      CategoryId,
+      feature_name: feature,
+      price,
+      promo_price,
+      stock,
+    }),
+  }).then((res) => res.json());
+};
+
+const Question = ({ name, title, value, handleChange }) => {
   return (
     <ProductInfo>
-      <AdminName>{name}</AdminName>
-      <AdminInput placeholder={name} name={name}></AdminInput>
+      <AdminName>{title}</AdminName>
+      <AdminInput
+        placeholder={title}
+        name={name}
+        value={value}
+        onChange={handleChange}
+      ></AdminInput>
     </ProductInfo>
   );
 };
 
-const QuestionText = ({ name }) => {
+const QuestionText = ({ title, name, value, handleChange }) => {
   return (
     <ProductInfo>
-      <AdminName>{name}</AdminName>
-      <AdminText rows="10" placeholder={name} name={name}></AdminText>
+      <AdminName>{title}</AdminName>
+      <AdminText
+        rows="10"
+        placeholder={title}
+        name={name}
+        value={value}
+        onChange={handleChange}
+      ></AdminText>
     </ProductInfo>
   );
 };
 
-const QuestionSelect = ({ name }) => {
+const QuestionSelect = ({ name, title, value, handleChange }) => {
+  const [category, setCategory] = useState([]);
+  useEffect(() => {
+    getCategory().then((res) => {
+      setCategory(res.data);
+    });
+  }, []);
+
   return (
     <ProductInfo>
-      <AdminName>{name}</AdminName>
-      <Selector placeholder={name} name={name}>
-        <option value="1">常溫點心</option>
-        <option value="1">家常塔派</option>
-        <option value="1">招牌蛋糕</option>
+      <AdminName>{title}</AdminName>
+      <Selector
+        placeholder={title}
+        name={name}
+        value={value}
+        onChange={handleChange}
+      >
+        {category.length !== 0 &&
+          category.map((item) => <option value={item.id}>{item.name}</option>)}
+      </Selector>
+    </ProductInfo>
+  );
+};
+
+const QuestionStatusSelect = ({ name, title, value, setValue }) => {
+  return (
+    <ProductInfo>
+      <AdminName>{title}</AdminName>
+      <Selector
+        placeholder={title}
+        name={name}
+        value={value}
+        onChange={setValue}
+      >
+        <option value="1">上架</option>
+        <option value="2">下架</option>
       </Selector>
     </ProductInfo>
   );
 };
 
 export default function AdminProductPage() {
+  const history = useHistory();
+  const [product, setProduct] = useState({
+    name: "",
+    image: "",
+    CategoryId: "",
+    info: "",
+    feature: "",
+    price: "",
+    promo_price: "",
+    stock: "",
+  });
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
+  const handleSubmit = () => {
+    const {
+      name,
+      image,
+      info,
+      CategoryId,
+      feature,
+      price,
+      promo_price,
+      stock,
+    } = product;
+    if (
+      !name ||
+      !image ||
+      !info ||
+      !CategoryId ||
+      !feature ||
+      !price ||
+      !stock
+    ) {
+      setError(true);
+      return setErrorMessage("請輸入完整商品資訊");
+    }
+    addProduct(
+      name,
+      image,
+      info,
+      CategoryId,
+      feature,
+      price,
+      promo_price,
+      stock
+    )
+      .then((res) => {
+        if (res.ok === 0) {
+          setError(true);
+          setErrorMessage(res.message);
+          return;
+        }
+        history.push("/admin/products");
+      })
+      .catch((err) => {
+        setError(true);
+        setErrorMessage(err.toString());
+        return;
+      });
+  };
+
+  const handleChange = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+  };
+
   return (
     <Content>
       <Product>
-        <ProductImage>
-          <img src="https://imgur.com/lxWa1BS.png" alt="product"></img>
-        </ProductImage>
         <ProductDesc>
           <AdminTitle>商品資訊</AdminTitle>
           <ProductContent>
-            <Question name="商品名稱" />
-            <Question name="圖片網址" />
-            <QuestionSelect name="分類" />
-            <Question name="原價" />
-            <Question name="特價" />
-            <Question name="庫存" />
-            <QuestionText name="商品介紹" />
+            <Question
+              title="商品名稱"
+              name="name"
+              value={product.name}
+              handleChange={handleChange}
+            />
+            <Question
+              title="圖片網址"
+              name="image"
+              value={product.image}
+              handleChange={handleChange}
+            />
+            <QuestionStatusSelect
+              title="狀態"
+              name="status"
+              value={product.status}
+              setValue={handleChange}
+            />
+            <QuestionSelect
+              title="分類"
+              name="CategoryId"
+              value={product.CategoryId}
+              handleChange={handleChange}
+            />
+            <QuestionText
+              title="商品介紹"
+              name="info"
+              value={product.info}
+              handleChange={handleChange}
+            />
+            <AdminTitle>商品規格</AdminTitle>
+            <Question
+              title="規格名稱"
+              name="feature"
+              value={product.feature}
+              handleChange={handleChange}
+            />
+            <Question
+              title="原價"
+              name="price"
+              value={product.price}
+              handleChange={handleChange}
+            />
+            <Question
+              title="特價"
+              name="promo_price"
+              value={product.promo_price}
+              handleChange={handleChange}
+            />
+            <Question
+              title="庫存"
+              name="stock"
+              value={product.stock}
+              handleChange={handleChange}
+            />
           </ProductContent>
+          <Error error={error}>{errorMessage}</Error>
           <AdminBtn>
-            <SubmitButton>提交</SubmitButton>
+            <SubmitButton onClick={handleSubmit}>提交</SubmitButton>
           </AdminBtn>
         </ProductDesc>
       </Product>
