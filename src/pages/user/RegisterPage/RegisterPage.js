@@ -1,10 +1,10 @@
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { H3, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import React, { useState } from "react";
-import { register } from "../../../WebAPI";
+import { register } from "../../../webAPI/userAPI";
 import { setAuthToken } from "../../../utils";
-import { useHistory } from "react-router-dom";
 
 const PageContainer = styled.div`
   * {
