@@ -1,13 +1,12 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { H3, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import googleLogin from "../../../components/icon/googleLogin.png";
 import facebookLogin from "../../../components/icon/facebookLogin.png";
-import { login, getMe } from "../../../WebAPI";
+import { login, getMe } from "../../../webAPI/userAPI";
 import { setAuthToken } from "../../../utils";
-import { useHistory } from "react-router-dom";
 import AuthContext from "../../../contexts";
 
 const PageContainer = styled.div`

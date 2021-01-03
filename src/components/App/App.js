@@ -21,6 +21,7 @@ import {
   AdminPage,
   AdminProductListPage,
   AdminProductPage,
+  AdminEditProductPage,
   AdminMemberPage,
   AdminOrderListPage,
   AdminNewsPage,
@@ -28,7 +29,7 @@ import {
   OrderListPage,
 } from "../../pages";
 import AuthContext from "../../contexts";
-import { getMe } from "../../WebAPI";
+import { getMe } from "../../webAPI/userAPI";
 import { getAuthToken, ScrollToTop } from "../../utils";
 
 function Navbars({ user }) {
@@ -108,8 +109,11 @@ function App() {
           <Route exact path="/admin/products">
             <AdminProductListPage />
           </Route>
-          <Route path="/admin/product/">
+          <Route exact path="/admin/product">
             <AdminProductPage />
+          </Route>
+          <Route exact path="/admin/product/:id">
+            <AdminEditProductPage />
           </Route>
           <Route path="/admin/category/">
             <AdminCategoryPage />

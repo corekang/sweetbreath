@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
-import { creatOrder } from "../../../WebAPI";
+import { creatOrder } from "../../../webAPI/orderAPI";
 import { theme } from "../../../constants/theme";
 import {
   H2,
@@ -309,7 +309,7 @@ function CheckoutList({
     };
     creatOrder(finalOrder);
     alert(`下單成功，感謝您的購買`);
-    history.push("/orders");
+    history.push("/member");
   };
 
   return (
