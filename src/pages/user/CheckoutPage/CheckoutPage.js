@@ -309,7 +309,7 @@ function CheckoutList({
     };
     creatOrder(finalOrder);
     alert(`下單成功，感謝您的購買`);
-    history.push("/orders");
+    history.push("/member");
   };
 
   return (
