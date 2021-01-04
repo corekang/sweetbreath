@@ -30,15 +30,21 @@ const PageTitle = styled(H1)`
 const TabContainer = (
   {
     user,
-    editInputValue,
+    fullname,
+    email,
+    address,
+    birthday,
     handleEditUser,
-    handleEditInputChange,
     handleEditInputFocus,
+    handleEditFullname,
+    handleEditEmail,
+    handleEditBirthday,
+    handleEditAddress,
   },
   editable
 ) => {
   return (
-    <TabGroup>
+    <TabGroup onSubmit={handleEditUser}>
       <TabItem editable={editable === 0}>
         <TableItemTitle>編號</TableItemTitle>
         <TableItemValue>{user.id}</TableItemValue>
@@ -58,13 +64,13 @@ const TabContainer = (
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料"
-          value={editInputValue}
-          onChange={handleEditInputChange}
+          value={fullname}
+          onChange={handleEditFullname}
           onFocus={handleEditInputFocus}
         ></TableItemValueNew>
         <EditButton
           editable={editable !== 0}
-          onClick={() => handleEditUser(user.fullname)}
+          onClick={() => handleEditUser(fullname)}
         >
           變更
         </EditButton>
@@ -76,11 +82,10 @@ const TabContainer = (
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料"
-          /*value={editInputValue}
-          onChange={handleEditInputChange}
-          onFocus={handleEditInputFocus}*/
+          value={email}
+          onChange={handleEditEmail}
+          onFocus={handleEditInputFocus}
         ></TableItemValueNew>
-        <EditButton editable={editable !== 0}>變更</EditButton>
       </TabItem>
       <TabItem editable={editable !== 0}>
         <TableItemTitle>生日</TableItemTitle>
@@ -91,11 +96,10 @@ const TabContainer = (
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料"
-          /*value={editInputValue}
-          onChange={handleEditInputChange}
-          onFocus={handleEditInputFocus}*/
+          value={birthday}
+          onChange={handleEditBirthday}
+          onFocus={handleEditInputFocus}
         ></TableItemValueNew>
-        <EditButton editable={editable !== 0}>變更</EditButton>
       </TabItem>
       <TabItem editable={editable !== 0}>
         <TableItemTitle>地址</TableItemTitle>
@@ -104,17 +108,16 @@ const TabContainer = (
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料"
-          /*value={editInputValue}
-          onChange={handleEditInputChange}
-          onFocus={handleEditInputFocus}*/
+          value={address}
+          onChange={handleEditAddress}
+          onFocus={handleEditInputFocus}
         ></TableItemValueNew>
-        <EditButton editable={editable !== 0}>變更</EditButton>
       </TabItem>
     </TabGroup>
   );
 };
 
-const TabGroup = styled.div`
+const TabGroup = styled.form`
   width: 100%;
   border-top: none;
   padding: 30px 0 0 0;
@@ -128,7 +131,7 @@ const TabItem = styled.div`
   width: 65%;
   padding: 8px 0;
   display: grid;
-  grid-template-columns: 2fr 5fr 3fr 1fr;
+  grid-template-columns: 15% 35% 40% 10%;
   align-items: center;
   :hover {
     background: ${(props) =>
@@ -191,14 +194,25 @@ const Message = styled.div`
 
 export default function MemberPage() {
   const [user, setUser] = useState([]);
+  const [order, setOrder] = useState([]);
   const [active, setActive] = useState(0);
-  const [editInputValue, setEditInputValue] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [address, setAddress] = useState("");
   const [message, setMessage] = useState();
 
+  // 取得會員個人資料
   useEffect(() => {
     getUser().then((user) => setUser(user.data));
   }, []);
 
+  // 取得會員訂單資料
+  useEffect(() => {
+    getUserOrders().then((order) => console.log(setOrder(order.data)));
+  }, []);
+
+  // 切換分頁
   const handleClick = (e) => {
     const index = parseInt(e.target.id, 0);
     if (index !== active) {
@@ -206,28 +220,48 @@ export default function MemberPage() {
     }
   };
 
-  const handleEditInputChange = (e) => {
-    setEditInputValue(e.target.value);
-  };
-
-  const handleEditInputFocus = () => {
-    setMessage(null);
-    setEditInputValue("");
-  };
-
   const handleEditUser = () => {
-    if (!editInputValue) return;
+    if (!fullname) return;
+    if (!email) return;
 
+    // 變更畫面
     setUser((user) => {
-      return { ...user, fullname: editInputValue };
+      return { ...user, fullname, email, birthday, address };
     });
 
-    editUser(editInputValue).then((res) => {
+    // 變更資料庫
+    editUser(fullname, email, birthday, address).then((res) => {
       if (res.ok === 1) {
         setMessage(res.message);
         return;
       }
     });
+  };
+
+  const handleEditInputFocus = () => {
+    setMessage(null);
+  };
+
+  const handleEditFullname = (e) => {
+    if (!e.target.value) {
+      return;
+    }
+    setFullname(e.target.value);
+  };
+
+  const handleEditEmail = (e) => {
+    if (!e.target.value) {
+      return;
+    }
+    setEmail(e.target.value);
+  };
+
+  const handleEditBirthday = (e) => {
+    setBirthday(e.target.value);
+  };
+
+  const handleEditAddress = (e) => {
+    setAddress(e.target.value);
   };
 
   return (
@@ -246,17 +280,20 @@ export default function MemberPage() {
         <Content active={active === 0}>
           <TabContainer
             user={user}
-            key={user.id}
+            fullname={fullname}
+            email={email}
+            address={address}
+            birthday={birthday}
             handleEditUser={handleEditUser}
-            handleEditInputChange={handleEditInputChange}
             handleEditInputFocus={handleEditInputFocus}
+            handleEditFullname={handleEditFullname}
+            handleEditEmail={handleEditEmail}
+            handleEditBirthday={handleEditBirthday}
+            handleEditAddress={handleEditAddress}
           />
         </Content>
         <Content active={active === 1}>
-          <TabGroup>
-            <GlobalStyle />
-            <Table />
-          </TabGroup>
+          <TabGroup order={order}></TabGroup>
         </Content>
       </>
     </Container>

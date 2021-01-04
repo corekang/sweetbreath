@@ -62,7 +62,7 @@ export const getUser = () => {
 export const editUser = (fullname, email, birthday, address) => {
   const token = getAuthToken();
   return fetch(`${BASE_URL}/user`, {
-    method: "PUT",
+    method: "PUT", // PATCH
     headers: {
       authorization: `Bearer ${token}`,
       "content-type": "application/json",
@@ -81,9 +81,8 @@ export const editUser = (fullname, email, birthday, address) => {
     });
 };
 
-export const getUserOrders = () => {
+export const getUserOrders = (id) => {
   const token = getAuthToken();
-  const id = 1;
   return fetch(`/order/${id}`, {
     method: "GET",
     headers: {
