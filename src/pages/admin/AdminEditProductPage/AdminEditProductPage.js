@@ -1,319 +1,31 @@
-import styled from "styled-components";
-import {
-  MEDIA_QUERY,
-  H3,
-  H4,
-  Button,
-  Body,
-  BodyLarge,
-  Input,
-  Textarea,
-} from "../../../constants/style";
 import { useHistory, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getAuthToken } from "../../../utils";
-
-const Content = styled.div`
-  margin: 40px auto;
-  padding: 0 40px;
-`;
-
-const Product = styled.div`
-  display: flex;
-  width: 100%;
-  margin: 40px 0;
-  ${MEDIA_QUERY} {
-    display: block;
-  }
-`;
-
-const ProductImage = styled.div`
-  flex: 2;
-  margin-right: 40px;
-  border-radius: 4px;
-  img {
-    width: 100%;
-    border-radius: 4px;
-    box-shadow: 0 3px 22px 1px rgba(100, 100, 100, 0.32);
-  }
-  ${MEDIA_QUERY} {
-    margin: 0;
-  }
-`;
-
-const AdminInput = styled(Input)`
-  flex: 3.5;
-  margin: 10px 5px;
-  width: 70%;
-  ${MEDIA_QUERY} {
-    margin: 10px 0;
-    width: 90%;
-  }
-`;
-const AdminText = styled(Textarea)`
-  flex: 3.5;
-  margin: 10px 5px;
-  width: 70%;
-  ${MEDIA_QUERY} {
-    margin: 10px 0;
-    width: 90%;
-  }
-`;
-const ProductDesc = styled.div`
-  flex: 3;
-  ${MEDIA_QUERY} {
-    margin: 20px 0;
-  }
-`;
-
-const AdminTitle = styled(H3)`
-  margin-top: 0px;
-  border-bottom: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
-  padding-bottom: 10px;
-`;
-
-const ProductContent = styled(Body)`
-  word-break: break-all;
-  white-space: pre-line;
-  margin: 20px 0;
-  ${MEDIA_QUERY} {
-    font-size: ${(props) => props.theme.fontSize.h4};
-  }
-`;
-
-const SubmitButton = styled(Button)`
-  cursor: pointer;
-  padding: 20px 100px;
-  border: none;
-  border-radius: 4px;
-  margin: 5px 0;
-  color: ${(props) => props.theme.colors.neutralWhite};
-  background: ${(props) => props.theme.colors.mainPrimary};
-  ${MEDIA_QUERY} {
-    width: 95%;
-    padding: 10px;
-    font-size: ${(props) => props.theme.fontSize.h4};
-  }
-`;
-
-const DeleteButton = styled(SubmitButton)`
-  background: ${(props) => props.theme.colors.uiNegative};
-  margin-right: 10px;
-`;
-
-const AddButton = styled(SubmitButton)`
-  background: ${(props) => props.theme.colors.mainPrimary};
-
-  justify-content: rignt;
-`;
-
-const ProductInfo = styled.div`
-  display: flex;
-  align-items: baseline;
-  ${MEDIA_QUERY} {
-    display: block;
-    margin: 20px 0;
-  }
-`;
-
-const AdminName = styled(BodyLarge)`
-  flex: 1.5;
-  ${MEDIA_QUERY} {
-    font-size: ${(props) => props.theme.fontSize.h4};
-  }
-`;
-
-const AdminBtn = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  ${MEDIA_QUERY} {
-    display: block;
-  }
-`;
-const Error = styled(H4)`
-  display: flex;
-  height: 1em;
-  font-weight: bold;
-  margin: 25px 0;
-  visibility: ${(props) => (props.error ? "visible" : "hidden")};
-  color: ${(props) => props.theme.colors.uiWarning};
-  justify-content: center;
-`;
-
-const Selector = styled.select`
-  margin: 10px 5px;
-  width: 70%;
-  padding: 12px;
-  border-radius: 4px;
-  border: solid 1px ${(props) => props.theme.colors.neutralLightGrey};
-  background-color: ${(props) => props.theme.colors.neutralWhite};
-  color: ${(props) => props.theme.colors.neutralBlack};
-
-  &:focus {
-    border: solid 1px ${(props) => props.theme.colors.mainPrimary};
-  }
-
-  &::placeholder {
-    color: ${(props) => props.theme.colors.neutralDarkGrey};
-  }
-  ${MEDIA_QUERY} {
-    margin: 10px 0;
-    width: 95%;
-  }
-`;
-
-const FeatureItem = styled.div`
-  padding: 10px 0;
-  margin: 20px 0;
-  & + & {
-    border-top: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
-  }
-`;
-
-const AdminFeature = styled.div`
-  margin-top: 60px;
-`;
-
-const getCategory = () => {
-  return fetch(`/api/category`).then((res) => res.json());
-};
-
-const getProduct = (id) => {
-  return fetch(`/api/product/${id}`).then((res) => res.json());
-};
-
-const editProduct = (id, name, image, status, info, categoryId) => {
-  const token = getAuthToken();
-  return fetch(`/api/product/${id}`, {
-    method: "PUT",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      name,
-      image,
-      status,
-      info,
-      CategoryId: categoryId,
-    }),
-  }).then((res) => res.json());
-};
-
-const deleteFeature = (id) => {
-  const token = getAuthToken();
-  return fetch(`/api/feature/${id}`, {
-    method: "DELETE",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "content-type": "application/json",
-    },
-  }).then((res) => res.json());
-};
-
-const editFeature = (id, name, price, promo_price, stock) => {
-  const token = getAuthToken();
-  return fetch(`/api/feature/${id}`, {
-    method: "PUT",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      name,
-      price,
-      promo_price,
-      stock,
-    }),
-  }).then((res) => res.json());
-};
-
-const addFeature = (id, name, price, promo_price, stock) => {
-  const token = getAuthToken();
-  return fetch(`/api/feature/${id}`, {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      name,
-      price,
-      promo_price,
-      stock,
-    }),
-  }).then((res) => res.json());
-};
-
-const Question = ({ name, title, value, setValue }) => {
-  return (
-    <ProductInfo>
-      <AdminName>{title}</AdminName>
-      <AdminInput
-        placeholder={title}
-        name={name}
-        value={value}
-        onChange={setValue}
-      ></AdminInput>
-    </ProductInfo>
-  );
-};
-
-const QuestionText = ({ title, name, value, setValue }) => {
-  return (
-    <ProductInfo>
-      <AdminName>{title}</AdminName>
-      <AdminText
-        rows="10"
-        placeholder={title}
-        name={name}
-        value={value}
-        onChange={setValue}
-      ></AdminText>
-    </ProductInfo>
-  );
-};
-
-const QuestionSelect = ({ name, title, value, setValue }) => {
-  const [category, setCategory] = useState([]);
-  useEffect(() => {
-    getCategory().then((res) => {
-      setCategory(res.data);
-    });
-  }, []);
-
-  return (
-    <ProductInfo>
-      <AdminName>{title}</AdminName>
-      <Selector
-        placeholder={title}
-        name={name}
-        value={value}
-        onChange={setValue}
-      >
-        {category.length !== 0 &&
-          category.map((item) => <option value={item.id}>{item.name}</option>)}
-      </Selector>
-    </ProductInfo>
-  );
-};
-
-const QuestionStatusSelect = ({ name, title, value, setValue }) => {
-  return (
-    <ProductInfo>
-      <AdminName>{title}</AdminName>
-      <Selector
-        placeholder={title}
-        name={name}
-        value={value}
-        onChange={setValue}
-      >
-        <option value="1">上架</option>
-        <option value="2">下架</option>
-      </Selector>
-    </ProductInfo>
-  );
-};
+import {
+  getProduct,
+  editProduct,
+  addFeature,
+  editFeature,
+  deleteFeature,
+} from "../../../webAPI/productAPI";
+import {
+  Content,
+  Product,
+  ProductImage,
+  ProductDesc,
+  AdminTitle,
+  ProductContent,
+  Error,
+  AdminBtn,
+  SubmitButton,
+  AdminFeature,
+  FeatureItem,
+  DeleteButton,
+  AddButton,
+} from "./style";
+import Question from "./Question";
+import QuestionText from "./QuestionText";
+import QuestionSelect from "./QuestionSelect";
+import QuestionStatusSelect from "./QuestionStatusSelect";
 
 export default function AdminProductPage() {
   const { id } = useParams();
@@ -403,9 +115,10 @@ export default function AdminProductPage() {
         return;
       });
   };
+
   const handleFeatureEdit = (id) => {
     const newFeature = features.filter((item) => item.id === id);
-    const { name, price, promo_price, stock, errorMessage } = newFeature[0];
+    const { name, price, promo_price, stock } = newFeature[0];
     if (!name || !price || !stock) {
       setError(true);
       const newFeatures = features.map((feature) => {
@@ -563,31 +276,31 @@ export default function AdminProductPage() {
               title="商品名稱"
               name="name"
               value={product.name}
-              setValue={handleChange}
+              handleChange={handleChange}
             />
             <Question
               title="圖片網址"
               name="image"
               value={product.image}
-              setValue={handleChange}
+              handleChange={handleChange}
             />
             <QuestionStatusSelect
               title="狀態"
               name="status"
               value={product.status}
-              setValue={handleChange}
+              handleChange={handleChange}
             />
             <QuestionSelect
               title="分類"
               name="CategoryId"
               value={product.CategoryId}
-              setValue={handleChange}
+              handleChange={handleChange}
             />
             <QuestionText
               title="商品介紹"
               name="info"
               value={product.info}
-              setValue={handleChange}
+              handleChange={handleChange}
             />
             <Error error={error}>{product.errorMessage}</Error>
             <AdminBtn>
@@ -597,31 +310,31 @@ export default function AdminProductPage() {
               <AdminTitle>商品規格</AdminTitle>
               {features &&
                 features.map((feature) => (
-                  <FeatureItem>
+                  <FeatureItem key={feature.id}>
                     <Question
                       title="規格名稱"
                       name="name"
                       value={feature.name}
-                      setValue={handleFeatureChange(feature.id)}
+                      handleChange={handleFeatureChange(feature.id)}
                     />
                     <Question
                       title="原價"
                       name="price"
                       value={feature.price}
-                      setValue={handleFeatureChange(feature.id)}
+                      handleChange={handleFeatureChange(feature.id)}
                     />
 
                     <Question
                       title="特價"
                       name="promo_price"
                       value={feature.promo_price}
-                      setValue={handleFeatureChange(feature.id)}
+                      handleChange={handleFeatureChange(feature.id)}
                     />
                     <Question
                       title="庫存"
                       name="stock"
                       value={feature.stock}
-                      setValue={handleFeatureChange(feature.id)}
+                      handleChange={handleFeatureChange(feature.id)}
                     />
                     <Error error={error}>{feature.errorMessage}</Error>
                     <AdminBtn>
@@ -661,26 +374,26 @@ export default function AdminProductPage() {
                     title="規格名稱"
                     name="name"
                     value={feature.name}
-                    setValue={handleNewFeatureChange}
+                    handleChange={handleNewFeatureChange}
                   />
                   <Question
                     title="原價"
                     name="price"
                     value={feature.price}
-                    setValue={handleNewFeatureChange}
+                    handleChange={handleNewFeatureChange}
                   />
 
                   <Question
                     title="特價"
                     name="promo_price"
                     value={feature.promo_price}
-                    setValue={handleNewFeatureChange}
+                    handleChange={handleNewFeatureChange}
                   />
                   <Question
                     title="庫存"
                     name="stock"
                     value={feature.stock}
-                    setValue={handleNewFeatureChange}
+                    handleChange={handleNewFeatureChange}
                   />
                   <Error error={error}>{feature.errorMessage}</Error>
                   <AdminBtn>
