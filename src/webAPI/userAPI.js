@@ -35,15 +35,62 @@ export const getMe = () => {
     headers: {
       authorization: `Bearer ${token}`,
     },
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
 };
 
-// 撈取會員資料
 export const getUser = () => {
   const token = getAuthToken();
-  return fetch("/api/user", {
+  return fetch(`${BASE_URL}/user`, {
+    method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
     },
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
+};
+
+export const editUser = (fullname, email, birthday, address) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/user`, {
+    method: "PUT", // PATCH
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      fullname: `${fullname}`,
+      email: `${email}`,
+      birthday: `${birthday}`,
+      address: `${address}`,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
+};
+
+export const getUserOrders = (id) => {
+  const token = getAuthToken();
+  return fetch(`/order/${id}`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
 };

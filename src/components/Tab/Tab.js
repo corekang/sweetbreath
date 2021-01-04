@@ -18,16 +18,13 @@ export const Tab = styled.button`
   position: relative;
 
   font-size: 1em;
-  border: ${(props) => (props.active ? "1px solid #ccc" : "")};
-  border-bottom: ${(props) => (props.active ? "none" : "")};
-  background-color: ${(props) => (props.active ? "white" : "lightgray")};
+  border: ${(props) => (props.active ? "" : "")};
+  border-bottom: ${(props) =>
+    props.active ? "2px solid #6e70ff" : "2px solid #e6e6eb"};
+  background-color: ${(props) =>
+    props.active ? theme.colors.mainPrimary : theme.colors.neutralLightGrey};
   height: ${(props) => (props.active ? "3em" : "3em;")};
   transition: background-color 0.5s ease-in-out;
-  border-top-right-radius: 30px;
-
-  :hover {
-    background-color: white;
-  }
 `;
 
 export const Content = styled.div`

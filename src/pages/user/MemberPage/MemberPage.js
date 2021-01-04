@@ -1,10 +1,10 @@
 import styled, { createGlobalStyle } from "styled-components";
-import { H1, MEDIA_QUERY } from "../../../constants/style";
+import { H1, MEDIA_QUERY, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Content } from "../../../components/Tab/Tab.js";
 import Table from "../../../components/Table/Table.js";
+import { getUser, editUser, getUserOrders } from "../../../webAPI/userAPI";
 
 const Container = styled.div`
   * {
@@ -27,28 +27,146 @@ const PageTitle = styled(H1)`
   margin-bottom: 40px;
 `;
 
-const TabGroup = styled.div`
-  width: 99%;
-  border: 1px solid #ccc;
+const TabContainer = (
+  {
+    user,
+    fullname,
+    email,
+    address,
+    birthday,
+    handleEditUser,
+    handleEditInputFocus,
+    handleEditFullname,
+    handleEditEmail,
+    handleEditBirthday,
+    handleEditAddress,
+  },
+  editable
+) => {
+  return (
+    <TabGroup onSubmit={handleEditUser}>
+      <TabItem editable={editable === 0}>
+        <TableItemTitle>編號</TableItemTitle>
+        <TableItemValue>{user.id}</TableItemValue>
+        <TableItemValueNew editable={editable === 0}></TableItemValueNew>
+        <EditButton editable={editable === 0}>變更</EditButton>
+      </TabItem>
+      <TabItem editable={editable === 0}>
+        <TableItemTitle>帳號</TableItemTitle>
+        <TableItemValue>{user.username}</TableItemValue>
+        <TableItemValueNew editable={editable === 0}></TableItemValueNew>
+        <EditButton editable={editable === 0}>變更</EditButton>
+      </TabItem>
+      <TabItem editable={editable !== 0}>
+        <TableItemTitle>全名</TableItemTitle>
+        <TableItemValue>{user.fullname}</TableItemValue>
+        <TableItemValueNew
+          editable={editable !== 0}
+          type="text"
+          placeholder="輸入新資料"
+          value={fullname}
+          onChange={handleEditFullname}
+          onFocus={handleEditInputFocus}
+        ></TableItemValueNew>
+        <EditButton
+          editable={editable !== 0}
+          onClick={() => handleEditUser(fullname)}
+        >
+          變更
+        </EditButton>
+      </TabItem>
+      <TabItem editable={editable !== 0}>
+        <TableItemTitle>電子郵件</TableItemTitle>
+        <TableItemValue>{user.email}</TableItemValue>
+        <TableItemValueNew
+          editable={editable !== 0}
+          type="text"
+          placeholder="輸入新資料"
+          value={email}
+          onChange={handleEditEmail}
+          onFocus={handleEditInputFocus}
+        ></TableItemValueNew>
+      </TabItem>
+      <TabItem editable={editable !== 0}>
+        <TableItemTitle>生日</TableItemTitle>
+        <TableItemValue>
+          {new Date(user.birthday).toLocaleDateString("zh-TW")}
+        </TableItemValue>
+        <TableItemValueNew
+          editable={editable !== 0}
+          type="text"
+          placeholder="輸入新資料"
+          value={birthday}
+          onChange={handleEditBirthday}
+          onFocus={handleEditInputFocus}
+        ></TableItemValueNew>
+      </TabItem>
+      <TabItem editable={editable !== 0}>
+        <TableItemTitle>地址</TableItemTitle>
+        <TableItemValue>{user.address}</TableItemValue>
+        <TableItemValueNew
+          editable={editable !== 0}
+          type="text"
+          placeholder="輸入新資料"
+          value={address}
+          onChange={handleEditAddress}
+          onFocus={handleEditInputFocus}
+        ></TableItemValueNew>
+      </TabItem>
+    </TabGroup>
+  );
+};
+
+const TabGroup = styled.form`
+  width: 100%;
   border-top: none;
-  padding: 30px;
+  padding: 30px 0 0 0;
+  margin-left: 10px;
+  display: column;
 `;
 
 const TabItem = styled.div`
-  display: column;
-  padding: 10px 0;
   box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  width: 65%;
+  padding: 8px 0;
+  display: grid;
+  grid-template-columns: 15% 35% 40% 10%;
+  align-items: center;
+  :hover {
+    background: ${(props) =>
+      props.editable ? theme.colors.neutralLightGrey : ""};
+  }
+}
+`;
+
+const TableItemTitle = styled.div``;
+
+const TableItemValue = styled.div``;
+
+const TableItemValueNew = styled(Input)`
+  color: ${theme.colors.neutralBlack};
+  font-size: ${theme.fontSize.bodyLarge};
+  border-bottom: 1px solid ${theme.colors.neutralLightGrey};
+  padding: 8px;
+  margin: 0 10px;
+  visibility: ${(props) => (props.editable ? "" : "hidden")};
 `;
 
 const EditButton = styled.button`
   width: 50px;
   height: 30px;
   border-radius: 4px;
-  background-color: ${theme.colors.mainPrimary};
+  background-color: ${(props) =>
+    props.editable ? theme.colors.mainPrimary : theme.colors.neutralLightGrey};
   border: 0;
   color: #ffffff;
   margin-left: 10px;
-  cursor: pointer;
+  cursor: ${(props) => (props.editable ? "pointer" : "")};
+  :hover {
+    background: ${(props) =>
+      props.editable ? theme.colors.uiNegative : theme.colors.neutralLightGrey};
+  }
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -69,17 +187,87 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Message = styled.div`
+  color: ${theme.colors.mainPrimary};
+  margin: 0 0 20px 0;
+`;
+
 export default function MemberPage() {
+  const [user, setUser] = useState([]);
+  const [order, setOrder] = useState([]);
   const [active, setActive] = useState(0);
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [address, setAddress] = useState("");
+  const [message, setMessage] = useState();
+
+  // 取得會員個人資料
+  useEffect(() => {
+    getUser().then((user) => setUser(user.data));
+  }, []);
+
+  // 取得會員訂單資料
+  useEffect(() => {
+    getUserOrders().then((order) => console.log(setOrder(order.data)));
+  }, []);
+
+  // 切換分頁
   const handleClick = (e) => {
     const index = parseInt(e.target.id, 0);
     if (index !== active) {
       setActive(index);
     }
   };
+
+  const handleEditUser = () => {
+    if (!fullname) return;
+    if (!email) return;
+
+    // 變更畫面
+    setUser((user) => {
+      return { ...user, fullname, email, birthday, address };
+    });
+
+    // 變更資料庫
+    editUser(fullname, email, birthday, address).then((res) => {
+      if (res.ok === 1) {
+        setMessage(res.message);
+        return;
+      }
+    });
+  };
+
+  const handleEditInputFocus = () => {
+    setMessage(null);
+  };
+
+  const handleEditFullname = (e) => {
+    if (!e.target.value) {
+      return;
+    }
+    setFullname(e.target.value);
+  };
+
+  const handleEditEmail = (e) => {
+    if (!e.target.value) {
+      return;
+    }
+    setEmail(e.target.value);
+  };
+
+  const handleEditBirthday = (e) => {
+    setBirthday(e.target.value);
+  };
+
+  const handleEditAddress = (e) => {
+    setAddress(e.target.value);
+  };
+
   return (
     <Container>
       <PageTitle>會員專區</PageTitle>
+      {message && <Message>{message}</Message>}
       <Tabs>
         <Tab onClick={handleClick} active={active === 0} id={0}>
           個人資料
@@ -87,55 +275,27 @@ export default function MemberPage() {
         <Tab onClick={handleClick} active={active === 1} id={1}>
           消費紀錄
         </Tab>
-        <Tab onClick={handleClick} active={active === 2} id={2}>
-          追蹤清單
-        </Tab>
       </Tabs>
       <>
         <Content active={active === 0}>
-          <TabGroup>
-            <TabItem>姓名</TabItem>
-            <TabItem>電子郵件</TabItem>
-            <TabItem>
-              手機號碼<EditButton>變更</EditButton>
-            </TabItem>
-            <TabItem>
-              密碼<EditButton>變更</EditButton>
-            </TabItem>
-          </TabGroup>
+          <TabContainer
+            user={user}
+            fullname={fullname}
+            email={email}
+            address={address}
+            birthday={birthday}
+            handleEditUser={handleEditUser}
+            handleEditInputFocus={handleEditInputFocus}
+            handleEditFullname={handleEditFullname}
+            handleEditEmail={handleEditEmail}
+            handleEditBirthday={handleEditBirthday}
+            handleEditAddress={handleEditAddress}
+          />
         </Content>
         <Content active={active === 1}>
-          <TabGroup>
-            <GlobalStyle />
-            <Table />
-          </TabGroup>
-        </Content>
-        <Content active={active === 2}>
-          <TabGroup>
-            <TabItem>
-              商品名稱1<EditButton>購買</EditButton>
-              <EditButton>刪除</EditButton>
-            </TabItem>
-            <TabItem>
-              商品名稱2<EditButton>購買</EditButton>
-              <EditButton>刪除</EditButton>
-            </TabItem>
-          </TabGroup>
+          <TabGroup order={order}></TabGroup>
         </Content>
       </>
-      {/* <Tabs>
-        <TabList>
-          <Tab>Title 1</Tab>
-          <Tab>Title 2</Tab>
-        </TabList>
-
-        <TabPanel>
-          <h2>Any content 1</h2>
-        </TabPanel>
-        <TabPanel>
-          <h2>Any content 2</h2>
-        </TabPanel>
-      </Tabs> */}
     </Container>
   );
 }
