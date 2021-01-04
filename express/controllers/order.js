@@ -43,6 +43,7 @@ const orderController = {
     for (let i = 0; i < order_items.length; i++) {
       const item = order_items[i];
       const checkList = [
+        "product_id",
         "product_name",
         "product_feature",
         "product_price",
@@ -52,7 +53,6 @@ const orderController = {
     }
     //建立訂單
     const order_number = String(String(Date.now()) + UserId);
-    console.log(order_number);
     Orders.create({
       UserId,
       order_number,
@@ -65,6 +65,7 @@ const orderController = {
       const OrderId = res.id;
       order_items.map((order) => {
         const {
+          product_id,
           product_name,
           product_feature,
           product_price,
@@ -73,6 +74,7 @@ const orderController = {
         OrderItem.create({
           OrderId,
           order_number,
+          product_id,
           product_name,
           product_feature,
           product_price,
@@ -108,6 +110,7 @@ const orderController = {
           {
             model: OrderItem,
             attributes: [
+              "product_id",
               "product_name",
               "product_feature",
               "product_price",
@@ -149,6 +152,7 @@ const orderController = {
           {
             model: OrderItem,
             attributes: [
+              "product_id",
               "product_name",
               "product_feature",
               "product_price",
@@ -181,6 +185,7 @@ const orderController = {
         {
           model: OrderItem,
           attributes: [
+            "product_id",
             "product_name",
             "product_feature",
             "product_price",
