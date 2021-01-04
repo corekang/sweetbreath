@@ -21,7 +21,11 @@ export default function QuestionSelect({ name, title, value, handleChange }) {
         onChange={handleChange}
       >
         {category.length !== 0 &&
-          category.map((item) => <option value={item.id}>{item.name}</option>)}
+          category.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
       </Selector>
     </ProductInfo>
   );
