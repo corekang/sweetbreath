@@ -114,6 +114,8 @@ const TabUser = (
   );
 };
 
+const TabOrder = styled.div``;
+
 const TabGroup = styled.form`
   width: 100%;
   border-top: none;
@@ -206,6 +208,7 @@ export default function MemberPage() {
   const [birthday, setBirthday] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState();
+  const [age, setAge] = useState(0);
 
   // 取得會員個人資料
   useEffect(() => {
@@ -224,6 +227,15 @@ export default function MemberPage() {
       setActive(index);
     }
   };
+
+  // 切換分頁時清空 message、value
+  useEffect(() => {
+    setMessage("");
+    setFullname("");
+    setEmail("");
+    setBirthday("");
+    setAddress("");
+  }, [active]);
 
   const handleEditUser = () => {
     // if (!fullname) return;
@@ -305,7 +317,7 @@ export default function MemberPage() {
           />
         </Content>
         <Content active={active === 1}>
-          <TabGroup order={order}></TabGroup>
+          <TabOrder order={order}></TabOrder>
         </Content>
       </>
     </Container>
