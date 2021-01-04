@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import {
   Product,
   ProductLink,
@@ -54,6 +55,7 @@ export default function ProductRecommend() {
             itemLink={`/product/${product.id}`}
             itemImg={product.image}
             itemName={product.name}
+            key={product.id}
           />
         ))}
       <BlankCard />
@@ -61,3 +63,9 @@ export default function ProductRecommend() {
     </RecommendContent>
   );
 }
+
+RecommendItem.propTypes = {
+  id: PropTypes.string,
+  image: PropTypes.string,
+  name: PropTypes.string,
+};
