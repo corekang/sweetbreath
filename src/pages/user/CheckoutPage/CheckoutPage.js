@@ -92,6 +92,7 @@ export default function CheckoutPage() {
     let order_items = [];
     for (let i = 0; i < orderItem.length; i++) {
       order_items.push({
+        product_id: orderItem[i].id,
         product_name: orderItem[i].productName,
         product_feature: orderItem[i].feature,
         product_price: orderItem[i].price,
