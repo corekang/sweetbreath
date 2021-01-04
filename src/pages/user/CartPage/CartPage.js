@@ -13,23 +13,18 @@ import {
 export default function CartPage() {
   const cartData = JSON.parse(localStorage.getItem("cart")) || [];
   const [cart, setCart] = useState(cartData || []);
-  const [totalPrice, setTotalPrice] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
 
   // 當 cart 改變就執行: 寫入 localStorage & 計算總價
   useEffect(() => {
-    writeCartToLocalStorage(cart);
-
-    setTotalPrice(
-      cart.reduce(
-        (totalCost, { subTotal: itemCost }) => totalCost + parseFloat(itemCost),
-        0
-      )
-    );
-  }, [cart]);
-
-  const writeCartToLocalStorage = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
-  };
+
+    let currentTotal = 0;
+    for (let i = 0; i < cart.length; i++) {
+      currentTotal += cart[i].price * cart[i].count;
+      setTotalPrice(currentTotal);
+    }
+  }, [cart]);
 
   // 減少商品數
   const handleClickDown = (cartItem) => {
@@ -99,7 +94,7 @@ export default function CartPage() {
             <CartListContainer>
               {cart.map((cartItem) => (
                 <CartList
-                  key={cartItem.id}
+                  key={cartItem.id && cartItem.feature}
                   cartItem={cartItem}
                   cart={cart}
                   setCart={setCart}

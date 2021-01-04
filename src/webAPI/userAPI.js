@@ -14,7 +14,6 @@ export const register = (fullname, username, email, password) => {
       password,
     }),
   }).then((res) => res.json());
-  // .then((data) => console.log(data));
 };
 
 export const login = (username, password) => {

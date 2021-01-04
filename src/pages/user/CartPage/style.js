@@ -1,36 +1,15 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import {
-  H1,
-  H3,
-  H4,
-  H5,
-  BodyLarge,
-  MEDIA_QUERY,
-} from "../../../constants/style";
-
-export { H3 };
+import { H1, H4, H5, MEDIA_QUERY } from "../../../constants/style";
 
 export const CartContainer = styled.div`
-  max-width: 860px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 60px 20px;
 
   * {
     box-sizing: border-box;
-  }
-
-  a,
-  button {
-    text-decoration: none;
-    border: none;
-    outline: none;
-  }
-
-  ${MEDIA_QUERY} {
-    height: 100%;
-    max-width: 100%;
   }
 `;
 
@@ -51,13 +30,14 @@ export const CartContent = styled.div`
 `;
 
 export const CartListContainer = styled.div`
-  min-width: 440px;
+  width: 500px;
   height: 100%;
   padding: 10px 30px;
   border: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
 
   ${MEDIA_QUERY} {
-    margin: 0;
+    max-width: 440px;
+    margin: 0 10px;
   }
 `;
 
@@ -68,8 +48,8 @@ export const CartItemContainer = styled.div`
 `;
 
 export const ImgLink = styled(Link)`
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 4px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -127,14 +107,14 @@ export const CounterArea = styled(H4)`
 `;
 
 export const CounterIcon = styled(Icon)`
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   padding: 2px;
   cursor: pointer;
   color: ${(props) => props.theme.colors.mainPrimary};
 `;
 
-export const CartItemPrice = styled(BodyLarge)``;
+export const CartItemPrice = styled(H4)``;
 
 export const CartSummaryContainer = styled.div`
   width: 360px;
@@ -147,7 +127,7 @@ export const CartSummaryContainer = styled.div`
   }
 `;
 
-export const Subtotal = styled(BodyLarge)`
+export const Subtotal = styled(H4)`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -160,14 +140,13 @@ export const OrderTotalPrice = styled(H4)`
 `;
 
 export const ButtonContainer = styled.div`
-  margin: 20px 0;
   display: flex;
   flex-direction: row-reverse;
 
   a {
     border-radius: 4px;
     padding: 10px 32px;
-    font-size: ${(props) => props.theme.fontSize.button};
+    font-size: ${(props) => props.theme.fontSize.h5};
     transition: ease-in-out 0.1s;
   }
 
@@ -192,6 +171,8 @@ export const CartEmpty = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: ${(props) => props.theme.fontSize.h3};
+  padding: 100px 0;
 `;
 
 export const BackToHome = styled(SubmitButton)`
