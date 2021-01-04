@@ -11,6 +11,10 @@ export const getCategoryAndProducts = () => {
   return fetch(`${BASE_URL}/category/products`).then((res) => res.json());
 };
 
+export const getCategoryAndLaunchedProducts = () => {
+  return fetch(`${BASE_URL}/category/product`).then((res) => res.json());
+};
+
 // 撈取單一商品規格 API
 export const getProduct = (productId) => {
   return fetch(`${BASE_URL}/product/${productId}`).then((res) => res.json());
