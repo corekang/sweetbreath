@@ -14,7 +14,6 @@ export const register = (fullname, username, email, password) => {
       password,
     }),
   }).then((res) => res.json());
-  // .then((data) => console.log(data));
 };
 
 export const login = (username, password) => {
@@ -37,5 +36,14 @@ export const getMe = () => {
       authorization: `Bearer ${token}`,
     },
   }).then((res) => res.json());
-  // .then((data) => console.log(data));
+};
+
+// 撈取會員資料
+export const getUser = () => {
+  const token = getAuthToken();
+  return fetch("/api/user", {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
 };
