@@ -27,7 +27,7 @@ const PageTitle = styled(H1)`
   margin-bottom: 40px;
 `;
 
-const TabContainer = (
+const TabUser = (
   {
     user,
     fullname,
@@ -40,6 +40,7 @@ const TabContainer = (
     handleEditEmail,
     handleEditBirthday,
     handleEditAddress,
+    message,
   },
   editable
 ) => {
@@ -49,13 +50,11 @@ const TabContainer = (
         <TableItemTitle>編號</TableItemTitle>
         <TableItemValue>{user.id}</TableItemValue>
         <TableItemValueNew editable={editable === 0}></TableItemValueNew>
-        <EditButton editable={editable === 0}>變更</EditButton>
       </TabItem>
       <TabItem editable={editable === 0}>
         <TableItemTitle>帳號</TableItemTitle>
         <TableItemValue>{user.username}</TableItemValue>
         <TableItemValueNew editable={editable === 0}></TableItemValueNew>
-        <EditButton editable={editable === 0}>變更</EditButton>
       </TabItem>
       <TabItem editable={editable !== 0}>
         <TableItemTitle>全名</TableItemTitle>
@@ -63,25 +62,19 @@ const TabContainer = (
         <TableItemValueNew
           editable={editable !== 0}
           type="text"
-          placeholder="輸入新資料"
+          placeholder="輸入新資料（必填）"
           value={fullname}
           onChange={handleEditFullname}
           onFocus={handleEditInputFocus}
         ></TableItemValueNew>
-        <EditButton
-          editable={editable !== 0}
-          onClick={() => handleEditUser(fullname)}
-        >
-          變更
-        </EditButton>
       </TabItem>
       <TabItem editable={editable !== 0}>
         <TableItemTitle>電子郵件</TableItemTitle>
         <TableItemValue>{user.email}</TableItemValue>
         <TableItemValueNew
           editable={editable !== 0}
-          type="text"
-          placeholder="輸入新資料"
+          type="email"
+          placeholder="輸入新資料（必填）"
           value={email}
           onChange={handleEditEmail}
           onFocus={handleEditInputFocus}
@@ -94,7 +87,7 @@ const TabContainer = (
         </TableItemValue>
         <TableItemValueNew
           editable={editable !== 0}
-          type="text"
+          type="date"
           placeholder="輸入新資料"
           value={birthday}
           onChange={handleEditBirthday}
@@ -113,6 +106,10 @@ const TabContainer = (
           onFocus={handleEditInputFocus}
         ></TableItemValueNew>
       </TabItem>
+      <EditButtonBlock>
+        {message && <Message>{message}</Message>}
+        <EditButton>變更</EditButton>
+      </EditButtonBlock>
     </TabGroup>
   );
 };
@@ -131,7 +128,7 @@ const TabItem = styled.div`
   width: 65%;
   padding: 8px 0;
   display: grid;
-  grid-template-columns: 15% 35% 40% 10%;
+  grid-template-columns: 20% 40% 40%;
   align-items: center;
   :hover {
     background: ${(props) =>
@@ -153,19 +150,26 @@ const TableItemValueNew = styled(Input)`
   visibility: ${(props) => (props.editable ? "" : "hidden")};
 `;
 
+const EditButtonBlock = styled.div`
+  width: 65%;
+  padding-right: 10px;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+`;
+
 const EditButton = styled.button`
   width: 50px;
   height: 30px;
   border-radius: 4px;
-  background-color: ${(props) =>
-    props.editable ? theme.colors.mainPrimary : theme.colors.neutralLightGrey};
+  background: ${theme.colors.mainPrimary};
   border: 0;
   color: #ffffff;
-  margin-left: 10px;
-  cursor: ${(props) => (props.editable ? "pointer" : "")};
+  cursor: pointer;
   :hover {
-    background: ${(props) =>
-      props.editable ? theme.colors.uiNegative : theme.colors.neutralLightGrey};
+    background: ${theme.colors.uiNegative};
   }
 `;
 
@@ -189,7 +193,8 @@ const GlobalStyle = createGlobalStyle`
 
 const Message = styled.div`
   color: ${theme.colors.mainPrimary};
-  margin: 0 0 20px 0;
+  margin: 0 20px 0 0;
+  align-items: center;
 `;
 
 export default function MemberPage() {
@@ -221,13 +226,25 @@ export default function MemberPage() {
   };
 
   const handleEditUser = () => {
-    if (!fullname) return;
-    if (!email) return;
+    // if (!fullname) return;
+    if (!fullname) {
+      setMessage("全名必填喔！");
+      return;
+    }
+    if (!email) {
+      setMessage("電子郵件必填喔！");
+      return;
+    }
 
     // 變更畫面
     setUser((user) => {
       return { ...user, fullname, email, birthday, address };
     });
+
+    setFullname("");
+    setEmail("");
+    setBirthday("");
+    setAddress("");
 
     // 變更資料庫
     editUser(fullname, email, birthday, address).then((res) => {
@@ -243,16 +260,10 @@ export default function MemberPage() {
   };
 
   const handleEditFullname = (e) => {
-    if (!e.target.value) {
-      return;
-    }
     setFullname(e.target.value);
   };
 
   const handleEditEmail = (e) => {
-    if (!e.target.value) {
-      return;
-    }
     setEmail(e.target.value);
   };
 
@@ -267,7 +278,7 @@ export default function MemberPage() {
   return (
     <Container>
       <PageTitle>會員專區</PageTitle>
-      {message && <Message>{message}</Message>}
+      {/*message && <Message>{message}</Message>*/}
       <Tabs>
         <Tab onClick={handleClick} active={active === 0} id={0}>
           個人資料
@@ -278,12 +289,13 @@ export default function MemberPage() {
       </Tabs>
       <>
         <Content active={active === 0}>
-          <TabContainer
+          <TabUser
             user={user}
             fullname={fullname}
             email={email}
             address={address}
             birthday={birthday}
+            message={message}
             handleEditUser={handleEditUser}
             handleEditInputFocus={handleEditInputFocus}
             handleEditFullname={handleEditFullname}
