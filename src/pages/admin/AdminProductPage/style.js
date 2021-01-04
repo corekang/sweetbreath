@@ -82,6 +82,7 @@ export const SubmitButton = styled(Button)`
   cursor: pointer;
   padding: 20px 100px;
   border-radius: 4px;
+  border: none;
   color: ${(props) => props.theme.colors.neutralWhite};
   background: ${(props) => props.theme.colors.mainPrimary};
   ${MEDIA_QUERY} {
