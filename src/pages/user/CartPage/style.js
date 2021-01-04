@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { H1, H3, H4, H5, MEDIA_QUERY } from "../../../constants/style";
+import { H1, H4, H5, MEDIA_QUERY } from "../../../constants/style";
 
 export const CartContainer = styled.div`
   max-width: 1000px;
