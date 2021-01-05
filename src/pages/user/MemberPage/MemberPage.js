@@ -203,11 +203,12 @@ const TabOrder = ({ order, key, orderItems }) => {
           訂單狀態｜{order.status}
         </TabOrderTop>
         <TabOrderCenter>
-          <TabOrderProductTitle>訂單內容：</TabOrderProductTitle>
+          <TabOrderProductTitle>訂單內容｜</TabOrderProductTitle>
           {orderItems.map((orderItems) => (
             <TabOrderProduct
               orderItems={orderItems}
               key={orderItems.product_id}
+              id="orderProduct"
             >
               <TabOrderProductImg>
                 <Link to={"/product/" + orderItems.product_id} target="_blank">
@@ -228,7 +229,7 @@ const TabOrder = ({ order, key, orderItems }) => {
               {orderItems.product_price * orderItems.product_quantity}
             </TabOrderProduct>
           ))}
-          <TabOrderProductTotal>
+          <TabOrderProductTotal id="totalPrize">
             訂單金額｜<b>NT$ {order.total}</b>
           </TabOrderProductTotal>
         </TabOrderCenter>
@@ -258,6 +259,10 @@ const TabOrderItem = styled.div`
   line-height: 30px;
   :hover {
     border: 3px solid ${theme.colors.mainPrimary};
+
+    #totalPrize {
+      background: ${theme.colors.mainSecondary};
+    }
   }
 `;
 
@@ -317,7 +322,7 @@ export default function MemberPage() {
   // 取得會員訂單資料，第二個參數傳 [user]，這樣 user 變了，這個 effect 才會重新執行
   useEffect(() => {
     if (user.id) {
-      getUserOrders(user.id).then((order) => setOrder(order.data));
+      getUserOrders(user.id).then((order) => setOrder(order.data.reverse()));
     }
   }, [user]);
 
