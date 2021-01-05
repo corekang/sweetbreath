@@ -1,8 +1,9 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import { H1, MEDIA_QUERY, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import { Tabs, Tab, Content } from "../../../components/Tab/Tab.js";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getUser, editUser } from "../../../webAPI/userAPI";
 import { getUserOrders } from "../../../webAPI/orderAPI";
 
@@ -180,7 +181,7 @@ const Message = styled.div`
   align-items: center;
 `;
 
-const TabOrder = ({ order }) => {
+const TabOrder = ({ order, key, orderItems }) => {
   const options = {
     // day: "numeric", // (e.g., 1)
     // month: "short", // (e.g., Oct)
@@ -194,24 +195,49 @@ const TabOrder = ({ order }) => {
     <TabOrderGroup>
       <TabOrderItem>
         <TabOrderTop>
-          訂單日期：
+          訂單日期｜
           {new Date(order.createdAt).toLocaleDateString("zh-TW", options)}
           <br />
-          訂單號碼：{order.order_number}
+          訂單號碼｜{order.order_number}
           <br />
-          訂單狀態：{order.status}
+          訂單狀態｜{order.status}
         </TabOrderTop>
         <TabOrderCenter>
-          訂單內容：{order.orderItems}
-          <br />
-          訂單金額：<b>NT$ </b>
+          <TabOrderProductTitle>訂單內容：</TabOrderProductTitle>
+          {orderItems.map((orderItems) => (
+            <TabOrderProduct
+              orderItems={orderItems}
+              key={orderItems.product_id}
+            >
+              <TabOrderProductImg>
+                <Link to={"/product/" + orderItems.product_id} target="_blank">
+                  <img
+                    src={orderItems.product_image}
+                    alt={orderItems.product_name}
+                  />
+                </Link>
+              </TabOrderProductImg>
+              <b>
+                <Link to={"/product/" + orderItems.product_id} target="_blank">
+                  {orderItems.product_name}
+                  {orderItems.product_feature}
+                </Link>
+              </b>
+              &emsp; NT$ {orderItems.product_price}*
+              {orderItems.product_quantity}=
+              {orderItems.product_price * orderItems.product_quantity}
+            </TabOrderProduct>
+          ))}
+          <TabOrderProductTotal>
+            訂單金額｜<b>NT$ {order.total}</b>
+          </TabOrderProductTotal>
         </TabOrderCenter>
         <TabOrderBottom>
-          收件姓名：{order.buyer_fullname}
+          收件姓名｜{order.buyer_fullname}
           <br />
-          收件電話：{order.buyer_phone}
+          收件電話｜{order.buyer_phone}
           <br />
-          收件地址：{order.postal_code}
+          收件地址｜{order.postal_code}
           {order.buyer_address}
         </TabOrderBottom>
       </TabOrderItem>
@@ -227,25 +253,48 @@ const TabOrderGroup = styled.div`
 
 const TabOrderItem = styled.div`
   width: 66%;
-  border: 1px solid #ccc;
+  border: 1px solid ${theme.colors.neutralLightGrey};
   padding: 20px 10px;
   line-height: 30px;
   :hover {
-    background: ${theme.colors.neutralLightGrey};
+    border: 3px solid ${theme.colors.mainPrimary};
   }
 `;
 
 const TabOrderTop = styled.div`
-  border-bottom: 3px solid #ccc;
+  border-bottom: 3px solid ${theme.colors.neutralPaleGrey};
   margin-bottom: 10px;
   padding-bottom: 10px;
-}
 `;
 
 const TabOrderCenter = styled.div`
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid ${theme.colors.neutralPaleGrey};
   margin-bottom: 10px;
   padding-bottom: 10px;
+`;
+
+const TabOrderProductTitle = styled.div`
+  margin-bottom: 10px;
+`;
+
+const TabOrderProduct = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TabOrderProductImg = styled.div`
+  img {
+    width: 150px;
+    height: 150px;
+  }
+`;
+
+const TabOrderProductTotal = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const TabOrderBottom = styled.div``;
@@ -369,7 +418,11 @@ export default function MemberPage() {
         </Content>
         <Content active={active === 1}>
           {order.map((order) => (
-            <TabOrder order={order}></TabOrder>
+            <TabOrder
+              order={order}
+              key={order.id}
+              orderItems={order.OrderItems}
+            ></TabOrder>
           ))}
         </Content>
       </>
