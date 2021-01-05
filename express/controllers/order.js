@@ -28,6 +28,7 @@ const orderController = {
       postal_code,
       buyer_address,
       order_items,
+      total,
     } = req.body;
     const checkList = [
       "UserId",
@@ -37,6 +38,7 @@ const orderController = {
       "postal_code",
       "buyer_address",
       "order_items",
+      "total",
     ];
     judgeObj(req.body, checkList, res, "運送資料尚未填寫完成");
     //驗證訂單資料
@@ -45,6 +47,7 @@ const orderController = {
       const checkList = [
         "product_id",
         "product_name",
+        "product_image",
         "product_feature",
         "product_price",
         "product_quantity",
@@ -61,12 +64,14 @@ const orderController = {
       buyer_phone,
       postal_code,
       buyer_address,
+      total,
     }).then((res) => {
       const OrderId = res.id;
       order_items.map((order) => {
         const {
           product_id,
           product_name,
+          product_image,
           product_feature,
           product_price,
           product_quantity,
@@ -76,6 +81,7 @@ const orderController = {
           order_number,
           product_id,
           product_name,
+          product_image,
           product_feature,
           product_price,
           product_quantity,
@@ -112,6 +118,7 @@ const orderController = {
             attributes: [
               "product_id",
               "product_name",
+              "product_image",
               "product_feature",
               "product_price",
               "product_quantity",
@@ -154,6 +161,7 @@ const orderController = {
             attributes: [
               "product_id",
               "product_name",
+              "product_image",
               "product_feature",
               "product_price",
               "product_quantity",
@@ -187,6 +195,7 @@ const orderController = {
           attributes: [
             "product_id",
             "product_name",
+            "product_image",
             "product_feature",
             "product_price",
             "product_quantity",
