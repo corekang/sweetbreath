@@ -42,7 +42,7 @@ const RegisterButton = styled.button`
 `;
 
 const ErrorMessage = styled.div`
-  color: red;
+  color: ${theme.colors.mainPrimary};
   text-align: center;
   word-wrap: break-word;
   width: 350px;
@@ -78,9 +78,10 @@ export default function RegisterPage() {
         value
       )
     ) {
-      console.log("請輸入正確 Email");
+      // console.log("請輸入正確 Email");
       return setErrorMessage(
-        "@ 前後可以是英文、數字與「-」、「.」組合，但「-」、「.」不能連續出現，@ 之後必須是英文、數字與「.」組合，最末個「.」之後為英文"
+        "@ 前後接受英文、數字與「-」、「.」組合"
+        // "@ 前後可以是英文、數字與「-」、「.」組合，但「-」、「.」不能連續出現，@ 之後必須是英文、數字與「.」組合，最末個「.」之後為英文"
       );
     }
     return setErrorMessage(null);
