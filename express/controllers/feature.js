@@ -1,7 +1,8 @@
+require("dotenv").config({ path: "../../.env" });
 const db = require("../models");
 const Feature = db.Feature;
 const jwt = require("jsonwebtoken");
-const SECRET = "sweetbreathyumyum";
+const SECRET = process.env.JWT_SECRET;
 
 const featureController = {
   addFeature: (req, res, checkAuthorization) => {

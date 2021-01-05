@@ -1,8 +1,9 @@
+require("dotenv").config({ path: "../../.env" });
 const db = require("../models");
 const Product = db.Product;
 const Category = db.Category;
 const jwt = require("jsonwebtoken");
-const SECRET = "sweetbreathyumyum";
+const SECRET = process.env.JWT_SECRET;
 
 const categoryController = {
   getCategoryName: (req, res) => {
