@@ -1,10 +1,11 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import { H1, MEDIA_QUERY, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Content } from "../../../components/Tab/Tab.js";
-import Table from "../../../components/Table/Table.js";
-import { getUser, editUser, getUserOrders } from "../../../webAPI/userAPI";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getUser, editUser } from "../../../webAPI/userAPI";
+import { getUserOrders } from "../../../webAPI/orderAPI";
 
 const Container = styled.div`
   * {
@@ -32,99 +33,96 @@ const TabUser = (
     user,
     fullname,
     email,
-    address,
     birthday,
+    address,
+    message,
     handleEditUser,
     handleEditInputFocus,
     handleEditFullname,
     handleEditEmail,
     handleEditBirthday,
     handleEditAddress,
-    message,
   },
   editable
 ) => {
   return (
-    <TabGroup onSubmit={handleEditUser}>
-      <TabItem editable={editable === 0}>
-        <TableItemTitle>編號</TableItemTitle>
-        <TableItemValue>{user.id}</TableItemValue>
-        <TableItemValueNew editable={editable === 0}></TableItemValueNew>
-      </TabItem>
-      <TabItem editable={editable === 0}>
-        <TableItemTitle>帳號</TableItemTitle>
-        <TableItemValue>{user.username}</TableItemValue>
-        <TableItemValueNew editable={editable === 0}></TableItemValueNew>
-      </TabItem>
-      <TabItem editable={editable !== 0}>
-        <TableItemTitle>全名</TableItemTitle>
-        <TableItemValue>{user.fullname}</TableItemValue>
-        <TableItemValueNew
+    <TabUserGroup onSubmit={handleEditUser}>
+      <TabUserItem editable={editable === 0}>
+        <TabUserItemTitle>編號</TabUserItemTitle>
+        <TabUserItemValue>{user.id}</TabUserItemValue>
+        <TabUserItemValueNew editable={editable === 0}></TabUserItemValueNew>
+      </TabUserItem>
+      <TabUserItem editable={editable === 0}>
+        <TabUserItemTitle>帳號</TabUserItemTitle>
+        <TabUserItemValue>{user.username}</TabUserItemValue>
+        <TabUserItemValueNew editable={editable === 0}></TabUserItemValueNew>
+      </TabUserItem>
+      <TabUserItem editable={editable !== 0}>
+        <TabUserItemTitle>全名</TabUserItemTitle>
+        <TabUserItemValue>{user.fullname}</TabUserItemValue>
+        <TabUserItemValueNew
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料（必填）"
           value={fullname}
           onChange={handleEditFullname}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
-      </TabItem>
-      <TabItem editable={editable !== 0}>
-        <TableItemTitle>電子郵件</TableItemTitle>
-        <TableItemValue>{user.email}</TableItemValue>
-        <TableItemValueNew
+        ></TabUserItemValueNew>
+      </TabUserItem>
+      <TabUserItem editable={editable !== 0}>
+        <TabUserItemTitle>電子郵件</TabUserItemTitle>
+        <TabUserItemValue>{user.email}</TabUserItemValue>
+        <TabUserItemValueNew
           editable={editable !== 0}
           type="email"
           placeholder="輸入新資料（必填）"
           value={email}
           onChange={handleEditEmail}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
-      </TabItem>
-      <TabItem editable={editable !== 0}>
-        <TableItemTitle>生日</TableItemTitle>
-        <TableItemValue>
+        ></TabUserItemValueNew>
+      </TabUserItem>
+      <TabUserItem editable={editable !== 0}>
+        <TabUserItemTitle>生日</TabUserItemTitle>
+        <TabUserItemValue>
           {new Date(user.birthday).toLocaleDateString("zh-TW")}
-        </TableItemValue>
-        <TableItemValueNew
+        </TabUserItemValue>
+        <TabUserItemValueNew
           editable={editable !== 0}
           type="date"
           placeholder="輸入新資料"
           value={birthday}
           onChange={handleEditBirthday}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
-      </TabItem>
-      <TabItem editable={editable !== 0}>
-        <TableItemTitle>地址</TableItemTitle>
-        <TableItemValue>{user.address}</TableItemValue>
-        <TableItemValueNew
+        ></TabUserItemValueNew>
+      </TabUserItem>
+      <TabUserItem editable={editable !== 0}>
+        <TabUserItemTitle>地址</TabUserItemTitle>
+        <TabUserItemValue>{user.address}</TabUserItemValue>
+        <TabUserItemValueNew
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料"
           value={address}
           onChange={handleEditAddress}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
-      </TabItem>
+        ></TabUserItemValueNew>
+      </TabUserItem>
       <EditButtonBlock>
         {message && <Message>{message}</Message>}
         <EditButton>變更</EditButton>
       </EditButtonBlock>
-    </TabGroup>
+    </TabUserGroup>
   );
 };
 
-const TabOrder = styled.div``;
-
-const TabGroup = styled.form`
+const TabUserGroup = styled.form`
   width: 100%;
-  border-top: none;
   padding: 30px 0 0 0;
   margin-left: 10px;
   display: column;
 `;
 
-const TabItem = styled.div`
+const TabUserItem = styled.div`
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
   width: 65%;
@@ -139,11 +137,13 @@ const TabItem = styled.div`
 }
 `;
 
-const TableItemTitle = styled.div``;
+const TabUserItemTitle = styled.div`
+  padding-left: 10px;
+`;
 
-const TableItemValue = styled.div``;
+const TabUserItemValue = styled.div``;
 
-const TableItemValueNew = styled(Input)`
+const TabUserItemValueNew = styled(Input)`
   color: ${theme.colors.neutralBlack};
   font-size: ${theme.fontSize.bodyLarge};
   border-bottom: 1px solid ${theme.colors.neutralLightGrey};
@@ -175,29 +175,129 @@ const EditButton = styled.button`
   }
 `;
 
-const GlobalStyle = createGlobalStyle`
-  table {
-    width: 100%;
-    border: 1px solid black;
-    border-collapse: collapse;
-    th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    th, td, tr {
-      padding: 10px;
-    }
-    th {
-      text-align: left;
-    }
-  }
-`;
-
 const Message = styled.div`
   color: ${theme.colors.mainPrimary};
   margin: 0 20px 0 0;
   align-items: center;
 `;
+
+const TabOrder = ({ order, key, orderItems }) => {
+  const options = {
+    // day: "numeric", // (e.g., 1)
+    // month: "short", // (e.g., Oct)
+    // year: "numeric", // (e.g., 2019)
+    hour: "2-digit", // (e.g., 02)
+    minute: "2-digit", // (e.g., 02)
+    hour12: true, // 24 小時制
+    timeZone: "Asia/Taipei", // "America/New_York"
+  };
+  return (
+    <TabOrderGroup>
+      <TabOrderItem>
+        <TabOrderTop>
+          訂單日期｜
+          {new Date(order.createdAt).toLocaleDateString("zh-TW", options)}
+          <br />
+          訂單號碼｜{order.order_number}
+          <br />
+          訂單狀態｜{order.status}
+        </TabOrderTop>
+        <TabOrderCenter>
+          <TabOrderProductTitle>訂單內容：</TabOrderProductTitle>
+          {orderItems.map((orderItems) => (
+            <TabOrderProduct
+              orderItems={orderItems}
+              key={orderItems.product_id}
+            >
+              <TabOrderProductImg>
+                <Link to={"/product/" + orderItems.product_id} target="_blank">
+                  <img
+                    src={orderItems.product_image}
+                    alt={orderItems.product_name}
+                  />
+                </Link>
+              </TabOrderProductImg>
+              <b>
+                <Link to={"/product/" + orderItems.product_id} target="_blank">
+                  {orderItems.product_name}
+                  {orderItems.product_feature}
+                </Link>
+              </b>
+              &emsp; NT$ {orderItems.product_price}*
+              {orderItems.product_quantity}=
+              {orderItems.product_price * orderItems.product_quantity}
+            </TabOrderProduct>
+          ))}
+          <TabOrderProductTotal>
+            訂單金額｜<b>NT$ {order.total}</b>
+          </TabOrderProductTotal>
+        </TabOrderCenter>
+        <TabOrderBottom>
+          收件姓名｜{order.buyer_fullname}
+          <br />
+          收件電話｜{order.buyer_phone}
+          <br />
+          收件地址｜{order.postal_code}
+          {order.buyer_address}
+        </TabOrderBottom>
+      </TabOrderItem>
+    </TabOrderGroup>
+  );
+};
+
+const TabOrderGroup = styled.div`
+  width: 100%;
+  padding: 30px 0 0 0;
+  display: column;
+`;
+
+const TabOrderItem = styled.div`
+  width: 66%;
+  border: 1px solid ${theme.colors.neutralLightGrey};
+  padding: 20px 10px;
+  line-height: 30px;
+  :hover {
+    border: 3px solid ${theme.colors.mainPrimary};
+  }
+`;
+
+const TabOrderTop = styled.div`
+  border-bottom: 3px solid ${theme.colors.neutralPaleGrey};
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+`;
+
+const TabOrderCenter = styled.div`
+  border-bottom: 1px solid ${theme.colors.neutralPaleGrey};
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+`;
+
+const TabOrderProductTitle = styled.div`
+  margin-bottom: 10px;
+`;
+
+const TabOrderProduct = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TabOrderProductImg = styled.div`
+  img {
+    width: 150px;
+    height: 150px;
+  }
+`;
+
+const TabOrderProductTotal = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TabOrderBottom = styled.div``;
 
 export default function MemberPage() {
   const [user, setUser] = useState([]);
@@ -208,17 +308,18 @@ export default function MemberPage() {
   const [birthday, setBirthday] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState();
-  const [age, setAge] = useState(0);
 
   // 取得會員個人資料
   useEffect(() => {
     getUser().then((user) => setUser(user.data));
   }, []);
 
-  // 取得會員訂單資料
+  // 取得會員訂單資料，第二個參數傳 [user]，這樣 user 變了，這個 effect 才會重新執行
   useEffect(() => {
-    getUserOrders().then((order) => console.log(setOrder(order.data)));
-  }, []);
+    if (user.id) {
+      getUserOrders(user.id).then((order) => setOrder(order.data));
+    }
+  }, [user]);
 
   // 切換分頁
   const handleClick = (e) => {
@@ -237,8 +338,8 @@ export default function MemberPage() {
     setAddress("");
   }, [active]);
 
-  const handleEditUser = () => {
-    // if (!fullname) return;
+  const handleEditUser = (e) => {
+    e.preventDefault();
     if (!fullname) {
       setMessage("全名必填喔！");
       return;
@@ -290,7 +391,6 @@ export default function MemberPage() {
   return (
     <Container>
       <PageTitle>會員專區</PageTitle>
-      {/*message && <Message>{message}</Message>*/}
       <Tabs>
         <Tab onClick={handleClick} active={active === 0} id={0}>
           個人資料
@@ -305,8 +405,8 @@ export default function MemberPage() {
             user={user}
             fullname={fullname}
             email={email}
-            address={address}
             birthday={birthday}
+            address={address}
             message={message}
             handleEditUser={handleEditUser}
             handleEditInputFocus={handleEditInputFocus}
@@ -317,7 +417,13 @@ export default function MemberPage() {
           />
         </Content>
         <Content active={active === 1}>
-          <TabOrder order={order}></TabOrder>
+          {order.map((order) => (
+            <TabOrder
+              order={order}
+              key={order.id}
+              orderItems={order.OrderItems}
+            ></TabOrder>
+          ))}
         </Content>
       </>
     </Container>

@@ -38,7 +38,7 @@ export const getMe = () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     });
 };
@@ -53,7 +53,7 @@ export const getUser = () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     });
 };
@@ -61,7 +61,7 @@ export const getUser = () => {
 export const editUser = (fullname, email, birthday, address) => {
   const token = getAuthToken();
   return fetch(`${BASE_URL}/user`, {
-    method: "PUT", // PATCH
+    method: "PUT",
     headers: {
       authorization: `Bearer ${token}`,
       "content-type": "application/json",
@@ -75,22 +75,7 @@ export const editUser = (fullname, email, birthday, address) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-      return data;
-    });
-};
-
-export const getUserOrders = (id) => {
-  const token = getAuthToken();
-  return fetch(`/order/${id}`, {
-    method: "GET",
-    headers: {
-      authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     });
 };

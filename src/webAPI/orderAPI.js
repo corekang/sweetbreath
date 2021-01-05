@@ -14,3 +14,29 @@ export const creatOrder = (orderDetail) => {
     .then((res) => res.json())
     .then((data) => console.log(data));
 };
+
+export const getUserOrders = (id) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/order/${id}`, {
+    // 沒資料：`/order/${id}`
+    method: "GET",
+    headers: {
+      authorization: token, // `Bearer ${token}`
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log(data);
+      return data;
+    });
+};
+
+// 管理員撈取所有訂單
+export const getOrders = () => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/orders`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+};

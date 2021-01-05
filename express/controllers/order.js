@@ -30,6 +30,7 @@ const orderController = {
       postal_code,
       buyer_address,
       order_items,
+      total,
     } = req.body;
     const checkList = [
       "UserId",
@@ -39,13 +40,16 @@ const orderController = {
       "postal_code",
       "buyer_address",
       "order_items",
+      "total",
     ];
     judgeObj(req.body, checkList, res, "運送資料尚未填寫完成");
     //驗證訂單資料
     for (let i = 0; i < order_items.length; i++) {
       const item = order_items[i];
       const checkList = [
+        "product_id",
         "product_name",
+        "product_image",
         "product_feature",
         "product_price",
         "product_quantity",
@@ -54,7 +58,6 @@ const orderController = {
     }
     //建立訂單
     const order_number = String(String(Date.now()) + UserId);
-    console.log(order_number);
     Orders.create({
       UserId,
       order_number,
@@ -63,11 +66,14 @@ const orderController = {
       buyer_phone,
       postal_code,
       buyer_address,
+      total,
     }).then((res) => {
       const OrderId = res.id;
       order_items.map((order) => {
         const {
+          product_id,
           product_name,
+          product_image,
           product_feature,
           product_price,
           product_quantity,
@@ -75,7 +81,9 @@ const orderController = {
         OrderItem.create({
           OrderId,
           order_number,
+          product_id,
           product_name,
+          product_image,
           product_feature,
           product_price,
           product_quantity,
@@ -110,7 +118,9 @@ const orderController = {
           {
             model: OrderItem,
             attributes: [
+              "product_id",
               "product_name",
+              "product_image",
               "product_feature",
               "product_price",
               "product_quantity",
@@ -151,7 +161,9 @@ const orderController = {
           {
             model: OrderItem,
             attributes: [
+              "product_id",
               "product_name",
+              "product_image",
               "product_feature",
               "product_price",
               "product_quantity",
@@ -183,7 +195,9 @@ const orderController = {
         {
           model: OrderItem,
           attributes: [
+            "product_id",
             "product_name",
+            "product_image",
             "product_feature",
             "product_price",
             "product_quantity",

@@ -92,7 +92,9 @@ export default function CheckoutPage() {
     let order_items = [];
     for (let i = 0; i < orderItem.length; i++) {
       order_items.push({
+        product_id: orderItem[i].id,
         product_name: orderItem[i].productName,
+        product_image: orderItem[i].image,
         product_feature: orderItem[i].feature,
         product_price: orderItem[i].price,
         product_quantity: orderItem[i].count,
@@ -105,11 +107,13 @@ export default function CheckoutPage() {
       buyer_phone: phone,
       postal_code: postalCode,
       buyer_address: address,
+      total: totalPrice,
       order_items,
     };
     creatOrder(finalOrder);
     alert(`下單成功，感謝您的購買`);
     history.push("/member");
+    localStorage.removeItem("cart");
   };
 
   return (
