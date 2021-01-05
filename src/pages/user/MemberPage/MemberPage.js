@@ -1,10 +1,10 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { H1, MEDIA_QUERY, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Content } from "../../../components/Tab/Tab.js";
-import Table from "../../../components/Table/Table.js";
-import { getUser, editUser, getUserOrders } from "../../../webAPI/userAPI";
+import React, { useState, useEffect } from "react";
+import { getUser, editUser } from "../../../webAPI/userAPI";
+import { getUserOrders } from "../../../webAPI/orderAPI";
 
 const Container = styled.div`
   * {
@@ -32,79 +32,79 @@ const TabUser = (
     user,
     fullname,
     email,
-    address,
     birthday,
+    address,
+    message,
     handleEditUser,
     handleEditInputFocus,
     handleEditFullname,
     handleEditEmail,
     handleEditBirthday,
     handleEditAddress,
-    message,
   },
   editable
 ) => {
   return (
     <TabGroup onSubmit={handleEditUser}>
       <TabItem editable={editable === 0}>
-        <TableItemTitle>編號</TableItemTitle>
-        <TableItemValue>{user.id}</TableItemValue>
-        <TableItemValueNew editable={editable === 0}></TableItemValueNew>
+        <TabItemTitle>編號</TabItemTitle>
+        <TabItemValue>{user.id}</TabItemValue>
+        <TabItemValueNew editable={editable === 0}></TabItemValueNew>
       </TabItem>
       <TabItem editable={editable === 0}>
-        <TableItemTitle>帳號</TableItemTitle>
-        <TableItemValue>{user.username}</TableItemValue>
-        <TableItemValueNew editable={editable === 0}></TableItemValueNew>
+        <TabItemTitle>帳號</TabItemTitle>
+        <TabItemValue>{user.username}</TabItemValue>
+        <TabItemValueNew editable={editable === 0}></TabItemValueNew>
       </TabItem>
       <TabItem editable={editable !== 0}>
-        <TableItemTitle>全名</TableItemTitle>
-        <TableItemValue>{user.fullname}</TableItemValue>
-        <TableItemValueNew
+        <TabItemTitle>全名</TabItemTitle>
+        <TabItemValue>{user.fullname}</TabItemValue>
+        <TabItemValueNew
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料（必填）"
           value={fullname}
           onChange={handleEditFullname}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
+        ></TabItemValueNew>
       </TabItem>
       <TabItem editable={editable !== 0}>
-        <TableItemTitle>電子郵件</TableItemTitle>
-        <TableItemValue>{user.email}</TableItemValue>
-        <TableItemValueNew
+        <TabItemTitle>電子郵件</TabItemTitle>
+        <TabItemValue>{user.email}</TabItemValue>
+        <TabItemValueNew
           editable={editable !== 0}
           type="email"
           placeholder="輸入新資料（必填）"
           value={email}
           onChange={handleEditEmail}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
+        ></TabItemValueNew>
       </TabItem>
       <TabItem editable={editable !== 0}>
-        <TableItemTitle>生日</TableItemTitle>
-        <TableItemValue>
+        <TabItemTitle>生日</TabItemTitle>
+        <TabItemValue>
           {new Date(user.birthday).toLocaleDateString("zh-TW")}
-        </TableItemValue>
-        <TableItemValueNew
+        </TabItemValue>
+        <TabItemValueNew
           editable={editable !== 0}
           type="date"
           placeholder="輸入新資料"
           value={birthday}
           onChange={handleEditBirthday}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
+        ></TabItemValueNew>
       </TabItem>
       <TabItem editable={editable !== 0}>
-        <TableItemTitle>地址</TableItemTitle>
-        <TableItemValue>{user.address}</TableItemValue>
-        <TableItemValueNew
+        <TabItemTitle>地址</TabItemTitle>
+        <TabItemValue>{user.address}</TabItemValue>
+        <TabItemValueNew
           editable={editable !== 0}
           type="text"
           placeholder="輸入新資料"
           value={address}
           onChange={handleEditAddress}
           onFocus={handleEditInputFocus}
-        ></TableItemValueNew>
+        ></TabItemValueNew>
       </TabItem>
       <EditButtonBlock>
         {message && <Message>{message}</Message>}
@@ -114,7 +114,25 @@ const TabUser = (
   );
 };
 
-const TabOrder = styled.div``;
+const TabOrder = ({ order }) => {
+  return (
+    <TabGroup>
+      訂單編號：{order.order_number}
+      <br />
+      訂購時間：{order.createdAt}
+      <br />
+      訂購內容：
+      <br />
+      聯繫電話：{order.buyer_phone}
+      <br />
+      配送地址：{order.postal_code}
+      {order.buyer_address}
+      <br />
+      訂單狀態：{order.status}
+      <br />
+    </TabGroup>
+  );
+};
 
 const TabGroup = styled.form`
   width: 100%;
@@ -139,11 +157,13 @@ const TabItem = styled.div`
 }
 `;
 
-const TableItemTitle = styled.div``;
+const TabItemTitle = styled.div`
+  padding-left: 10px;
+`;
 
-const TableItemValue = styled.div``;
+const TabItemValue = styled.div``;
 
-const TableItemValueNew = styled(Input)`
+const TabItemValueNew = styled(Input)`
   color: ${theme.colors.neutralBlack};
   font-size: ${theme.fontSize.bodyLarge};
   border-bottom: 1px solid ${theme.colors.neutralLightGrey};
@@ -208,17 +228,18 @@ export default function MemberPage() {
   const [birthday, setBirthday] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState();
-  const [age, setAge] = useState(0);
 
   // 取得會員個人資料
   useEffect(() => {
     getUser().then((user) => setUser(user.data));
   }, []);
 
-  // 取得會員訂單資料
+  // 取得會員訂單資料，第二個參數傳 [user]，這樣 user 變了，這個 effect 才會重新執行
   useEffect(() => {
-    getUserOrders().then((order) => console.log(setOrder(order.data)));
-  }, []);
+    if (user.id) {
+      getUserOrders(user.id).then((order) => setOrder(order.data));
+    }
+  }, [user]);
 
   // 切換分頁
   const handleClick = (e) => {
@@ -237,8 +258,8 @@ export default function MemberPage() {
     setAddress("");
   }, [active]);
 
-  const handleEditUser = () => {
-    // if (!fullname) return;
+  const handleEditUser = (e) => {
+    e.preventDefault();
     if (!fullname) {
       setMessage("全名必填喔！");
       return;
@@ -290,7 +311,6 @@ export default function MemberPage() {
   return (
     <Container>
       <PageTitle>會員專區</PageTitle>
-      {/*message && <Message>{message}</Message>*/}
       <Tabs>
         <Tab onClick={handleClick} active={active === 0} id={0}>
           個人資料
@@ -305,8 +325,8 @@ export default function MemberPage() {
             user={user}
             fullname={fullname}
             email={email}
-            address={address}
             birthday={birthday}
+            address={address}
             message={message}
             handleEditUser={handleEditUser}
             handleEditInputFocus={handleEditInputFocus}
@@ -317,7 +337,9 @@ export default function MemberPage() {
           />
         </Content>
         <Content active={active === 1}>
-          <TabOrder order={order}></TabOrder>
+          {order.map((order) => (
+            <TabOrder order={order}></TabOrder>
+          ))}
         </Content>
       </>
     </Container>

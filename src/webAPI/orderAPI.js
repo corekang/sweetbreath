@@ -14,3 +14,19 @@ export const creatOrder = (orderDetail) => {
     .then((res) => res.json())
     .then((data) => console.log(data));
 };
+
+export const getUserOrders = (id) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/order/${id}`, {
+    // 沒資料：`/order/${id}`
+    method: "GET",
+    headers: {
+      authorization: token, // `Bearer ${token}`
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
+};
