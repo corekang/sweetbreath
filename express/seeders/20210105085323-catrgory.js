@@ -8,14 +8,20 @@ module.exports = {
         {
           name: "常溫蛋糕",
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           name: "期間限定",
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           name: "熱銷經典",
           is_deleted: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}

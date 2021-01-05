@@ -14,6 +14,8 @@ module.exports = {
           這項點心外型上小巧，大約呈2英吋高、分層的圓柱體，是法國波爾多地區的特產，但也常常可以在巴黎糕點店(pâtisseries)找到。`,
           status: 1,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           CategoryId: 2,
@@ -28,6 +30,8 @@ module.exports = {
           磅蛋糕發源自美國南部，再傳入世界各國後，各國則因應風俗民情以及不同的飲食習慣，創造出了各式各樣不同風格的磅蛋糕，材料及作法簡單不容易失敗，香濃且密實的濃郁口感，為新手必學的ㄧ道甜點。`,
           status: 1,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           CategoryId: 2,
@@ -40,6 +44,8 @@ module.exports = {
           磅蛋糕發源自美國南部，再傳入世界各國後，各國則因應風俗民情以及不同的飲食習慣，創造出了各式各樣不同風格的磅蛋糕，材料及作法簡單不容易失敗，香濃且密實的濃郁口感，為新手必學的ㄧ道甜點。`,
           status: 1,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           CategoryId: 1,
@@ -48,6 +54,8 @@ module.exports = {
           info: `可可貝果超爆好吃的啦！`,
           status: 1,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           CategoryId: 1,
@@ -56,6 +64,8 @@ module.exports = {
           info: null,
           status: 1,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           CategoryId: 1,
@@ -70,6 +80,8 @@ module.exports = {
           為了紀念這次勝利，麵包師傅們把麵包做成了號角的形狀，這種形狀也很近似於鄂圖曼帝國旗幟的標誌。`,
           status: 1,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}

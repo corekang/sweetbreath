@@ -1,9 +1,10 @@
+require("dotenv").config({ path: "../../.env" });
 const db = require("../models");
 const User = db.User;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-const SECRET = "sweetbreathyumyum";
+const SECRET = process.env.SECRET;
 
 const userController = {
   register: (req, res) => {

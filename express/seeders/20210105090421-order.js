@@ -8,7 +8,7 @@ module.exports = {
         {
           UserId: 2,
           order_number: 160976576433222,
-          buyer_fullname: "AnnAnn",
+          buyer_fullname: "安安",
           buyer_email: "AnnAnn@AnnAnn.com",
           buyer_phone: 12345678,
           postal_code: 1111,
@@ -18,6 +18,9 @@ module.exports = {
           is_done: null,
           is_cancel: null,
           status: null,
+          total: 270,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           UserId: 3,
@@ -32,6 +35,9 @@ module.exports = {
           is_done: null,
           is_cancel: null,
           status: null,
+          total: 860,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}

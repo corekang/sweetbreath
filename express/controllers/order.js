@@ -1,8 +1,10 @@
+require("dotenv").config({ path: "../../.env" });
 const db = require("../models");
 const Orders = db.Orders;
 const OrderItem = db.OrderItem;
 const jwt = require("jsonwebtoken");
-const SECRET = "sweetbreathyumyum";
+const SECRET = process.env.SECRET;
+
 const judgeObj = (obj, chekList, res, errorMessage) => {
   const keysList = Object.keys(obj);
   const emptyData = chekList.filter((key) => keysList.indexOf(key) < 0);

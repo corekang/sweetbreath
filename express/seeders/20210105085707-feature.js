@@ -12,6 +12,8 @@ module.exports = {
           price: 300,
           promo_price: 270,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           ProductId: 2,
@@ -20,6 +22,8 @@ module.exports = {
           price: 400,
           promo_price: 350,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           ProductId: 3,
@@ -28,6 +32,8 @@ module.exports = {
           price: 400,
           promo_price: 350,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           ProductId: 4,
@@ -36,6 +42,8 @@ module.exports = {
           price: 80,
           promo_price: null,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           ProductId: 5,
@@ -44,6 +52,8 @@ module.exports = {
           price: 500,
           promo_price: 450,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           ProductId: 6,
@@ -52,6 +62,8 @@ module.exports = {
           price: 120,
           promo_price: 99,
           is_deleted: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}
