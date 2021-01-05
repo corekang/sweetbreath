@@ -38,7 +38,7 @@ export const getMe = () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     });
 };
@@ -53,7 +53,7 @@ export const getUser = () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     });
 };
@@ -75,7 +75,7 @@ export const editUser = (fullname, email, birthday, address) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     });
 };
