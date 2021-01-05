@@ -30,3 +30,13 @@ export const getUserOrders = (id) => {
       return data;
     });
 };
+
+// 管理員撈取所有訂單
+export const getOrders = () => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/orders`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+};

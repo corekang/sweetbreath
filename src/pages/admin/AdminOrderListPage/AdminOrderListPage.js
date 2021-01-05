@@ -1,37 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import { theme } from "../../../constants/theme";
-import { H2, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
+import { H1, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
+import { getOrders } from "../../../webAPI/orderAPI";
+import { getProduct } from "../../../webAPI/productAPI";
 
 const OrderListContainer = styled.div`
-  max-width: 780px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px;
 
   * {
     box-sizing: border-box;
   }
-
-  a,
-  button {
-    text-decoration: none;
-
-    outline: none;
-  }
-
-  ${MEDIA_QUERY} {
-    height: 100%;
-    max-width: 100%;
-  }
 `;
 
 const OrderListHeader = styled.div``;
-
-const OrderListTitle = styled(H2)`
-  padding: 8px 0;
-`;
 
 const OrderStatusButtons = styled.div`
   display: flex;
@@ -89,14 +75,15 @@ const OrderButtons = styled.div`
   button {
     font-size: ${theme.fontSize.bodyLarge};
     padding: 6px 12px;
-    background: ${theme.colors.uiNegative};
+    background: ${theme.colors.neutralDarkGrey};
     color: ${theme.colors.neutralWhite};
-    border: none;
     border-radius: 4px;
-    cursor: pointer;
     margin-left: 20px;
+    cursor: pointer;
   }
 `;
+
+const OpenButton = styled.button``;
 
 const OrderItemsContainer = styled.div`
   padding: 10px 20px;
@@ -153,24 +140,24 @@ const OrderTotalPrice = styled(BodyLarge)`
   text-align: right;
 `;
 
-function OrderItem() {
+const NoOrder = styled.div``;
+
+function OrderItem({ orderItem }) {
   return (
     <OrderItemContainer>
-      <Link to="/product/1" target="_blank">
-        <img
-          src="https://img2.momoshop.com.tw/goodsimg/0007/249/953/7249953_L.jpg?t=1608292496"
-          alt="product"
-        ></img>
+      <Link to={"/product/" + orderItem.product_id} target="_blank">
+        <img src={orderItem.product_image} alt="product"></img>
       </Link>
       <OrderItemContent>
         <OrderItemTitle>
-          <Link to="/product/1" target="_blank">
-            商品名稱商品名稱商品名稱商品名稱商品名稱商品名稱
+          <Link to={"/product/" + orderItem.product_id} target="_blank">
+            {orderItem.product_name}
           </Link>
         </OrderItemTitle>
         <OderItemDetails>
-          <OrderItemNumber>X1</OrderItemNumber>
-          <OrderItemPrice>NT$ 100</OrderItemPrice>
+          <OrderItemNumber>{orderItem.product_feature}</OrderItemNumber>
+          <OrderItemNumber>x {orderItem.product_quantity}</OrderItemNumber>
+          <OrderItemPrice>NT$ {orderItem.product_price}</OrderItemPrice>
         </OderItemDetails>
       </OrderItemContent>
     </OrderItemContainer>
@@ -181,84 +168,75 @@ function Order({ order, orderStatus, setOrderStatus }) {
   const handleCompleteOrder = () => {};
 
   const handleCancelOrder = () => {};
-
   return (
     <OrderContainer>
       <OrderHeader>
         <OrderDetails>
-          <div>訂單日期：{order.createdAt}</div>
-          <div>訂單號碼：{order.orderNumber}</div>
-          <div>訂單狀態：{order.orderStatus}</div>
+          <div>
+            訂單日期：
+            {new Date(`${order.createdAt}`).toLocaleString()}
+          </div>
+          <div>訂單號碼：{order.order_number}</div>
+          <div>訂單狀態：{order.status ? "已完成" : "未完成"}</div>
         </OrderDetails>
         <OrderButtons>
-          <button onClick={handleCompleteOrder}>完成</button>
-          <button onClick={handleCancelOrder}>取消</button>
+          <button onClick={handleCompleteOrder}>
+            {order.is_paid ? "已付款" : "未付款"}
+          </button>
+          <button onClick={handleCancelOrder}>
+            {order.is_sent ? "已出貨" : "未出貨"}
+          </button>
+          <button onClick={handleCancelOrder}>
+            {order.is_cancel ? "已取消" : "取消訂單"}
+          </button>
+          <OpenButton>訂單明細</OpenButton>
         </OrderButtons>
       </OrderHeader>
       <OrderItemsContainer>
-        <OrderItem />
-        <OrderItem />
+        {order.OrderItems.map((orderItem) => (
+          <OrderItem
+            key={orderItem.product && orderItem.feature}
+            orderItem={orderItem}
+          />
+        ))}
       </OrderItemsContainer>
       <OrderTotalPrice>
-        訂單金額：<b>NT$ {order.totalAmount}</b>
+        訂單金額：<b>NT$ {order.total}</b>
       </OrderTotalPrice>
     </OrderContainer>
   );
 }
 
 export default function AdminOrderListPage() {
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      orderNumber: 100001,
-      userNumber: 1001,
-      totalAmount: 288,
-      orderStatus: "處理中",
-      isPaid: false,
-      isSent: false,
-      isDone: false,
-      isCancel: false,
-      createdAt: "2020/12/23 00:00:00",
-    },
-    {
-      id: 2,
-      orderNumber: 100002,
-      userNumber: 1002,
-      totalAmount: 499,
-      orderStatus: "已完成",
-      isPaid: true,
-      isSent: true,
-      isDone: true,
-      isCancel: false,
-      createdAt: "2020/12/20 08:08:08",
-    },
-
-    {
-      id: 3,
-      orderNumber: 100003,
-      userNumber: 188,
-      totalAmount: 88888,
-      orderStatus: "已取消",
-      isPaid: false,
-      isSent: false,
-      isDone: true,
-      isCancel: true,
-      createdAt: "2020/12/12 12:12:12",
-    },
-  ]);
-
+  const [orders, setOrders] = useState([]);
+  const [status, setStatus] = useState(1);
+  const [orderActive, setOrderActive] = useState(0);
   const [filterState, setFilterState] = useState("All");
   const [orderStatus, setOrderStatus] = useState("");
 
+  useEffect(() => {
+    getOrders().then((res) => {
+      setOrders(res.data);
+    });
+  }, []);
+
   const handleChangeFilter = (value) => setFilterState(value);
+
+  // orders.filter((order) => {
+  //   if (filterState === "All") return order;
+  //   if (filterState === "Active") return order.orderStatus === "處理中";
+  //   if (filterState === "Complete") return order.orderStatus === "已完成";
+  //   if (filterState === "Cancel") return order.orderStatus === "已取消";
+  // });
 
   return (
     <OrderListContainer>
       <OrderListHeader>
-        <OrderListTitle>訂單管理</OrderListTitle>
+        <H1>訂單管理</H1>
         <OrderStatusButtons>
           <StatusButton
             onClick={() => handleChangeFilter("All")}
+            selected={status === 1}
             className={filterState === "All" ? "selected" : ""}
           >
             所有訂單
@@ -284,22 +262,20 @@ export default function AdminOrderListPage() {
         </OrderStatusButtons>
       </OrderListHeader>
       <OrdersContainer>
-        {orders
-          .filter((order) => {
-            if (filterState === "All") return order;
-            if (filterState === "Active") return order.orderStatus === "處理中";
-            if (filterState === "Complete")
-              return order.orderStatus === "已完成";
-            if (filterState === "Cancel") return order.orderStatus === "已取消";
-          })
-          .map((order) => (
-            <Order
-              key={order.id}
-              order={order}
-              orderStatus={orderStatus}
-              setOrderStatus={setOrderStatus}
-            />
-          ))}
+        {!orders ? (
+          <NoOrder>查無訂單</NoOrder>
+        ) : (
+          orders
+            .reverse()
+            .map((order) => (
+              <Order
+                key={order.id}
+                order={order}
+                orderStatus={orderStatus}
+                setOrderStatus={setOrderStatus}
+              />
+            ))
+        )}
       </OrdersContainer>
     </OrderListContainer>
   );
