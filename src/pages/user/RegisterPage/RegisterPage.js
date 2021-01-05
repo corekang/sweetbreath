@@ -57,7 +57,7 @@ export default function RegisterPage() {
   const [errorMessage, setErrorMessage] = useState();
   const history = useHistory();
   const handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setErrorMessage(null);
     register(fullname, username, email, password).then((data) => {
       console.log(data);
