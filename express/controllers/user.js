@@ -4,7 +4,7 @@ const User = db.User;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-const SECRET = process.env.SECRET;
+const SECRET = process.env.JWT_SECRET;
 
 const userController = {
   register: (req, res) => {

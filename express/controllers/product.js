@@ -3,7 +3,7 @@ const db = require("../models");
 const Product = db.Product;
 const Feature = db.Feature;
 const jwt = require("jsonwebtoken");
-const SECRET = process.env.SECRET;
+const SECRET = process.env.JWT_SECRET;
 
 const productController = {
   getAllProducts: (req, res, checkAuthorization) => {
