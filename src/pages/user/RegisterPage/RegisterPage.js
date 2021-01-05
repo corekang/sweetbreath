@@ -69,7 +69,7 @@ export default function RegisterPage() {
         return setErrorMessage(data.message);
       }
       setAuthToken(data.token);
-      history.push("/login");
+      history.push("/");
     });
   };
   const handleEmail = (value) => {
