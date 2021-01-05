@@ -53,6 +53,10 @@ module.exports = {
         status: {
           type: Sequelize.STRING,
         },
+        total: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

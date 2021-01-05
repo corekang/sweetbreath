@@ -93,6 +93,7 @@ export default function CheckoutPage() {
     for (let i = 0; i < orderItem.length; i++) {
       order_items.push({
         product_id: orderItem[i].id,
+        product_image: orderItem[i].image,
         product_name: orderItem[i].productName,
         product_feature: orderItem[i].feature,
         product_price: orderItem[i].price,
@@ -107,6 +108,7 @@ export default function CheckoutPage() {
       postal_code: postalCode,
       buyer_address: address,
       order_items,
+      total: totalPrice,
     };
     creatOrder(finalOrder);
     alert(`下單成功，感謝您的購買`);
