@@ -1,90 +1,24 @@
 import React, { useState, useContext } from "react";
-import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
-import { H3, Input } from "../../../constants/style";
-import { theme } from "../../../constants/theme";
-import googleLogin from "../../../components/icon/googleLogin.png";
-import facebookLogin from "../../../components/icon/facebookLogin.png";
+import { useHistory } from "react-router-dom";
 import { login, getMe } from "../../../webAPI/userAPI";
 import { setAuthToken } from "../../../utils";
 import AuthContext from "../../../contexts";
-
-const PageContainer = styled.div`
-  * {
-    box-sizing: border-box;
-  }
-
-  padding-top: 40px;
-  display: grid;
-  justify-content: center;
-`;
-
-const LoginPageTitle = styled(H3)`
-  margin-bottom: 30px;
-  text-align: center;
-`;
-
-const LoginForm = styled.form`
-  width: 350px;
-`;
-
-const LoginInput = styled(Input)`
-  margin: 10px 0;
-  width: 100%;
-  font-size: ${theme.fontSize.h5};
-`;
-
-const LoginButton = styled.button`
-  width: 100%;
-  height: 46px;
-  margin: 20px 0;
-  border-radius: 4px;
-  background-color: ${theme.colors.mainPrimary};
-  font-size: ${theme.fontSize.h5};
-  color: #ffffff;
-  cursor: pointer;
-`;
-
-const LoginRefer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const LoginReferLink = styled(Link)`
-  color: ${theme.colors.neutralBlack};
-  border-bottom: 1px solid ${theme.colors.neutralWhite};
-
-  :hover {
-    border-bottom: 1px solid ${theme.colors.neutralBlack};
-  }
-`;
-
-const SocialLogin = styled.div``;
-
-const SocialLoginTitle = styled(H3)`
-  border-bottom: 1px solid ${theme.colors.neutralLightGrey};
-  width: 100%;
-  text-align: center;
-  display: block;
-  justify-content: center;
-  padding-top: 30px;
-  margin-top: 30px;
-  padding-bottom: 20px;
-`;
-
-const SocialLoginSite = styled(Link)`
-  display: flex;
-  justify-content: space-evenly;
-`;
-
-const SiteLogo = styled.img`
-  height: 60px;
-`;
-
-const ErrorMessage = styled.div`
-  color: ${theme.colors.mainPrimary};
-  text-align: center;
-`;
+import {
+  PageContainer,
+  LoginPageTitle,
+  LoginForm,
+  LoginInput,
+  LoginButton,
+  LoginRefer,
+  LoginReferLink,
+  SocialLogin,
+  SocialLoginTitle,
+  SocialLoginSite,
+  SiteLogo,
+  ErrorMessage,
+} from "./style";
+import googleLogin from "../../../components/icon/googleLogin.png";
+import facebookLogin from "../../../components/icon/facebookLogin.png";
 
 export default function LoginPage() {
   const { setUser } = useContext(AuthContext);
