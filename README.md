@@ -62,9 +62,9 @@ styled-components、Express、Sequelize、MySQL。
 - 管理訂單狀態，依付款進度、出貨進度調整訂單狀態，或取消處理中訂單。
 - 取消訂單：後端處理為變更訂單狀態，仍保留訂單資訊。
 
-![](./img/userflow-client-v3.png)
+![](./img/userflow-client-v3-20210104.png)
 
-![](./img/userflow-admin-v3.png)
+![](./img/userflow-admin-v3-20210104.png)
 
 ## 專案後端
 
