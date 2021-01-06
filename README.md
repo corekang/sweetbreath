@@ -1,7 +1,8 @@
 # Sweetbreath
 
-Sweetbreath 甜の呼吸甜點購物車  
-http://sweetbreath.tw/
+[Sweetbreath 甜の呼吸 網路甜點工作室](http://sweetbreath.tw/)
+
+![](./img/localhost-index02-20210106.png)
 
 ## 專案介紹
 
@@ -29,6 +30,7 @@ styled-components、Express、Sequelize、MySQL。
 
 `基本模組`
 
+- 首頁：主打活動輪播區、人氣商品。
 - 關於我們：瀏覽網站架設理念。
 - 最新消息：瀏覽最新消息列表。
 - 聯絡我們：瀏覽店家聯絡資料，瀏覽 Google Maps 實體地址、聯絡表單。
@@ -57,8 +59,79 @@ styled-components、Express、Sequelize、MySQL。
 `訂單管理模組`
 
 - 瀏覽所有訂單明細，依訂單狀態顯示訂單。
-- 管理訂單狀態，處理中訂單可取消。
+- 管理訂單狀態，依付款進度、出貨進度調整訂單狀態，或取消處理中訂單。
+- 取消訂單：後端處理為變更訂單狀態，仍保留訂單資訊。
 
-![](./img/UserFlow-Client-v3.png)
+![](./img/userflow-client-v3-20210104.png)
 
-![](./img/UserFlow-Admin-v3.png)
+![](./img/userflow-admin-v3-20210104.png)
+
+## 專案後端
+
+[sweetbreath-backend](https://github.com/ivymuchacha/sweetbreath-backend)：主要開發技術為 Express、Sequelize、MySQL。
+
+## 專案執行
+
+`npm install`
+
+安裝專案所需套件。
+
+`npm run dev`
+
+http://localhost:3000 啟動專案。  
+http://localhost:5000 啟動專案後端。
+
+`npm build`
+
+資料夾 build 建立專案 production 版本。
+
+`npm deploy`
+
+GitHub Pages 部屬專案網站。
+
+## 專案技術
+
+`前端框架與套件`
+
+- [React Hooks](https://reactjs.org/)
+- [Create React App](https://create-react-app.dev/)
+- [React DOM](https://www.npmjs.com/package/react-dom)
+- [React Router DOM](https://reactrouter.com/)
+- [PropTypes](https://www.npmjs.com/package/prop-types)
+- [styled-components](https://styled-components.com/)
+- [ESLint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+- [Google Map React](https://github.com/google-map-react/google-map-react)
+
+`後端框架與套件`
+
+- [Express](https://expressjs.com/)
+- [Sequelize](https://sequelize.org/)
+- [MySQL](https://www.mysql.com/)
+
+`第三方 API`
+
+- [Google Cloud Platform](https://cloud.google.com/)
+- [Imgur](https://imgur.com/)
+
+## 專案展示
+
+### 商品模組
+
+![](./img/)
+
+### 購物模組
+
+![](./img/)
+
+### 會員模組
+
+![](./img/)
+
+### 後臺管理模組
+
+![](./img/)
+
+## 專案授權
+
+[MIT License](https://choosealicense.com/licenses/mit/)
