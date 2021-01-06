@@ -112,7 +112,7 @@ export default function CheckoutPage() {
     };
     creatOrder(finalOrder);
     alert(`下單成功，感謝您的購買`);
-    history.push("/member");
+    history.push("/member/orderlist");
     localStorage.removeItem("cart");
   };
 

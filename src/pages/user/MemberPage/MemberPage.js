@@ -370,6 +370,13 @@ export default function MemberPage() {
   const [birthday, setBirthday] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState();
+  const { target } = useParams();
+
+  useEffect(() => {
+    if (target === "orderlist") {
+      setActive(1);
+    }
+  }, []);
 
   // 取得會員個人資料
   useEffect(() => {

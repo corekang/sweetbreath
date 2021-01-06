@@ -58,6 +58,16 @@ export const getUser = () => {
     });
 };
 
+export const getAllUser = () => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/users`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+};
+
 export const editUser = (fullname, email, birthday, address) => {
   const token = getAuthToken();
   return fetch(`${BASE_URL}/user`, {
@@ -78,4 +88,19 @@ export const editUser = (fullname, email, birthday, address) => {
       // console.log(data);
       return data;
     });
+};
+
+export const editUserStatus = (id, is_admin, status) => {
+  const token = getAuthToken();
+  fetch(`${BASE_URL}/users/${id}`, {
+    method: "PUT",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      is_admin,
+      status,
+    }),
+  }).then((res) => res.json());
 };

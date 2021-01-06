@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+# Sweetbreath
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sweetbreath 甜の呼吸甜點購物車  
+http://sweetbreath.tw/
 
-## Available Scripts
+## 專案介紹
 
-In the project directory, you can run:
+本專案為 Sweet Breath 甜の呼吸甜點購物車前端與後端原始碼，主要開發技術為 React Hooks、
+styled-components、Express、Sequelize、MySQL。
 
-### `npm start`
+使用者相關功能
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`商品模組`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 商品分類檢視：商品分類以外，可建立特殊商品分類，例如人氣商品。
+- 瀏覽所有商品：依商品分類呈現。
+- 瀏覽單一商品：瀏覽商品名稱、商品介紹、商品規格、商品庫存、選擇商品數量加入購物車。
 
-### `npm test`
+`購物模組`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 購物車：選擇商品數量加入購物車，顯示訂單摘要。
+- 結帳：導向登入頁面，登入後輸入配送資料並檢視輸入格式，確認訂單總額後提交訂單。
 
-### `npm run build`
+`會員模組`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 會員註冊：必須輸入全名、帳號、電子郵件、密碼，檢視符合輸入格式即可註冊成功。
+- 會員登入：必須輸入帳號、密碼，即可登入。登入後依會員權限顯示一般權限選單／管理權限選單。
+- 會員專區：會員登入後可瀏覽個人資料、消費紀錄。個人資料可修改全名、電子郵件、生日、地址，為統一修改模式，全名、電子郵件必填，其他未填欄位於送出後清除原本資料。消費紀錄可瀏覽全部訂單，並顯示訂單狀態、訂單明細，點擊商品圖片、商品名稱可瀏覽商品介紹。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`基本模組`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 關於我們：瀏覽網站架設理念。
+- 最新消息：瀏覽最新消息列表。
+- 聯絡我們：瀏覽店家聯絡資料，瀏覽 Google Maps 實體地址、聯絡表單。
 
-### `npm run eject`
+管理者相關功能
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`商品管理模組`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 依商品分類瀏覽所有商品。
+- 編輯商品：可編輯商品資訊，包括商品名稱、圖片網址、狀態、分類、商品介紹。
+- 刪除商品：後端處理為變更商品狀態，仍保留商品資訊。
+- 新增商品：可新增商品資訊，包括商品資訊、商品規格，商品規格包括規格名稱、原價、特價、庫存。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`分類管理模組`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- 瀏覽所有商品分類名稱，顯示各類商品數量。
+- 編輯／刪除／新增分類。
+- 刪除分類：刪除商品：後端處理為變更分類狀態，仍保留分類名稱。
 
-## Learn More
+`權限管理模組`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 瀏覽所有帳號，可依使用者 id 或名稱搜尋特定帳號。
+- 分為一般權限、管理權限、停權。
+- 停權：後端處理為變更帳號狀態，仍保留帳號資訊。
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`訂單管理模組`
 
-### Code Splitting
+- 瀏覽所有訂單明細，依訂單狀態顯示訂單。
+- 管理訂單狀態，處理中訂單可取消。
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![](./img/UserFlow-Client-v3.png)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![](./img/UserFlow-Admin-v3.png)
