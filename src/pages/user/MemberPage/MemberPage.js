@@ -3,7 +3,7 @@ import { H1, MEDIA_QUERY, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import { Tabs, Tab, Content } from "../../../components/Tab/Tab.js";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getUser, editUser } from "../../../webAPI/userAPI";
 import { getUserOrders } from "../../../webAPI/orderAPI";
 
@@ -313,6 +313,13 @@ export default function MemberPage() {
   const [birthday, setBirthday] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState();
+  const { target } = useParams();
+
+  useEffect(() => {
+    if (target === "orderlist") {
+      setActive(1);
+    }
+  }, []);
 
   // 取得會員個人資料
   useEffect(() => {
