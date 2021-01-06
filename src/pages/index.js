@@ -9,7 +9,6 @@ import NewsPage from "./user/NewsPage";
 import ContactUsPage from "./user/ContactUsPage";
 import CartPage from "./user/CartPage";
 import CheckoutPage from "./user/CheckoutPage";
-import OrderConfirmPage from "./user/OrderConfirmPage";
 import MemberPage from "./user/MemberPage";
 import AdminPage from "./admin/AdminPage";
 import AdminProductListPage from "./admin/AdminProductListPage";
@@ -33,7 +32,6 @@ export {
   ContactUsPage,
   CartPage,
   CheckoutPage,
-  OrderConfirmPage,
   MemberPage,
   AdminPage,
   AdminProductListPage,
