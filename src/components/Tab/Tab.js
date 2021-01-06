@@ -1,15 +1,12 @@
 import styled from "styled-components";
-import { H1, MEDIA_QUERY } from "../../constants/style";
 import { theme } from "../../constants/theme";
 
 export const Tabs = styled.div`
   overflow: hidden;
-  background: #ffffff;
+  background: ${(props) => props.theme.colors.neutralWhite};
   height: 3em;
 `;
 
-// margin-right: 0.1em;
-// height: ${(props) => (props.active ? "3em" : "2.6em; top:.4em")};
 export const Tab = styled.button`
   border: none;
   outline: none;

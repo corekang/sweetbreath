@@ -31,6 +31,7 @@ const LoginForm = styled.form`
 const LoginInput = styled(Input)`
   margin: 10px 0;
   width: 100%;
+  font-size: ${theme.fontSize.h5};
 `;
 
 const LoginButton = styled.button`
@@ -39,7 +40,7 @@ const LoginButton = styled.button`
   margin: 20px 0;
   border-radius: 4px;
   background-color: ${theme.colors.mainPrimary};
-  border: 0;
+  font-size: ${theme.fontSize.h5};
   color: #ffffff;
   cursor: pointer;
 `;
@@ -50,8 +51,12 @@ const LoginRefer = styled.div`
 `;
 
 const LoginReferLink = styled(Link)`
-  color: #000000;
-  text-decoration: none;
+  color: ${theme.colors.neutralBlack};
+  border-bottom: 1px solid ${theme.colors.neutralWhite};
+
+  :hover {
+    border-bottom: 1px solid ${theme.colors.neutralBlack};
+  }
 `;
 
 const SocialLogin = styled.div``;
