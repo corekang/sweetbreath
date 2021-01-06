@@ -16,7 +16,6 @@ import {
   ContactUsPage,
   CartPage,
   CheckoutPage,
-  OrderConfirmPage,
   MemberPage,
   AdminPage,
   AdminProductListPage,
@@ -94,11 +93,11 @@ function App() {
           <Route exact path="/checkout">
             <CheckoutPage />
           </Route>
-          <Route exact path="/order">
-            <OrderConfirmPage />
-          </Route>
           <Route exact path="/orders">
             <OrderListPage />
+          </Route>
+          <Route exact path="/member/:target">
+            <MemberPage />
           </Route>
           <Route exact path="/member">
             <MemberPage />

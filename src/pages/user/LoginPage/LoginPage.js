@@ -77,7 +77,7 @@ const SiteLogo = styled.img`
 `;
 
 const ErrorMessage = styled.div`
-  color: red;
+  color: ${theme.colors.mainPrimary};
   text-align: center;
 `;
 
