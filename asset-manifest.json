@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/sweetbreath/static/css/main.a1d870e4.chunk.css",
-    "main.js": "/sweetbreath/static/js/main.b982b255.chunk.js",
-    "main.js.map": "/sweetbreath/static/js/main.b982b255.chunk.js.map",
-    "runtime-main.js": "/sweetbreath/static/js/runtime-main.a107d052.js",
-    "runtime-main.js.map": "/sweetbreath/static/js/runtime-main.a107d052.js.map",
+    "main.css": "/sweetbreath/static/css/main.0f5146e8.chunk.css",
+    "main.js": "/sweetbreath/static/js/main.b2924609.chunk.js",
+    "main.js.map": "/sweetbreath/static/js/main.b2924609.chunk.js.map",
+    "runtime-main.js": "/sweetbreath/static/js/runtime-main.9ed9c8d5.js",
+    "runtime-main.js.map": "/sweetbreath/static/js/runtime-main.9ed9c8d5.js.map",
     "static/css/2.4f3280a4.chunk.css": "/sweetbreath/static/css/2.4f3280a4.chunk.css",
-    "static/js/2.460e5d93.chunk.js": "/sweetbreath/static/js/2.460e5d93.chunk.js",
-    "static/js/2.460e5d93.chunk.js.map": "/sweetbreath/static/js/2.460e5d93.chunk.js.map",
-    "static/js/3.2cce9738.chunk.js": "/sweetbreath/static/js/3.2cce9738.chunk.js",
-    "static/js/3.2cce9738.chunk.js.map": "/sweetbreath/static/js/3.2cce9738.chunk.js.map",
+    "static/js/2.ecd0a1ff.chunk.js": "/sweetbreath/static/js/2.ecd0a1ff.chunk.js",
+    "static/js/2.ecd0a1ff.chunk.js.map": "/sweetbreath/static/js/2.ecd0a1ff.chunk.js.map",
+    "static/js/3.b56ca280.chunk.js": "/sweetbreath/static/js/3.b56ca280.chunk.js",
+    "static/js/3.b56ca280.chunk.js.map": "/sweetbreath/static/js/3.b56ca280.chunk.js.map",
     "index.html": "/sweetbreath/index.html",
     "static/css/2.4f3280a4.chunk.css.map": "/sweetbreath/static/css/2.4f3280a4.chunk.css.map",
-    "static/css/main.a1d870e4.chunk.css.map": "/sweetbreath/static/css/main.a1d870e4.chunk.css.map",
-    "static/js/2.460e5d93.chunk.js.LICENSE.txt": "/sweetbreath/static/js/2.460e5d93.chunk.js.LICENSE.txt",
+    "static/css/main.0f5146e8.chunk.css.map": "/sweetbreath/static/css/main.0f5146e8.chunk.css.map",
+    "static/js/2.ecd0a1ff.chunk.js.LICENSE.txt": "/sweetbreath/static/js/2.ecd0a1ff.chunk.js.LICENSE.txt",
     "static/media/facebookLogin.47c6df6c.png": "/sweetbreath/static/media/facebookLogin.47c6df6c.png",
     "static/media/googleLogin.e8514c2b.png": "/sweetbreath/static/media/googleLogin.e8514c2b.png",
     "static/media/instagram.bb6713ca.png": "/sweetbreath/static/media/instagram.bb6713ca.png",
@@ -24,10 +24,10 @@
     "static/media/sweetBreath_line.206e0998.png": "/sweetbreath/static/media/sweetBreath_line.206e0998.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.a107d052.js",
+    "static/js/runtime-main.9ed9c8d5.js",
     "static/css/2.4f3280a4.chunk.css",
-    "static/js/2.460e5d93.chunk.js",
-    "static/css/main.a1d870e4.chunk.css",
-    "static/js/main.b982b255.chunk.js"
+    "static/js/2.ecd0a1ff.chunk.js",
+    "static/css/main.0f5146e8.chunk.css",
+    "static/js/main.b2924609.chunk.js"
   ]
 }
