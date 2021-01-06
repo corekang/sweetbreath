@@ -1,9 +1,10 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+
 import { H1, MEDIA_QUERY, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import { Tabs, Tab, Content } from "../../../components/Tab/Tab.js";
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
 import { getUser, editUser } from "../../../webAPI/userAPI";
 import { getUserOrders } from "../../../webAPI/orderAPI";
 
@@ -12,12 +13,13 @@ const Container = styled.div`
     box-sizing: border-box;
   }
 
-  max-width: 1280px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 0 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-size: ${theme.fontSize.h4};
 
   ${MEDIA_QUERY} {
     padding: 0 20px;
@@ -167,7 +169,7 @@ const EditButton = styled.button`
   height: 30px;
   border-radius: 4px;
   background: ${theme.colors.mainPrimary};
-  border: 0;
+  font-size: ${theme.fontSize.h5};
   color: #ffffff;
   cursor: pointer;
   :hover {
@@ -181,7 +183,40 @@ const Message = styled.div`
   align-items: center;
 `;
 
-const TabOrder = ({ order, key, orderItems }) => {
+const OrderStatus = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const OrderStatusLabel = styled.button`
+  background: ${theme.colors.neutralGrey};
+  font-size: ${theme.fontSize.bodyLarge};
+  color: ${theme.colors.neutralWhite};
+  border-radius: 4px;
+  padding: 6px;
+  margin: 4px;
+  cursor: pointer;
+
+  ${MEDIA_QUERY} {
+    font-size: ${theme.fontSize.bodyLarge};
+  }
+`;
+
+const IsDoneLabel = styled(OrderStatusLabel)`
+  ${(props) =>
+    (props.isCancel && `background: ${theme.colors.uiNegative}`) ||
+    (props.isDone
+      ? `background: ${theme.colors.uiPositive}`
+      : `background: ${theme.colors.uiWarning}`)}
+`;
+const IsPaidLabel = styled(OrderStatusLabel)`
+  ${(props) => props.isPaid && `background: ${theme.colors.uiPositive}`}
+`;
+const IsSentLabel = styled(OrderStatusLabel)`
+  ${(props) => props.isSent && `background: ${theme.colors.uiPositive}`}
+`;
+
+const TabOrder = ({ order, orderItems }) => {
   const options = {
     // day: "numeric", // (e.g., 1)
     // month: "short", // (e.g., Oct)
@@ -200,7 +235,19 @@ const TabOrder = ({ order, key, orderItems }) => {
           <br />
           訂單號碼｜{order.order_number}
           <br />
-          訂單狀態｜{order.status}
+          <OrderStatus>
+            訂單狀態｜
+            <IsDoneLabel isCancel={order.is_cancel} isDone={order.is_done}>
+              {(order.is_cancel && "已取消") ||
+                (order.is_done ? "已完成" : "未完成")}
+            </IsDoneLabel>
+            <IsPaidLabel isPaid={order.is_paid}>
+              {order.is_paid ? "已付款" : "未付款"}
+            </IsPaidLabel>
+            <IsSentLabel isSent={order.is_sent}>
+              {order.is_sent ? "已出貨" : "未出貨"}
+            </IsSentLabel>
+          </OrderStatus>
         </TabOrderTop>
         <TabOrderCenter>
           <TabOrderProductTitle>訂單內容｜</TabOrderProductTitle>
@@ -254,9 +301,11 @@ const TabOrderGroup = styled.div`
 
 const TabOrderItem = styled.div`
   width: 66%;
-  border: 1px solid ${theme.colors.neutralLightGrey};
-  padding: 20px 10px;
+  border: 3px solid ${theme.colors.neutralLightGrey};
+  padding: 30px;
   line-height: 30px;
+  font-size: ${theme.fontSize.h4};
+
   :hover {
     border: 3px solid ${theme.colors.mainPrimary};
 
@@ -286,12 +335,20 @@ const TabOrderProduct = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  a {
+    color: ${theme.colors.neutralBlack};
+
+    :hover {
+      border-bottom: 1px solid ${theme.colors.neutralBlack};
+    }
+  }
 `;
 
 const TabOrderProductImg = styled.div`
   img {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
+    border-radius: 4px;
   }
 `;
 

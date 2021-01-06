@@ -28,6 +28,7 @@ const RegisterForm = styled.form`
 const RegisterInput = styled(Input)`
   margin: 10px 0;
   width: 100%;
+  font-size: ${theme.fontSize.h5};
 `;
 
 const RegisterButton = styled.button`
@@ -36,6 +37,7 @@ const RegisterButton = styled.button`
   margin: 20px 0;
   border-radius: 4px;
   background-color: ${theme.colors.mainPrimary};
+  font-size: ${theme.fontSize.h5};
   border: 0;
   color: #ffffff;
   cursor: pointer;

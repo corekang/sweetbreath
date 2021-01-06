@@ -36,20 +36,16 @@ const ButtonContent = styled(Link)`
   padding: 5px 0px;
   box-sizing: border-box;
   min-width: 78px;
-  border-radius: 5px;
   color: ${(props) => props.theme.colors.neutralBlack};
+  border-bottom: 2px solid ${(props) => props.theme.colors.neutralWhite};
   text-align: center;
-  text-decoration: none;
   font-weight: 500;
   ${MEDIA_QUERY} {
     min-width: 65px;
   }
   :hover {
-    background-color: ${(props) => props.theme.colors.neutralGrey};
-    color: ${(props) => props.theme.colors.neutralSnow};
-    @media screen and (max-width: 1400px) {
-      background-color: white;
-    }
+    border-bottom: 2px solid ${(props) => props.theme.colors.neutralGrey};
+    color: ${(props) => props.theme.colors.neutralDarkGrey};
   }
   & + & {
     margin-left: 60px;
@@ -85,10 +81,6 @@ const ButtonText = styled(BodyLarge)`
   font-family: serif;
   @media screen and (max-width: 1400px) {
     padding: 9px 0px;
-    border-radius: 5px;
-    :hover {
-      background-color: ${(props) => props.theme.colors.neutralGrey};
-    }
   }
 `;
 
