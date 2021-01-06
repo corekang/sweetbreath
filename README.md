@@ -2,6 +2,8 @@
 
 [Sweetbreath 甜の呼吸 網路甜點工作室](http://sweetbreath.tw/)
 
+![](./img/localhost-index02-20210106.png)
+
 ## 專案介紹
 
 本專案為 Sweet Breath 甜の呼吸甜點購物車前端與後端原始碼，主要開發技術為 React Hooks、
@@ -57,11 +59,12 @@ styled-components、Express、Sequelize、MySQL。
 `訂單管理模組`
 
 - 瀏覽所有訂單明細，依訂單狀態顯示訂單。
-- 管理訂單狀態，處理中訂單可取消。
+- 管理訂單狀態，依付款進度、出貨進度調整訂單狀態，或取消處理中訂單。
+- 取消訂單：後端處理為變更訂單狀態，仍保留訂單資訊。
 
-![](./img/UserFlow-Client-v3.png)
+![](./img/userflow-client-v3.png)
 
-![](./img/UserFlow-Admin-v3.png)
+![](./img/userflow-admin-v3.png)
 
 ## 專案後端
 
