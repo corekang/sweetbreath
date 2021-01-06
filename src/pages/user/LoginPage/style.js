@@ -53,7 +53,7 @@ export const LoginReferLink = styled(Link)`
   }
 `;
 
-export const SocialLogin = styled.div``;
+export const SocialLoginContainer = styled.div``;
 
 export const SocialLoginTitle = styled(H3)`
   border-bottom: 1px solid ${theme.colors.neutralLightGrey};
