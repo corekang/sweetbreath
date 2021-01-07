@@ -32,7 +32,11 @@ export default function MemberPage() {
   // 取得會員訂單資料，第二個參數傳 [user]，這樣 user 變了，這個 effect 才會重新執行
   useEffect(() => {
     if (user.id) {
-      getUserOrders(user.id).then((order) => setOrder(order.data.reverse()));
+      getUserOrders(user.id).then((order) => {
+        if (order.data) {
+          setOrder(order.data.reverse());
+        }
+      });
     }
   }, [user]);
 
