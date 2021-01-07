@@ -17,7 +17,7 @@ function getRecommendProduct() {
     .then((res) => res.json())
     .then((res) => {
       const recommendProducts = res.data.filter(
-        (catergory) => catergory.name === "人氣商品"
+        (category) => category.name === "人氣商品"
       );
       return recommendProducts;
     })

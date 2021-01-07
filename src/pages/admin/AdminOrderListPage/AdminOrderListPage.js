@@ -17,7 +17,9 @@ export default function AdminOrderListPage() {
 
   useEffect(() => {
     getOrders().then((res) => {
-      setOrders(res.data.reverse());
+      if (res.data) {
+        setOrders(res.data.reverse());
+      }
     });
   }, [setOrders]);
 
@@ -35,14 +37,16 @@ export default function AdminOrderListPage() {
     setSelected(value);
 
     getOrders().then((res) => {
-      const allOrders = res.data.reverse();
-      const filterOrders = allOrders.filter((order) => {
-        if (value === "all") return order;
-        if (value === "active") return !order.is_done && !order.is_cancel;
-        if (value === "done") return order.is_done;
-        if (value === "cancel") return order.is_cancel;
-      });
-      setOrders(filterOrders);
+      if (res.data) {
+        const allOrders = res.data.reverse();
+        const filterOrders = allOrders.filter((order) => {
+          if (value === "all") return order;
+          if (value === "active") return !order.is_done && !order.is_cancel;
+          if (value === "done") return order.is_done;
+          if (value === "cancel") return order.is_cancel;
+        });
+        setOrders(filterOrders);
+      }
     });
   };
 

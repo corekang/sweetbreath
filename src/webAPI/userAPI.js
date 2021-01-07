@@ -1,5 +1,5 @@
 import { getAuthToken } from "../utils";
-const BASE_URL = "/api"; // Domain Name
+const BASE_URL = "https://sweetbreath-backend.herokuapp.com"; // Domain Name
 
 export const register = (fullname, username, email, password) => {
   return fetch(`${BASE_URL}/register`, {

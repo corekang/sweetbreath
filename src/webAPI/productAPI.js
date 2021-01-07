@@ -1,5 +1,7 @@
 import { getAuthToken } from "../utils";
-const BASE_URL = "/api"; // Domain Name
+const BASE_URL = "https://sweetbreath-backend.herokuapp.com"; // Domain Name
+
+///// 產品分類管理
 
 // 撈取未刪除分類
 export const getCategory = () => {
@@ -54,7 +56,7 @@ export const addProduct = (
 // 編輯商品
 export const editProduct = (id, name, image, status, info, categoryId) => {
   const token = getAuthToken();
-  return fetch(`/api/product/${id}`, {
+  return fetch(`/product/${id}`, {
     method: "PUT",
     headers: {
       authorization: `Bearer ${token}`,
@@ -85,7 +87,7 @@ export const deleteProduct = (productId) => {
 // 新增規格
 export const addFeature = (id, name, price, promo_price, stock) => {
   const token = getAuthToken();
-  return fetch(`/api/feature/${id}`, {
+  return fetch(`${BASE_URL}/feature/${id}`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
@@ -103,7 +105,7 @@ export const addFeature = (id, name, price, promo_price, stock) => {
 // 編輯規格
 export const editFeature = (id, name, price, promo_price, stock) => {
   const token = getAuthToken();
-  return fetch(`/api/feature/${id}`, {
+  return fetch(`${BASE_URL}/feature/${id}`, {
     method: "PUT",
     headers: {
       authorization: `Bearer ${token}`,
@@ -121,7 +123,51 @@ export const editFeature = (id, name, price, promo_price, stock) => {
 // 刪除規格
 export const deleteFeature = (id) => {
   const token = getAuthToken();
-  return fetch(`/api/feature/${id}`, {
+  return fetch(`${BASE_URL}/feature/${id}`, {
+    method: "DELETE",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+  }).then((res) => res.json());
+};
+
+///// 產品分類管理
+
+// 新增分類 API
+export const addCategory = (addInputValue) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/category`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      name: addInputValue,
+    }),
+  }).then((res) => res.json());
+};
+
+// 編輯分類 API
+export const editCategory = (id, name) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/category/${id}`, {
+    method: "PUT",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      name: `${name}`,
+    }),
+  }).then((res) => res.json());
+};
+
+// 刪除分類 API
+export const deleteCategory = (id) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/category/${id}`, {
     method: "DELETE",
     headers: {
       authorization: `Bearer ${token}`,
