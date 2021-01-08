@@ -13,6 +13,7 @@ export const getCategoryAndProducts = () => {
   return fetch(`${BASE_URL}/category/products`).then((res) => res.json());
 };
 
+// 以分類撈取有上架的產品 API
 export const getCategoryAndLaunchedProducts = () => {
   return fetch(`${BASE_URL}/category/product`).then((res) => res.json());
 };
