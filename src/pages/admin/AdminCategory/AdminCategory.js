@@ -140,8 +140,10 @@ function Category({
         <SettingInput
           type="text"
           placeholder="修改分類名稱..."
-          value={editInputValue}
-          onChange={handleEditInputChange}
+          value={editInputValue[category.id]}
+          onChange={(e) => {
+            handleEditInputChange(e, category.id);
+          }}
           onFocus={handleEditInputFocus}
         ></SettingInput>
         <SettingButton onClick={() => handleEditClick(category.id)}>
@@ -158,7 +160,7 @@ function Category({
 export default function AdminCategory() {
   const [categories, setCategories] = useState([]);
   const [addInputValue, setAddInputValue] = useState("");
-  const [editInputValue, setEditInputValue] = useState("");
+  const [editInputValue, setEditInputValue] = useState({});
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
@@ -175,8 +177,10 @@ export default function AdminCategory() {
   };
 
   // 讀取 edit input 值
-  const handleEditInputChange = (e) => {
-    setEditInputValue(e.target.value);
+  const handleEditInputChange = (e, id) => {
+    setEditInputValue((input) => {
+      return { ...input, [id]: e.target.value };
+    });
   };
 
   const handleEditInputFocus = () => {
@@ -199,21 +203,24 @@ export default function AdminCategory() {
 
   // 編輯分類
   const handleEditClick = (id) => {
-    if (!editInputValue) return;
+    console.log();
+    if (!editInputValue[id]) return;
     // 改畫面
     setCategories(
       categories.map((category) => {
         if (category.id !== id) return category;
-        return { ...category, name: editInputValue };
+        return { ...category, name: editInputValue[id] };
       })
     );
-
     // 改資料庫
-    editCategory(id, editInputValue).then((res) => {
+    editCategory(id, editInputValue[id]).then((res) => {
       if (res.ok === 0) {
         setErrorMessage(res.message);
         return;
       }
+    });
+    setEditInputValue((input) => {
+      return { ...input, [id]: "" };
     });
   };
 
@@ -247,6 +254,7 @@ export default function AdminCategory() {
           <Category
             key={category.id}
             category={category}
+            editInputValue={editInputValue}
             handleEditClick={handleEditClick}
             handleEditInputChange={handleEditInputChange}
             handleEditInputFocus={handleEditInputFocus}
