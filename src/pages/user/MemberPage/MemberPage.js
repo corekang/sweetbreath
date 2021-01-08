@@ -69,8 +69,6 @@ export default function MemberPage() {
     }
     let newBirthday = "";
     let newAdress = "";
-    console.log("birthday:", birthday);
-    console.log("address:", address);
     birthday === "" ? (newBirthday = user.birthday) : (newBirthday = birthday);
     address === "" ? (newAdress = user.address) : (newAdress = address);
     // 變更畫面
