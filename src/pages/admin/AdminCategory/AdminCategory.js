@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { MEDIA_QUERY, H1, H4, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import {
-  getCategoryAndLaunchedProducts,
+  getCategoryAndProducts,
   addCategory,
   editCategory,
   deleteCategory,
@@ -162,7 +162,7 @@ export default function AdminCategory() {
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
-    getCategoryAndLaunchedProducts().then((res) => setCategories(res.data));
+    getCategoryAndProducts().then((res) => setCategories(res.data));
   }, []);
 
   // 讀取 add input 值
