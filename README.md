@@ -1,6 +1,6 @@
 # Sweet Breath 甜之呼吸 - 網路甜點工作室
 
-- [網站 DEMO](http://sweetbreath.tw/)
+- [網站 DEMO](https://corekang.github.io/sweetbreath/#/)
 
 ![](./img/localhost-index02-20210106.png)
 
@@ -78,7 +78,7 @@ Express 和 Sequelize 進行開發。
 
 2. 執行 `npm run start`，在 http://localhost:3000 啟動專案。
 
-3. 執行 `npm run dev`，在 http://localhost:5000 啟動專案後端。
+3. 執行 `npm run dev`，使用 concurrently 實現同時在http://localhost:3000 啟動前端，並在 http://localhost:5000 啟動後端專案。
 
 4. 執行 `npm build`，在 build 資料夾建立專案 production 版本。
 
@@ -99,6 +99,10 @@ Express 和 Sequelize 進行開發。
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
 - [Google Map React](https://github.com/google-map-react/google-map-react)
+- [gh-pages](https://create-react-app.dev/docs/deployment/)官方推薦的快速部署方法
+- [bootstrap](https://getbootstrap.com/)
+- [react-slick](https://react-slick.neostack.com/) 圖片輪播功能
+- [http-proxy-middleware](https://www.npmjs.com/package/http-proxy-middleware) 解決每次串 API 都要寫一串網址的麻煩
 
 #### `第三方 API`
 
