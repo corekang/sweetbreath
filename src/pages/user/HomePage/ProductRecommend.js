@@ -9,22 +9,7 @@ import {
   RecommendContent,
   BlankCard,
 } from "./style";
-
-function getRecommendProduct() {
-  return fetch("/api/category/product", {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      const recommendProducts = res.data.filter(
-        (category) => category.name === "人氣商品"
-      );
-      return recommendProducts;
-    })
-    .then((res) => {
-      return res[0].Products;
-    });
-}
+import { getCategoryAndLaunchedProducts } from "../../../webAPI/productAPI";
 
 function RecommendItem(props) {
   return (
@@ -43,9 +28,19 @@ function RecommendItem(props) {
 export default function ProductRecommend() {
   const [products, setProducts] = useState([]);
 
-  getRecommendProduct().then((res) => {
-    setProducts(res);
-  });
+  getCategoryAndLaunchedProducts()
+    .then((res) => {
+      const recommendProducts = res.data.filter(
+        (category) => category.name === "人氣商品"
+      );
+      return recommendProducts;
+    })
+    .then((res) => {
+      return res[0].Products;
+    })
+    .then((res) => {
+      setProducts(res);
+    });
 
   return (
     <RecommendContent>
