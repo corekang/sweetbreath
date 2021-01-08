@@ -22,17 +22,18 @@ Express 和 Sequelize 進行開發。
 - 瀏覽所有產品：可依照分類檢視產品。
 - 瀏覽單一產品：可瀏覽產品詳細資訊、產品規格與庫存，並可選擇產品數量加入購物車。
 
-![](./img/)
+![](./img/model_product_user.gif)
 
 #### `購物模組`
 
 - 購物車系統：顯示加入購物車的商品，並顯示訂單摘要。
 - 結帳功能：導向登入頁面，登入後輸入配送資料，確認訂單資訊和總額後，即可建立訂單。
 
-![](./img/)
+![](./img/model_creatOrder.gif)
 
 #### `會員模組`
 
+- 會員註冊功能
 - 會員身分驗證功能：登入後可查看或編輯個人相關資訊。
 - 查看訂單：可在消費記錄查看已建立的訂單資訊。
 
@@ -44,6 +45,8 @@ Express 和 Sequelize 進行開發。
 - 關於我們：瀏覽網站架設理念。
 - 最新消息：瀏覽最新消息列表。
 - 聯絡我們：瀏覽店家相關聯絡資訊、Google Maps 實體地址。
+
+![](./img/model_basic.gif)
 
 #### 管理者相關功能
 
@@ -78,7 +81,7 @@ Express 和 Sequelize 進行開發。
 
 2. 執行 `npm run start`，在 http://localhost:3000 啟動專案。
 
-3. 執行 `npm run dev`，使用 concurrently 實現同時在http://localhost:3000 啟動前端，並在 http://localhost:5000 啟動後端專案。
+3. 執行 `npm run dev`，使用 concurrently 實現同時在 http://localhost:3000 啟動前端，並在 http://localhost:5000 啟動後端專案。
 
 4. 執行 `npm build`，在 build 資料夾建立專案 production 版本。
 
