@@ -8,7 +8,7 @@ import TabUser from "./TabUser";
 import TabOrder from "./TabOrder";
 
 export default function MemberPage() {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState("");
   const [order, setOrder] = useState([]);
   const [active, setActive] = useState(0);
   const [fullname, setFullname] = useState("");
@@ -31,7 +31,7 @@ export default function MemberPage() {
 
   // 取得會員訂單資料，第二個參數傳 [user]，這樣 user 變了，這個 effect 才會重新執行
   useEffect(() => {
-    if (user.id) {
+    if (user) {
       getUserOrders(user.id).then((order) => {
         if (order.data) {
           setOrder(order.data.reverse());
@@ -67,10 +67,21 @@ export default function MemberPage() {
       setMessage("電子郵件必填喔！");
       return;
     }
-
+    let newBirthday = "";
+    let newAdress = "";
+    console.log("birthday:", birthday);
+    console.log("address:", address);
+    birthday === "" ? (newBirthday = user.birthday) : (newBirthday = birthday);
+    address === "" ? (newAdress = user.adress) : (newAdress = address);
     // 變更畫面
     setUser((user) => {
-      return { ...user, fullname, email, birthday, address };
+      return {
+        ...user,
+        fullname,
+        email,
+        birthday: newBirthday,
+        address: newAdress,
+      };
     });
 
     setFullname("");
@@ -79,7 +90,8 @@ export default function MemberPage() {
     setAddress("");
 
     // 變更資料庫
-    editUser(fullname, email, birthday, address).then((res) => {
+
+    editUser(fullname, email, newBirthday, newAdress).then((res) => {
       if (res.ok === 1) {
         setMessage(res.message);
         return;
@@ -120,20 +132,22 @@ export default function MemberPage() {
       </Tabs>
       <>
         <Content active={active === 0}>
-          <TabUser
-            user={user}
-            fullname={fullname}
-            email={email}
-            birthday={birthday}
-            address={address}
-            message={message}
-            handleEditUser={handleEditUser}
-            handleEditInputFocus={handleEditInputFocus}
-            handleEditFullname={handleEditFullname}
-            handleEditEmail={handleEditEmail}
-            handleEditBirthday={handleEditBirthday}
-            handleEditAddress={handleEditAddress}
-          />
+          {user && (
+            <TabUser
+              user={user}
+              fullname={fullname}
+              email={email}
+              birthday={birthday}
+              address={address}
+              message={message}
+              handleEditUser={handleEditUser}
+              handleEditInputFocus={handleEditInputFocus}
+              handleEditFullname={handleEditFullname}
+              handleEditEmail={handleEditEmail}
+              handleEditBirthday={handleEditBirthday}
+              handleEditAddress={handleEditAddress}
+            />
+          )}
         </Content>
         <Content active={active === 1}>
           {order.map((order) => (
