@@ -6,7 +6,6 @@ import { MEDIA_QUERY, H1, H4, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
 import {
   getCategoryAndProducts,
-  getCategoryAndLaunchedProducts,
   addCategory,
   editCategory,
   deleteCategory,
@@ -194,7 +193,7 @@ export default function AdminCategory() {
         return;
       }
       setAddInputValue("");
-      getCategoryAndLaunchedProducts().then((res) => setCategories(res.data));
+      getCategoryAndProducts().then((res) => setCategories(res.data));
     });
   };
 
@@ -225,7 +224,7 @@ export default function AdminCategory() {
         setErrorMessage(res.message);
         return;
       }
-      getCategoryAndLaunchedProducts().then((res) => setCategories(res.data));
+      getCategoryAndProducts().then((res) => setCategories(res.data));
     });
   };
 
