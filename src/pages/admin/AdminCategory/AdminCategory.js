@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 
 import { MEDIA_QUERY, H1, H4, Input } from "../../../constants/style";
 import { theme } from "../../../constants/theme";
-import { getAuthToken } from "../../../utils";
+import {
+  getCategoryAndLaunchedProducts,
+  addCategory,
+  editCategory,
+  deleteCategory,
+} from "../../../webAPI/productAPI";
 
 const Content = styled.div`
   max-width: 900px;
@@ -157,7 +162,7 @@ export default function AdminCategory() {
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
-    getCategories().then((res) => setCategories(res.data));
+    getCategoryAndLaunchedProducts().then((res) => setCategories(res.data));
   }, []);
 
   // 讀取 add input 值
@@ -188,7 +193,7 @@ export default function AdminCategory() {
         return;
       }
       setAddInputValue("");
-      getCategories().then((res) => setCategories(res.data));
+      getCategoryAndLaunchedProducts().then((res) => setCategories(res.data));
     });
   };
 
@@ -219,55 +224,8 @@ export default function AdminCategory() {
         setErrorMessage(res.message);
         return;
       }
-      getCategories().then((res) => setCategories(res.data));
+      getCategoryAndLaunchedProducts().then((res) => setCategories(res.data));
     });
-  };
-
-  // 讀取所有分類 API
-  const getCategories = () => {
-    return fetch(`/api/category/product`).then((res) => res.json());
-  };
-
-  // 新增分類 API
-  const addCategory = () => {
-    const token = getAuthToken();
-    return fetch(`/api/category`, {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${token}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        name: addInputValue,
-      }),
-    }).then((res) => res.json());
-  };
-
-  // 編輯分類 API
-  const editCategory = (id, name) => {
-    const token = getAuthToken();
-    return fetch(`/api/category/${id}`, {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${token}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        name: `${name}`,
-      }),
-    }).then((res) => res.json());
-  };
-
-  // 刪除分類 API
-  const deleteCategory = (id) => {
-    const token = getAuthToken();
-    return fetch(`/api/category/${id}`, {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${token}`,
-        "content-type": "application/json",
-      },
-    }).then((res) => res.json());
   };
 
   return (

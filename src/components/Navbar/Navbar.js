@@ -36,7 +36,7 @@ export default function Navbar() {
       </Logo>
       <FunctionBar>
         <NavButton route="/news" title={"最新消息"} />
-        <NavButton route="/products" title={"產品"} />
+        <NavButton route="/products" title={"商品"} />
         <NavButton route="/about" title={"關於我們"} />
         <NavButton route="/contact" title={"聯絡我們"} />
       </FunctionBar>

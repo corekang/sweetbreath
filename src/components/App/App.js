@@ -8,7 +8,6 @@ import {
   HomePage,
   AboutPage,
   LoginPage,
-  LogoutPage,
   RegisterPage,
   ProductListPage,
   ProductPage,
@@ -23,7 +22,6 @@ import {
   AdminEditProductPage,
   AdminMemberPage,
   AdminOrderListPage,
-  AdminNewsPage,
   AdminCategoryPage,
   OrderListPage,
 } from "../../pages";
@@ -39,7 +37,7 @@ function Navbars({ user }) {
 }
 
 function App() {
-  const [user, setUser] = useState(null); // useState("customer")
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (getAuthToken()) {
@@ -68,9 +66,6 @@ function App() {
           </Route>
           <Route exact path="/login">
             <LoginPage />
-          </Route>
-          <Route exact path="/logout">
-            <LogoutPage />
           </Route>
           <Route exact path="/register">
             <RegisterPage />
@@ -122,9 +117,6 @@ function App() {
           </Route>
           <Route exact path="/admin/orders">
             <AdminOrderListPage />
-          </Route>
-          <Route exact path="/admin/news">
-            <AdminNewsPage />
           </Route>
         </Switch>
         <Footer />
