@@ -56,7 +56,7 @@ export const addProduct = (
 // 編輯商品
 export const editProduct = (id, name, image, status, info, categoryId) => {
   const token = getAuthToken();
-  return fetch(`/product/${id}`, {
+  return fetch(`${BASE_URL}/product/${id}`, {
     method: "PUT",
     headers: {
       authorization: `Bearer ${token}`,
