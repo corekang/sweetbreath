@@ -72,7 +72,7 @@ export default function MemberPage() {
     console.log("birthday:", birthday);
     console.log("address:", address);
     birthday === "" ? (newBirthday = user.birthday) : (newBirthday = birthday);
-    address === "" ? (newAdress = user.adress) : (newAdress = address);
+    address === "" ? (newAdress = user.address) : (newAdress = address);
     // 變更畫面
     setUser((user) => {
       return {
