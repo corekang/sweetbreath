@@ -6,9 +6,8 @@ import {
   ContactUsPageTitle,
   ContactUsAboutItem,
 } from "./style";
-import { Map } from "../../../components/Map/Map.js";
-import MessageBoard from "./MessageBoard";
-import { Link } from "react-router-dom";
+import { Map } from "../../../components/Map/Map";
+import { MessageForm, MessageBoard } from "./Message";
 
 export default function ContactUsPage() {
   return (
@@ -32,12 +31,12 @@ export default function ContactUsPage() {
           </ContactUsAboutItem>
           <ContactUsAboutItem>
             版權聲明｜
-            <Link to="https://choosealicense.com/licenses/mit/">
+            <a href="https://choosealicense.com/licenses/mit/" target="_blank">
               MIT License
-            </Link>
+            </a>
           </ContactUsAboutItem>
         </ContactUsAbout>
-        <MessageBoard />
+        <MessageForm />
       </ContactUsInfo>
     </PageContainer>
   );

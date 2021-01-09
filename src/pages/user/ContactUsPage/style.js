@@ -27,20 +27,23 @@ export const ContactUsMap = styled.div`
 
 export const ContactUsInfo = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 30px auto;
   padding-bottom: 20px;
-  border-bottom: 1px solid ${theme.colors.neutralPaleGrey};
 
   ${MEDIA_QUERY} {
-    display: grid;
-    justify-content: center;
+    display: block;
   }
 `;
 
 export const ContactUsAbout = styled.div`
   width: 360px;
   margin-right: 50px;
+
+  ${MEDIA_QUERY} {
+    margin: 0 auto;
+    padding-left: 10px;
+  }
 `;
 
 export const ContactUsPageTitle = styled(H3)`
@@ -49,26 +52,28 @@ export const ContactUsPageTitle = styled(H3)`
 
 export const ContactUsAboutItem = styled(H5)``;
 
-export const ContactUsForm = styled.div`
+export const MessageFormContainer = styled.form`
   width: 350px;
+  margin: 0 auto;
+
   ${MEDIA_QUERY} {
-    margin-top: 30px;
+    margin-top: 60px;
     border-top: 1px solid ${theme.colors.neutralLightGrey};
     padding-top: 40px;
   }
 `;
 
-export const ContactUsInput = styled(InputLine)`
+export const MessageFormInput = styled(InputLine)`
   margin: 10px 0;
   width: 100%;
 `;
 
-export const ContactUsTextarea = styled(Textarea)`
+export const MessageFormTextarea = styled(Textarea)`
   width: 100%;
   margin-left: 0;
 `;
 
-export const ContactUsButton = styled.button`
+export const MessageFormButton = styled.button`
   width: 100%;
   height: 46px;
   margin: 20px 0;
@@ -77,4 +82,48 @@ export const ContactUsButton = styled.button`
   border: 0;
   color: #ffffff;
   cursor: pointer;
+`;
+
+export const MessageBoardContainer = styled.div`
+  width: 760px;
+  margin: 0 auto;
+
+  ${MEDIA_QUERY} {
+    max-width: 350px;
+  }
+`;
+
+export const MessageBoardItem = styled.div`
+  border: 3px solid ${theme.colors.neutralPaleGrey};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+
+  :hover {
+    border: 3px solid ${theme.colors.neutralGrey};
+  }
+
+  ${MEDIA_QUERY} {
+    display: column;
+    justify-content: center;
+  }
+`;
+
+export const MessageBoardItemUser = styled.div`
+  border-right: 1px solid ${theme.colors.neutralLightGrey};
+  width: 200px;
+  text-align: center;
+  padding: 20px;
+
+  ${MEDIA_QUERY} {
+    border-right: none;
+    border-bottom: 1px solid ${theme.colors.neutralLightGrey};
+  }
+`;
+
+export const MessageBoardItemInfo = styled.div`
+  background: red;
+  weight: 200px;
+  height: 300px;
 `;
