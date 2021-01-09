@@ -2,6 +2,10 @@
 
 [網站 DEMO](https://corekang.github.io/sweetbreath/#/)
 
+|--|--|
+|管理員帳號|admin ｜
+|管理員密碼|admin ｜
+
 ![](./img/localhost-index02-20210106.png)
 
 ## 專案介紹
@@ -123,6 +127,14 @@
 「Sweet Breath 甜の呼吸 - 網路甜點工作室」後端原始碼，採用 Express、Sequelize 開發，生成 API 與前端串連。
 
 - 專案連結：[sweetbreath-backend](https://github.com/ivymuchacha/sweetbreath-backend)
+
+## Resource - 資料引用來源
+
+[unsplash](https://unsplash.com/)
+
+## Declaration - 聲明
+
+本作品內圖片、內容等，純粹為個人練習前端使用，不做任何商業用途。
 
 ## 專案授權
 
