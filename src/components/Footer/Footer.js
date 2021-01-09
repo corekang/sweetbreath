@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../constants/theme";
-import { H4, BodyLarge, Caption1 } from "../../constants/style";
+import { H4, BodyLarge, Body } from "../../constants/style";
 import gitHubIcon from "../icon/gitHub.png";
 
 const FooterContent = styled.div`
@@ -33,8 +33,9 @@ const CopyrightContent = styled.div`
   color: ${theme.colors.neutralDarkGrey};
 `;
 
-const CopyrightText = styled(Caption1)`
+const CopyrightText = styled(Body)`
   padding: 3px;
+  margin-right: 5px;
 `;
 
 const ItemText = styled(BodyLarge)`
@@ -44,7 +45,7 @@ const ItemText = styled(BodyLarge)`
 
 const ItemImg = styled.img`
   margin: 10px;
-  heught: 20px;
+  height: 20px;
   width: 20px;
 `;
 
@@ -69,7 +70,7 @@ const SourceLink = styled.a`
 function Item(props) {
   return (
     <ItemWrapper>
-      <ItemText>{props.creater}</ItemText>
+      <ItemText>{props.creator}</ItemText>
       <a href={props.gitHubPage}>
         <ItemImg src={gitHubIcon} />
       </a>
@@ -82,18 +83,18 @@ export default function Footer() {
     <FooterContent>
       <FooterTitle>Created by</FooterTitle>
       <ItemContent>
-        <Item creater={"Core"} gitHubPage={"https://github.com/corekang"} />
+        <Item creator={"Core"} gitHubPage={"https://github.com/corekang"} />
         <Item
-          creater={"Heidi"}
+          creator={"Heidi"}
           gitHubPage={"https://github.com/heidiliu2020"}
         />
-        <Item creater={"Ivy"} gitHubPage={"https://github.com/ivymuchacha"} />
-        <Item creater={"Jim"} gitHubPage={"https://github.com/Oceankj"} />
+        <Item creator={"Ivy"} gitHubPage={"https://github.com/ivymuchacha"} />
+        <Item creator={"Jim"} gitHubPage={"https://github.com/Oceankj"} />
       </ItemContent>
       <CopyrightContent>
         <CopyrightText>© 2020 Lidemy. All rights reserved.</CopyrightText>
         <SourceLink href="https://github.com/corekang/sweetbreath">
-          <Caption1>Source Code.</Caption1>
+          <Body>Source Code.</Body>
         </SourceLink>
       </CopyrightContent>
     </FooterContent>

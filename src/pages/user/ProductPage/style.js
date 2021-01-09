@@ -63,7 +63,7 @@ export const FeatureList = styled.div`
   margin-top: 10px;
   padding: 5px 20px;
   border-radius: 10px;
-
+  border: 1px solid ${(props) => props.theme.colors.neutralWhite};
   :hover {
     border: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
   }

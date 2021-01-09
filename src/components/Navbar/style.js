@@ -17,12 +17,11 @@ export const NavbarContent = styled.div`
   box-sizing: border-box;
   height: 86px;
   padding: 27px;
-  box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${(props) => props.theme.colors.neutralWhite};
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  border: 0px soild black;
+  border: 0px solid black;
   box-shadow: 1px 3px 6px ${(props) => props.theme.colors.neutralLightGrey};
   @media screen and (max-width: 1150px) {
     padding: 0px;

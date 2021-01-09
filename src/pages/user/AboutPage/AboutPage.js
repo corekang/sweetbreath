@@ -25,7 +25,7 @@ const AboutDescription = styled.div`
 
 const Description = styled.div`
   box-sizing: border-box;
-  min-width: 50%;
+  min-width: 60%;
   text-align: center;
   padding: 0px 90px;
   @media screen and (max-width: 1200px) {
