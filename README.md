@@ -2,9 +2,10 @@
 
 [網站 DEMO](https://corekang.github.io/sweetbreath/#/)
 
-|--|--|
-|管理員帳號|admin ｜
-|管理員密碼|admin ｜
+| 測試用身份 | 帳號 | 密碼 |
+| --- | --- | -------- |
+| 管理員 | admin |admin|
+| 會員 | QQQ |QQQ|
 
 ![](./img/localhost-index02-20210106.png)
 
