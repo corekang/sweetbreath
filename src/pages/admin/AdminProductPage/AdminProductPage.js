@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
-import { addProduct } from "../../../webAPI/productAPI";
+import { useState, useEffect } from "react";
+import { addProduct, getCategory } from "../../../webAPI/productAPI";
 import {
   Content,
   Product,
@@ -18,6 +18,7 @@ import QuestionStatusSelect from "./QuestionStatusSelect";
 
 export default function AdminProductPage() {
   const history = useHistory();
+  const [category, setCategory] = useState([]);
   const [product, setProduct] = useState({
     name: "",
     image: "",
@@ -30,6 +31,13 @@ export default function AdminProductPage() {
   });
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  useEffect(() => {
+    getCategory().then((res) => {
+      setCategory(res.data);
+      setProduct({ ...product, CategoryId: res.data[0].id });
+    });
+  }, []);
+
   const handleSubmit = () => {
     const {
       name,
@@ -51,13 +59,15 @@ export default function AdminProductPage() {
       !stock
     ) {
       setError(true);
+      console.log(product);
       return setErrorMessage("請輸入完整商品資訊");
     }
+    const newCategoryId = Number(CategoryId);
     addProduct(
       name,
       image,
       info,
-      CategoryId,
+      newCategoryId,
       feature,
       price,
       promo_price,
@@ -109,7 +119,8 @@ export default function AdminProductPage() {
             <QuestionSelect
               title="分類"
               name="CategoryId"
-              value={product.CategoryId}
+              category={category}
+              value={Number(product.CategoryId)}
               handleChange={handleChange}
             />
             <QuestionText
