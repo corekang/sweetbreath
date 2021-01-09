@@ -17,6 +17,7 @@ export const NavbarContent = styled.div`
   box-sizing: border-box;
   height: 86px;
   padding: 27px;
+  box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${(props) => props.theme.colors.neutralWhite};
   align-items: center;
   justify-content: space-between;
@@ -121,6 +122,9 @@ export const ButtonText = styled(BodyLarge)`
     border-radius: 5px;
     :hover {
       background-color: ${(props) => props.theme.colors.neutralGrey};
+      ${MEDIA_QUERY} {
+        background-color: ${(props) => props.theme.colors.neutralWhite};
+      }
     }
   }
 `;
