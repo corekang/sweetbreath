@@ -59,7 +59,6 @@ export default function AdminProductPage() {
       !stock
     ) {
       setError(true);
-      console.log(product);
       return setErrorMessage("請輸入完整商品資訊");
     }
     const newCategoryId = Number(CategoryId);
