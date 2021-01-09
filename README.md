@@ -1,7 +1,6 @@
 # Sweet Breath 甜の呼吸 - 網路甜點工作室
 
-- [網站](http://sweetbreath.tw/)
-- [網站 GitHub Pages](https://corekang.github.io/sweetbreath/#/)
+[網站 DEMO](https://corekang.github.io/sweetbreath/#/)
 
 ![](./img/localhost-index02-20210106.png)
 
@@ -113,7 +112,7 @@
 - [gh-pages](https://create-react-app.dev/docs/deployment/)：官方推薦的快速部署方法
 - [bootstrap](https://getbootstrap.com/)：套用部分樣式
 - [react-slick](https://react-slick.neostack.com/)：圖片輪播功能
-- [http-proxy-middleware](https://www.npmjs.com/package/http-proxy-middleware)：解決每次串接 API 都要寫一串網址的麻煩使用
+- [http-proxy-middleware](https://www.npmjs.com/package/http-proxy-middleware)：避免每次串接 API 必須帶入一串網址
 
 #### `第三方 API`
 
