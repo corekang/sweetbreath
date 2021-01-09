@@ -14,6 +14,9 @@ export const OrdersListWrapper = styled.div`
     white-space: pre-line;
     letter-spacing: 1.3px;
   }
+  ${MEDIA_QUERY} {
+    padding: 30px 10px;
+  }
 `;
 
 export const OrderStatusButtons = styled.div`
@@ -134,6 +137,7 @@ export const OrderContent = styled.div`
 
   ${MEDIA_QUERY} {
     flex-direction: column;
+    padding: 20px;
   }
 `;
 

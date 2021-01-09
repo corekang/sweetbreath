@@ -17,7 +17,7 @@ export const NavbarContent = styled.div`
   display: flex;
   box-sizing: border-box;
   height: 86px;
-  padding: 15px;
+  padding: 15px 30px;
   box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${(props) => props.theme.colors.neutralWhite};
   box-shadow: 1px 3px 6px ${(props) => props.theme.colors.neutralLightGrey};
@@ -41,20 +41,22 @@ const ButtonContent = styled(Link)`
   border-bottom: 2px solid ${(props) => props.theme.colors.neutralWhite};
   text-align: center;
   font-weight: 500;
-  ${MEDIA_QUERY} {
-    min-width: 65px;
-  }
   :hover {
     border-bottom: 2px solid ${(props) => props.theme.colors.neutralGrey};
     color: ${(props) => props.theme.colors.neutralDarkGrey};
   }
+
+  ${MEDIA_QUERY} {
+    min-width: 65px;
+    :hover {
+      border-bottom: 2px solid ${(props) => props.theme.colors.neutralWhite};
+    }
+  }
+
   & + & {
     margin-left: 60px;
     @media screen and (max-width: 1400px) {
-      margin-left: 30px;
-    }
-    ${MEDIA_QUERY} {
-      margin-left: 10px;
+      margin-left: 20px;
     }
   }
 `;
@@ -104,6 +106,10 @@ export const LogoutButton = styled.button`
   img {
     width: 22px;
     height: 23px;
+  }
+
+  ${MEDIA_QUERY} {
+    margin-left: 5px;
   }
 `;
 
