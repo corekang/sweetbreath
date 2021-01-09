@@ -150,7 +150,7 @@ export const OrderDetail = styled.div`
   }
 `;
 
-export const SettigButtons = styled.div`
+export const SettingButtons = styled.div`
   button {
     background: ${theme.colors.neutralDarkGrey};
     font-size: ${theme.fontSize.bodyLarge};
@@ -188,6 +188,10 @@ export const OrderItemContainer = styled.div`
   &:last-child {
     margin-bottom: 0px;
   }
+
+  ${MEDIA_QUERY} {
+    width: 250px;
+  }
 `;
 
 export const ImgLink = styled(Link)`
@@ -210,6 +214,10 @@ export const OderItemDetails = styled.div`
 
   div {
     font-size: ${(props) => props.theme.fontSize.h5};
+  }
+
+  ${MEDIA_QUERY} {
+    margin: 0;
   }
 `;
 

@@ -9,7 +9,7 @@ import {
   OrderDetail,
   OrderHeader,
   OrderItemsContainer,
-  SettigButtons,
+  SettingButtons,
   SettingStatus,
 } from "./style";
 import PropTypes from "prop-types";
@@ -136,12 +136,12 @@ export function OrderList({ orders, setOrders, order, handleEditOrder }) {
           </IsSentLabel>
         </SettingStatus>
         <div>NT$ {order.total}</div>
-        <SettigButtons>
+        <SettingButtons>
           <button onClick={() => handleIsCancelOrder(order.order_number)}>
             取消
           </button>
           <button onClick={handleDetailClick}>明細</button>
-        </SettigButtons>
+        </SettingButtons>
       </OrderHeader>
       <OrderContent toggle={detailToggle}>
         <OrderDetail>

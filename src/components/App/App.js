@@ -23,7 +23,6 @@ import {
   AdminMemberPage,
   AdminOrderListPage,
   AdminCategoryPage,
-  OrderListPage,
 } from "../../pages";
 import AuthContext from "../../contexts";
 import { getMe } from "../../webAPI/userAPI";
@@ -87,9 +86,6 @@ function App() {
           </Route>
           <Route exact path="/checkout">
             <CheckoutPage />
-          </Route>
-          <Route exact path="/orders">
-            <OrderListPage />
           </Route>
           <Route exact path="/member/:target">
             <MemberPage />

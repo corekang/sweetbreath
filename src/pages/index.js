@@ -16,7 +16,6 @@ import AdminEditProductPage from "./admin/AdminEditProductPage";
 import AdminMemberPage from "./admin/AdminMemberPage";
 import AdminOrderListPage from "./admin/AdminOrderListPage";
 import AdminCategoryPage from "./admin/AdminCategory";
-import OrderListPage from "./user/OrderListPage";
 
 export {
   HomePage,
@@ -37,5 +36,4 @@ export {
   AdminMemberPage,
   AdminOrderListPage,
   AdminCategoryPage,
-  OrderListPage,
 };

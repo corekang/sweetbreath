@@ -36,8 +36,9 @@ export const CartListContainer = styled.div`
   border: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
 
   ${MEDIA_QUERY} {
-    max-width: 440px;
+    max-width: 350px;
     margin: 0 10px;
+    padding: 10px;
   }
 `;
 
@@ -45,6 +46,10 @@ export const CartItemContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 16px 0;
+
+  ${MEDIA_QUERY} {
+    margin: 8px 0;
+  }
 `;
 
 export const ImgLink = styled(Link)`
@@ -54,6 +59,11 @@ export const ImgLink = styled(Link)`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
+
+  ${MEDIA_QUERY} {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 export const CartItemContent = styled.div`
@@ -62,6 +72,10 @@ export const CartItemContent = styled.div`
 
   margin-left: 20px;
   flex: 1;
+
+  ${MEDIA_QUERY} {
+    margin-left: 10px;
+  }
 `;
 
 export const OderItemDetails = styled.div`
@@ -114,7 +128,9 @@ export const CounterIcon = styled(Icon)`
   color: ${(props) => props.theme.colors.mainPrimary};
 `;
 
-export const CartItemPrice = styled(H4)``;
+export const CartItemPrice = styled(H4)`
+  margin: 0;
+`;
 
 export const CartSummaryContainer = styled.div`
   width: 360px;
