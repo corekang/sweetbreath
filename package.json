@@ -2,7 +2,7 @@
   "name": "sweetbreath",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://corekang.github.io/sweetbreath",
+  "homepage": "https://sweetbreath.tw",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
