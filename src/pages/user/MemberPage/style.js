@@ -43,7 +43,9 @@ export const TabUserItem = styled.div`
     background: ${(props) =>
       props.editable ? theme.colors.neutralLightGrey : ""};
   }
-}
+  ${MEDIA_QUERY} {
+    width: 100%;
+  }
 `;
 
 export const TabUserItemTitle = styled.div`
@@ -109,6 +111,9 @@ export const TabOrderItem = styled.div`
     #totalPrize {
       background: ${theme.colors.mainSecondary};
     }
+  }
+  ${MEDIA_QUERY} {
+    width: 100%;
   }
 `;
 

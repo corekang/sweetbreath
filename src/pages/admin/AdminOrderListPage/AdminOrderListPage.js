@@ -17,7 +17,9 @@ export default function AdminOrderListPage() {
 
   useEffect(() => {
     getOrders().then((res) => {
-      setOrders(res.data.reverse());
+      if (res.data) {
+        setOrders(res.data.reverse());
+      }
     });
   }, [setOrders]);
 
@@ -35,14 +37,16 @@ export default function AdminOrderListPage() {
     setSelected(value);
 
     getOrders().then((res) => {
-      const allOrders = res.data.reverse();
-      const filterOrders = allOrders.filter((order) => {
-        if (value === "all") return order;
-        if (value === "active") return !order.is_done && !order.is_cancel;
-        if (value === "done") return order.is_done;
-        if (value === "cancel") return order.is_cancel;
-      });
-      setOrders(filterOrders);
+      if (res.data) {
+        const allOrders = res.data.reverse();
+        const filterOrders = allOrders.filter((order) => {
+          if (value === "all") return order;
+          if (value === "active") return !order.is_done && !order.is_cancel;
+          if (value === "done") return order.is_done;
+          if (value === "cancel") return order.is_cancel;
+        });
+        setOrders(filterOrders);
+      }
     });
   };
 
@@ -75,13 +79,13 @@ export default function AdminOrderListPage() {
           已取消
         </StatusButton>
       </OrderStatusButtons>
-      <OrdersContainer>
+      <OrdersContainer border="1">
         <OrderTableHeader>
-          <div>訂單號碼</div>
-          <div>訂單日期</div>
-          <div>訂單狀態</div>
-          <div>合計</div>
-          <div>操作</div>
+          <th>訂單號碼</th>
+          <th>訂單日期</th>
+          <th>訂單狀態</th>
+          <th>合計</th>
+          <th>操作</th>
         </OrderTableHeader>
         {!orders ? (
           <NoOrder>查無訂單</NoOrder>

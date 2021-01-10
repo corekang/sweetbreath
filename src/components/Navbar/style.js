@@ -22,7 +22,7 @@ export const NavbarContent = styled.div`
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  border: 0px soild black;
+  border: 0px solid black;
   box-shadow: 1px 3px 6px ${(props) => props.theme.colors.neutralLightGrey};
   @media screen and (max-width: 1150px) {
     padding: 0px;
@@ -122,6 +122,9 @@ export const ButtonText = styled(BodyLarge)`
     border-radius: 5px;
     :hover {
       background-color: ${(props) => props.theme.colors.neutralGrey};
+      ${MEDIA_QUERY} {
+        background-color: ${(props) => props.theme.colors.neutralWhite};
+      }
     }
   }
 `;

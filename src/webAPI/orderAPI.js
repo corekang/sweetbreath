@@ -1,5 +1,5 @@
 import { getAuthToken } from "../utils";
-const BASE_URL = "/api"; // Domain Name
+const BASE_URL = "https://sweetbreath-backend.herokuapp.com"; // Domain Name
 
 // 建立訂單
 export const creatOrder = (orderDetail) => {
@@ -45,8 +45,8 @@ export const editOrder = (editData) => {
   return fetch(`${BASE_URL}/order/${editData.orderNumber}`, {
     method: "PUT",
     headers: {
-      "content-type": "application/json",
       authorization: `Bearer ${token}`,
+      "content-type": "application/json",
     },
     body: JSON.stringify({
       is_paid: editData.isPaid,

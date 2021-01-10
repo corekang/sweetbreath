@@ -77,7 +77,7 @@ export const CheckoutForm = styled.form`
   margin: 20px 80px 0 0;
 
   ${MEDIA_QUERY} {
-    max-width: 360px;
+    max-width: 350px;
     margin: 20px;
   }
 `;
@@ -141,7 +141,7 @@ export const OrderListContainer = styled.div`
   border: 1px solid ${theme.colors.neutralLightGrey};
 
   ${MEDIA_QUERY} {
-    max-width: 360px;
+    max-width: 350px;
   }
 `;
 
@@ -161,6 +161,13 @@ export const OrderItemContainer = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+  }
+
+  ${MEDIA_QUERY} {
+    img {
+      width: 100px;
+      height: 100px;
+    }
   }
 `;
 

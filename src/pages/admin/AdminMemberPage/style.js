@@ -25,6 +25,7 @@ export const MemberSetting = styled.div`
 
   ${MEDIA_QUERY} {
     display: grid;
+    align-items: center;
   }
 `;
 
@@ -55,6 +56,9 @@ export const Member = styled.div`
 
 export const MemberInformation = styled.div`
   display: flex;
+  @media screen and (max-width: 1100px) {
+    display: block;
+  }
 `;
 
 export const MemberItem = styled.div`
@@ -87,8 +91,7 @@ export const SettingButton = styled.button`
         : props.theme.colors.uiPositive};
   }
   ${MEDIA_QUERY} {
-    margin: 15px;
-    min-width: 40px;
+    width: 60px;
     font-size: ${(props) => props.theme.fontSize.h5};
   }
 `;

@@ -17,17 +17,18 @@ export const NavbarContent = styled.div`
   display: flex;
   box-sizing: border-box;
   height: 86px;
-  padding: 30px;
+  padding: 15px 30px;
   box-shadow: 0 0 1px 0 #bdbdbd;
   background-color: ${(props) => props.theme.colors.neutralWhite};
+  box-shadow: 1px 3px 6px ${(props) => props.theme.colors.neutralLightGrey};
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  border: 0px soild black;
+  border: 0px solid black;
   @media screen and (max-width: 1400px) {
     justify-content: center;
     display: block;
-    padding-bottom: 30px;
+    padding-bottom: 15px;
     height: auto;
   }
 `;
@@ -40,20 +41,22 @@ const ButtonContent = styled(Link)`
   border-bottom: 2px solid ${(props) => props.theme.colors.neutralWhite};
   text-align: center;
   font-weight: 500;
-  ${MEDIA_QUERY} {
-    min-width: 65px;
-  }
   :hover {
     border-bottom: 2px solid ${(props) => props.theme.colors.neutralGrey};
     color: ${(props) => props.theme.colors.neutralDarkGrey};
   }
+
+  ${MEDIA_QUERY} {
+    min-width: 65px;
+    :hover {
+      border-bottom: 2px solid ${(props) => props.theme.colors.neutralWhite};
+    }
+  }
+
   & + & {
     margin-left: 60px;
     @media screen and (max-width: 1400px) {
-      margin-left: 30px;
-    }
-    ${MEDIA_QUERY} {
-      margin-left: 10px;
+      margin-left: 20px;
     }
   }
 `;
@@ -67,7 +70,7 @@ export const FunctionBar = styled.div`
   }
   & + & {
     @media screen and (max-width: 1400px) {
-      margin-top: 30px;
+      margin-top: 10px;
       padding-top: 15px;
       border-top: 1px solid ${(props) => props.theme.colors.neutralLightGrey};
     }
@@ -103,6 +106,10 @@ export const LogoutButton = styled.button`
   img {
     width: 22px;
     height: 23px;
+  }
+
+  ${MEDIA_QUERY} {
+    margin-left: 5px;
   }
 `;
 
