@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { H1, H3, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
+import { H1, BodyLarge, MEDIA_QUERY } from "../../../constants/style";
 import sweetBreath from "../../../components/icon/sweetBreath.png";
 
 const AboutContent = styled.div`
