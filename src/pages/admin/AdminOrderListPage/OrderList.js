@@ -4,7 +4,7 @@ import {
   IsDoneLabel,
   IsPaidLabel,
   IsSentLabel,
-  OrderContainer,
+  OrderContents,
   OrderContent,
   OrderDetail,
   OrderHeader,
@@ -115,11 +115,14 @@ export function OrderList({ orders, setOrders, order, handleEditOrder }) {
   };
 
   return (
-    <OrderContainer>
+    <>
       <OrderHeader>
-        <div> {order.order_number}</div>
-        <div> {new Date(`${order.createdAt}`).toLocaleString()}</div>
-        <SettingStatus>
+        <td data-title="訂單號碼"> {order.order_number}</td>
+        <td data-title="訂單日期">
+          {" "}
+          {new Date(`${order.createdAt}`).toLocaleString()}
+        </td>
+        <SettingStatus data-title="訂單狀態">
           <IsDoneLabel
             isCancel={order.is_cancel}
             isDone={order.is_done}
@@ -135,32 +138,36 @@ export function OrderList({ orders, setOrders, order, handleEditOrder }) {
             {order.is_sent ? "已出貨" : "未出貨"}
           </IsSentLabel>
         </SettingStatus>
-        <div>NT$ {order.total}</div>
-        <SettingButtons>
+        <td data-title="合計">NT$ {order.total}</td>
+        <SettingButtons data-title="操作">
           <button onClick={() => handleIsCancelOrder(order.order_number)}>
             取消
           </button>
           <button onClick={handleDetailClick}>明細</button>
         </SettingButtons>
       </OrderHeader>
-      <OrderContent toggle={detailToggle}>
-        <OrderDetail>
-          <div>訂購人：{order.buyer_fullname}</div>
-          <div>電子信箱：{order.buyer_email}</div>
-          <div>電話號碼：{order.buyer_phone}</div>
-          <div>郵遞區號：{order.postal_code}</div>
-          <div>收件地址：{order.buyer_address}</div>
-        </OrderDetail>
-        <OrderItemsContainer>
-          {order.OrderItems.map((orderItem) => (
-            <OrderItem
-              key={orderItem.product_id && orderItem.product_feature}
-              orderItem={orderItem}
-            />
-          ))}
-        </OrderItemsContainer>
-      </OrderContent>
-    </OrderContainer>
+      <OrderContents toggle={detailToggle}>
+        <td colSpan={5}>
+          <OrderContent>
+            <OrderDetail>
+              <div>訂購人：{order.buyer_fullname}</div>
+              <div>電子信箱：{order.buyer_email}</div>
+              <div>電話號碼：{order.buyer_phone}</div>
+              <div>郵遞區號：{order.postal_code}</div>
+              <div>收件地址：{order.buyer_address}</div>
+            </OrderDetail>
+            <OrderItemsContainer>
+              {order.OrderItems.map((orderItem) => (
+                <OrderItem
+                  key={orderItem.product_id && orderItem.product_feature}
+                  orderItem={orderItem}
+                />
+              ))}
+            </OrderItemsContainer>
+          </OrderContent>
+        </td>
+      </OrderContents>
+    </>
   );
 }
 

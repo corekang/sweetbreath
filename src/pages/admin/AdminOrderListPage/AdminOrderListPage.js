@@ -79,13 +79,13 @@ export default function AdminOrderListPage() {
           已取消
         </StatusButton>
       </OrderStatusButtons>
-      <OrdersContainer>
+      <OrdersContainer border="1">
         <OrderTableHeader>
-          <div>訂單號碼</div>
-          <div>訂單日期</div>
-          <div>訂單狀態</div>
-          <div>合計</div>
-          <div>操作</div>
+          <th>訂單號碼</th>
+          <th>訂單日期</th>
+          <th>訂單狀態</th>
+          <th>合計</th>
+          <th>操作</th>
         </OrderTableHeader>
         {!orders ? (
           <NoOrder>查無訂單</NoOrder>

@@ -54,51 +54,76 @@ export const StatusButton = styled.button`
   }
 `;
 
-export const OrdersContainer = styled.div`
+export const OrdersContainer = styled.table`
   border: 1px solid ${theme.colors.neutralLightGrey};
+  align-items: center;
+  border-collapse: collapse;
+  min-width: 100%;
+  ${MEDIA_QUERY} {
+    margin-right: 20px;
+
+    overflow: auto;
+  }
 `;
 
-export const OrderTableHeader = styled.div`
-  display: flex;
+export const OrderTableHeader = styled.tr`
   font-size: ${theme.fontSize.h4};
   background: ${theme.colors.mainPrimary};
 
-  div {
-    width: 112px;
-    padding: 12px 0;
-    border-right: 1px solid ${theme.colors.neutralSnow};
-    color: ${theme.colors.neutralSnow};
-    text-align: center;
-    flex: 1;
+  th {
+    font-weight: bold;
+    color: ${theme.colors.neutralWhite};
+    padding: 10px;
+    height: 50px;
+    ${MEDIA_QUERY} {
+      display: none;
+    }
   }
 `;
 
 export const OrderContainer = styled.div``;
 
-export const OrderHeader = styled.div`
-  display: flex;
+export const OrderHeader = styled.tr`
   align-items: center;
   border: 1px solid ${theme.colors.neutralLightGrey};
   background: ${theme.colors.neutralSnow};
 
-  div {
+  td {
     font-size: ${theme.fontSize.h5};
     align-items: center;
-    width: 142px;
     padding: 12px 0;
     flex: 1;
     text-align: center;
     text-overflow: ellipsis;
     overflow: hidden;
+
+    ${MEDIA_QUERY} {
+      display: block;
+      height: 60px;
+      padding: 5px;
+      margin-top: 5px;
+
+      :before {
+        margin-left: 10px;
+        color: black;
+        content: attr(data-title);
+        float: left;
+        font-weight: bold;
+      }
+    }
   }
 `;
 
-export const SettingStatus = styled.div`
+export const SettingStatus = styled.td`
   display: flex;
   justify-content: center;
 
   ${MEDIA_QUERY} {
     flex-direction: column;
+    display: block;
+    margin-top: 10px;
+    border: none;
+    height: 30px;
   }
 `;
 
@@ -130,31 +155,33 @@ export const IsSentLabel = styled(OrderStatusLabel)`
   ${(props) => props.isSent && `background: ${theme.colors.uiPositive}`}
 `;
 
-export const OrderContent = styled.div`
-  align-items: flex-start;
-  padding: 20px 50px;
-  display: ${(props) => (props.toggle ? `flex` : `none`)};
+export const OrderContents = styled.tr`
+  display: ${(props) => (props.toggle ? "table-row" : "none")};
+`;
 
+export const OrderContent = styled.div`
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
   ${MEDIA_QUERY} {
-    flex-direction: column;
     padding: 20px;
+    display: block;
   }
 `;
 
 export const OrderDetail = styled.div`
-  width: 400px;
   line-height: 1.8;
-  font-size: ${theme.fontSize.h4};
 
+  font-size: ${theme.fontSize.h4};
+  min-width: 35%;
   ${MEDIA_QUERY} {
-    max-width: 300px;
     margin-bottom: 30px;
     padding-bottom: 15px;
     border-bottom: 1px solid ${theme.colors.neutralLightGrey};
   }
 `;
 
-export const SettingButtons = styled.div`
+export const SettingButtons = styled.td`
   button {
     background: ${theme.colors.neutralDarkGrey};
     font-size: ${theme.fontSize.bodyLarge};
@@ -166,10 +193,6 @@ export const SettingButtons = styled.div`
 
     :hover {
       background: ${theme.colors.uiNegative};
-    }
-
-    ${MEDIA_QUERY} {
-      margin: 10px;
     }
   }
 `;
@@ -194,7 +217,7 @@ export const OrderItemContainer = styled.div`
   }
 
   ${MEDIA_QUERY} {
-    width: 250px;
+    max-width: 250px;
   }
 `;
 

@@ -14,7 +14,7 @@ export const CategoryHeader = styled.div`
   justify-content: space-between;
 
   ${MEDIA_QUERY} {
-    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -22,7 +22,8 @@ export const CategoryList = styled.div`
   display: flex;
   align-items: center;
   ${MEDIA_QUERY} {
-    justify-content: center;
+    display: block;
+    justify-content: left;
   }
 `;
 
@@ -100,6 +101,9 @@ export const ProductItemContainer = styled.div`
 
 export const ProductDescContainer = styled.div`
   display: flex;
+  ${MEDIA_QUERY} {
+    display: block;
+  }
 `;
 
 export const ProductDesc = styled(H5)`
