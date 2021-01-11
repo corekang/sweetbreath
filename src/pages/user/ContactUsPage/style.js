@@ -83,3 +83,54 @@ export const MessageFormButton = styled.button`
   color: #ffffff;
   cursor: pointer;
 `;
+
+export const MessageBoardContainer = styled.div`
+  width: 760px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  ${MEDIA_QUERY} {
+    margin-top: 20px;
+    max-width: 350px;
+  }
+`;
+
+export const MessageBoardItem = styled.div`
+  border: 2px solid ${theme.colors.neutralLightGrey};
+  padding: 10px;
+  margin-bottom: 20px;
+
+  &:nth-child(1) {
+    border: 2px solid ${theme.colors.neutralGrey};
+  }
+
+  :hover {
+    border: none;
+    box-shadow: 0 3px 22px 1px rgba(100, 100, 100, 0.32);
+  }
+`;
+
+export const MessageBoardItemContent = styled.div`
+  border-bottom: 1px solid ${theme.colors.neutralLightGrey};
+  height: 70%;
+  padding-bottom: 20px;
+  line-height: 26px;
+  word-break: keep-all;
+`;
+
+export const MessageBoardItemUesr = styled.div`
+  text-align: right;
+  padding-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  ${MEDIA_QUERY} {
+    display: block;
+    justify-content: center;
+  }
+`;
+
+export const MessageBoardEmpty = styled.div`
+  margin: 0 auto;
+`;

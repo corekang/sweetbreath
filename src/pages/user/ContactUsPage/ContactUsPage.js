@@ -5,11 +5,34 @@ import {
   ContactUsAbout,
   ContactUsPageTitle,
   ContactUsAboutItem,
+  MessageBoardEmpty,
 } from "./style";
+import React, { useState, useEffect } from "react";
 import { Map } from "../../../components/Map/Map";
-import MessageForm from "./Message";
+import { MessageForm } from "./MessageForm";
+import { MessageBoard } from "./MessageBoard";
+
+function writeTodosToLocalStorage(eachEntry) {
+  window.localStorage.setItem("messageboard", JSON.stringify(eachEntry));
+}
 
 export default function ContactUsPage() {
+  const [messageboard, setMessageboard] = useState([]);
+  const updateMessageboardArray = (eachEntry) => {
+    setMessageboard([...messageboard, eachEntry]);
+  };
+
+  useEffect(() => {
+    const messageboardData = window.localStorage.getItem("messageboard") || "";
+    if (messageboardData) {
+      setMessageboard(JSON.parse(messageboardData));
+    }
+  }, []);
+
+  useEffect(() => {
+    writeTodosToLocalStorage(messageboard);
+  }, [messageboard]);
+
   return (
     <PageContainer>
       <ContactUsMap>
@@ -36,8 +59,17 @@ export default function ContactUsPage() {
             </a>
           </ContactUsAboutItem>
         </ContactUsAbout>
-        <MessageForm />
+        <MessageForm updateMessageboardArray={updateMessageboardArray} />
       </ContactUsInfo>
+      {messageboard.length > 0 ? (
+        <>
+          <MessageBoard messageboard={messageboard} />
+        </>
+      ) : (
+        <MessageBoardEmpty>
+          <h3>——　尚無留言，歡迎提問　——</h3>
+        </MessageBoardEmpty>
+      )}
     </PageContainer>
   );
 }
