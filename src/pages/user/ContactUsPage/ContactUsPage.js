@@ -54,7 +54,11 @@ export default function ContactUsPage() {
           </ContactUsAboutItem>
           <ContactUsAboutItem>
             版權聲明｜
-            <a href="https://choosealicense.com/licenses/mit/" target="_blank">
+            <a
+              href="https://choosealicense.com/licenses/mit/"
+              target="_blank"
+              rel="noreferrer"
+            >
               MIT License
             </a>
           </ContactUsAboutItem>

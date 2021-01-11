@@ -45,7 +45,7 @@ export default function ProductPage() {
     });
     getProduct(id).then((res) => {
       const features = res.data.Features.map((feature) => {
-        feature.number = 0;
+        feature.number = 1;
         return feature;
       });
       const { CategoryId, id, image, info, name } = res.data;
