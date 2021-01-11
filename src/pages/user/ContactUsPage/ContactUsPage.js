@@ -7,7 +7,7 @@ import {
   ContactUsAboutItem,
 } from "./style";
 import { Map } from "../../../components/Map/Map";
-import { MessageForm, MessageBoard } from "./Message";
+import MessageForm from "./Message";
 
 export default function ContactUsPage() {
   return (

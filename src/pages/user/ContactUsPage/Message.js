@@ -3,35 +3,14 @@ import {
   MessageFormInput,
   MessageFormTextarea,
   MessageFormButton,
-  MessageBoardContainer,
-  MessageBoardItem,
-  MessageBoardItemUser,
-  MessageBoardItemInfo,
 } from "./style";
 import React, { useState } from "react";
 
-export const MessageBoard = ({ message }) => {
-  return (
-    <MessageBoardContainer>
-      <MessageBoardItem>
-        <MessageBoardItemUser>
-          <b>username</b>
-          <br />
-          <b>email</b>
-          <br />
-          <b>phone</b>
-        </MessageBoardItemUser>
-        <MessageBoardItemInfo>{message}</MessageBoardItemInfo>
-      </MessageBoardItem>
-    </MessageBoardContainer>
-  );
-};
-
-export function MessageForm() {
+export default function MessageForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [messages, setMessages] = useState([123, 456, 555]);
+  const [messages, setMessages] = useState(""); // [test, test2]
 
   const handleSubmit = (e) => {
     e.preventDefault();
