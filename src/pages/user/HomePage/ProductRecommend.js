@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Product,
@@ -28,19 +28,21 @@ function RecommendItem(props) {
 export default function ProductRecommend() {
   const [products, setProducts] = useState([]);
 
-  getCategoryAndLaunchedProducts()
-    .then((res) => {
-      const recommendProducts = res.data.filter(
-        (category) => category.name === "人氣商品"
-      );
-      return recommendProducts;
-    })
-    .then((res) => {
-      return res[0].Products;
-    })
-    .then((res) => {
-      setProducts(res);
-    });
+  useEffect(() => {
+    getCategoryAndLaunchedProducts()
+      .then((res) => {
+        const recommendProducts = res.data.filter(
+          (category) => category.name === "人氣商品"
+        );
+        return recommendProducts;
+      })
+      .then((res) => {
+        return res[0].Products;
+      })
+      .then((res) => {
+        setProducts(res);
+      });
+  }, []);
 
   return (
     <RecommendContent>
