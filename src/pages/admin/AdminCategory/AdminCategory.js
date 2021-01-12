@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Category from "./Category";
 import {
   AddButton,
@@ -15,15 +15,22 @@ import {
   editCategory,
   deleteCategory,
 } from "../../../webAPI/productAPI";
+import { LoadingContext } from "../../../contexts";
+import Loading from "../../../components/Loading";
 
 export default function AdminCategory() {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [categories, setCategories] = useState([]);
   const [addInputValue, setAddInputValue] = useState("");
   const [editInputValue, setEditInputValue] = useState({});
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
-    getCategoryAndProducts().then((res) => setCategories(res.data));
+    setIsLoading(true);
+    getCategoryAndProducts().then((res) => {
+      setCategories(res.data);
+      setIsLoading(false);
+    });
   }, []);
 
   // 讀取 add input 值
@@ -97,30 +104,36 @@ export default function AdminCategory() {
   return (
     <Content>
       <H1>分類管理</H1>
-      <AddCategoryContainer>
-        <AddInput
-          type="text"
-          placeholder="輸入分類名稱"
-          onChange={handleAddInputChange}
-          onFocus={handleAddInputFocus}
-          value={addInputValue}
-        ></AddInput>
-        <AddButton onClick={handleAddClick}>新增分類</AddButton>
-      </AddCategoryContainer>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      <CategoryContainer>
-        {categories.map((category) => (
-          <Category
-            key={category.id}
-            category={category}
-            editInputValue={editInputValue}
-            handleEditClick={handleEditClick}
-            handleEditInputChange={handleEditInputChange}
-            handleEditInputFocus={handleEditInputFocus}
-            handleDeleteClick={handleDeleteClick}
-          />
-        ))}
-      </CategoryContainer>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <AddCategoryContainer>
+            <AddInput
+              type="text"
+              placeholder="輸入分類名稱"
+              onChange={handleAddInputChange}
+              onFocus={handleAddInputFocus}
+              value={addInputValue}
+            ></AddInput>
+            <AddButton onClick={handleAddClick}>新增分類</AddButton>
+          </AddCategoryContainer>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          <CategoryContainer>
+            {categories.map((category) => (
+              <Category
+                key={category.id}
+                category={category}
+                editInputValue={editInputValue}
+                handleEditClick={handleEditClick}
+                handleEditInputChange={handleEditInputChange}
+                handleEditInputFocus={handleEditInputFocus}
+                handleDeleteClick={handleDeleteClick}
+              />
+            ))}
+          </CategoryContainer>
+        </>
+      )}
     </Content>
   );
 }

@@ -3,13 +3,16 @@ import {
   RegisterInput,
   RegisterButton,
   ErrorMessage,
+  SubmitLoading,
 } from "./style";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { register } from "../../../webAPI/userAPI";
 import { setAuthToken } from "../../../utils";
+import { LoadingContext } from "../../../contexts";
 
 export default function Register() {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -18,16 +21,18 @@ export default function Register() {
   const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setErrorMessage(null);
     register(fullname, username, email, password).then((data) => {
-      console.log(data);
       if (data.ok !== 1) {
+        setIsLoading(false);
         setFullname("");
         setUsername("");
         setEmail("");
         setPassword("");
         return setErrorMessage(data.message);
       }
+      setIsLoading(false);
       setAuthToken(data.token);
       history.push("/");
       window.location.reload();
@@ -35,7 +40,7 @@ export default function Register() {
   };
   const handleEmail = (value) => {
     if (
-      !/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/.test(
+      !/^\w+((-\w+)|(\.\w+))*[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/.test(
         value
       )
     ) {
@@ -84,7 +89,13 @@ export default function Register() {
           type="password"
           placeholder="密碼"
         />
-        <RegisterButton>註冊</RegisterButton>
+        {isLoading ? (
+          <SubmitLoading>資料驗證中...</SubmitLoading>
+        ) : (
+          <>
+            <RegisterButton>註冊</RegisterButton>
+          </>
+        )}
       </RegisterForm>
     </>
   );

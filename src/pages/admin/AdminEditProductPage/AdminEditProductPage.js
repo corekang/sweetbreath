@@ -1,5 +1,5 @@
 import { useHistory, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   getProduct,
   editProduct,
@@ -26,8 +26,11 @@ import Question from "./Question";
 import QuestionText from "./QuestionText";
 import QuestionSelect from "./QuestionSelect";
 import QuestionStatusSelect from "./QuestionStatusSelect";
+import { LoadingContext } from "../../../contexts";
+import Loading from "../../../components/Loading";
 
 export default function AdminProductPage() {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const { id } = useParams();
   const history = useHistory();
   const [add, setAdd] = useState(false);
@@ -49,6 +52,18 @@ export default function AdminProductPage() {
     price: "",
     errorMessage: "",
   });
+
+  useEffect(() => {
+    setIsLoading(true);
+    getProduct(id).then((res) => {
+      setIsLoading(false);
+      const { id, name, image, status, CategoryId, info, Features } = res.data;
+      let addErrorFeatures = Features;
+      addErrorFeatures.map((item) => (item.errorMessage = ""));
+      setProduct({ id, name, image, status, CategoryId, info });
+      setFeatures(addErrorFeatures);
+    });
+  }, []);
 
   const handleProductEdit = () => {
     const { name, image, status, CategoryId, info } = product;
@@ -253,164 +268,163 @@ export default function AdminProductPage() {
     setFeatures(newFeatures);
   };
 
-  useEffect(() => {
-    getProduct(id).then((res) => {
-      const { id, name, image, status, CategoryId, info, Features } = res.data;
-      let addErrorFeatures = Features;
-      addErrorFeatures.map((item) => (item.errorMessage = ""));
-      setProduct({ id, name, image, status, CategoryId, info });
-      setFeatures(addErrorFeatures);
-    });
-  }, []);
-
   return (
     <Content>
-      <Product>
-        <ProductImage>
-          <img src={product.image} alt="product"></img>
-        </ProductImage>
-        <ProductDesc>
-          <AdminTitle>商品資訊</AdminTitle>
-          <ProductContent>
-            <Question
-              title="商品名稱"
-              name="name"
-              value={product.name}
-              handleChange={handleChange}
-            />
-            <Question
-              title="圖片網址"
-              name="image"
-              value={product.image}
-              handleChange={handleChange}
-            />
-            <QuestionStatusSelect
-              title="狀態"
-              name="status"
-              value={product.status}
-              handleChange={handleChange}
-            />
-            <QuestionSelect
-              title="分類"
-              name="CategoryId"
-              value={product.CategoryId}
-              handleChange={handleChange}
-            />
-            <QuestionText
-              title="商品介紹"
-              name="info"
-              value={product.info}
-              handleChange={handleChange}
-            />
-            <Error error={error}>{product.errorMessage}</Error>
-            <AdminBtn>
-              <SubmitButton onClick={handleProductEdit}>提交</SubmitButton>
-            </AdminBtn>
-            <AdminFeature>
-              <AdminTitle>商品規格</AdminTitle>
-              {features &&
-                features.map((feature) => (
-                  <FeatureItem key={feature.id}>
-                    <Question
-                      title="規格名稱"
-                      name="name"
-                      value={feature.name}
-                      handleChange={handleFeatureChange(feature.id)}
-                    />
-                    <Question
-                      title="原價"
-                      name="price"
-                      value={feature.price}
-                      handleChange={handleFeatureChange(feature.id)}
-                    />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Product>
+            <ProductImage>
+              <img src={product.image} alt="product"></img>
+            </ProductImage>
+            <ProductDesc>
+              <AdminTitle>商品資訊</AdminTitle>
+              <ProductContent>
+                <Question
+                  title="商品名稱"
+                  name="name"
+                  value={product.name}
+                  handleChange={handleChange}
+                />
+                <Question
+                  title="圖片網址"
+                  name="image"
+                  value={product.image}
+                  handleChange={handleChange}
+                />
+                <QuestionStatusSelect
+                  title="狀態"
+                  name="status"
+                  value={product.status}
+                  handleChange={handleChange}
+                />
+                <QuestionSelect
+                  title="分類"
+                  name="CategoryId"
+                  value={product.CategoryId}
+                  handleChange={handleChange}
+                />
+                <QuestionText
+                  title="商品介紹"
+                  name="info"
+                  value={product.info}
+                  handleChange={handleChange}
+                />
+                <Error error={error}>{product.errorMessage}</Error>
+                <AdminBtn>
+                  <SubmitButton onClick={handleProductEdit}>提交</SubmitButton>
+                </AdminBtn>
+                <AdminFeature>
+                  <AdminTitle>商品規格</AdminTitle>
+                  {features &&
+                    features.map((feature) => (
+                      <FeatureItem key={feature.id}>
+                        <Question
+                          title="規格名稱"
+                          name="name"
+                          value={feature.name}
+                          handleChange={handleFeatureChange(feature.id)}
+                        />
+                        <Question
+                          title="原價"
+                          name="price"
+                          value={feature.price}
+                          handleChange={handleFeatureChange(feature.id)}
+                        />
 
-                    <Question
-                      title="特價"
-                      name="promo_price"
-                      value={feature.promo_price}
-                      handleChange={handleFeatureChange(feature.id)}
-                    />
-                    <Question
-                      title="庫存"
-                      name="stock"
-                      value={feature.stock}
-                      handleChange={handleFeatureChange(feature.id)}
-                    />
-                    <Error error={error}>{feature.errorMessage}</Error>
-                    <AdminBtn>
-                      <DeleteButton
-                        onClick={() => {
-                          handleFeatureDelete(feature.id, feature.ProductId);
-                        }}
-                      >
-                        刪除
-                      </DeleteButton>
-                      <SubmitButton
-                        onClick={() => {
-                          handleFeatureEdit(feature.id);
-                        }}
-                      >
-                        編輯
-                      </SubmitButton>
-                    </AdminBtn>
-                  </FeatureItem>
-                ))}
-              {!add && (
-                <FeatureItem>
-                  <AdminBtn>
-                    <AddButton
-                      onClick={() => {
-                        setAdd(true);
-                      }}
-                    >
-                      新增規格
-                    </AddButton>
-                  </AdminBtn>
-                </FeatureItem>
-              )}
-              {add && (
-                <FeatureItem>
-                  <Question
-                    title="規格名稱"
-                    name="name"
-                    value={feature.name}
-                    handleChange={handleNewFeatureChange}
-                  />
-                  <Question
-                    title="原價"
-                    name="price"
-                    value={feature.price}
-                    handleChange={handleNewFeatureChange}
-                  />
+                        <Question
+                          title="特價"
+                          name="promo_price"
+                          value={feature.promo_price}
+                          handleChange={handleFeatureChange(feature.id)}
+                        />
+                        <Question
+                          title="庫存"
+                          name="stock"
+                          value={feature.stock}
+                          handleChange={handleFeatureChange(feature.id)}
+                        />
+                        <Error error={error}>{feature.errorMessage}</Error>
+                        <AdminBtn>
+                          <DeleteButton
+                            onClick={() => {
+                              handleFeatureDelete(
+                                feature.id,
+                                feature.ProductId
+                              );
+                            }}
+                          >
+                            刪除
+                          </DeleteButton>
+                          <SubmitButton
+                            onClick={() => {
+                              handleFeatureEdit(feature.id);
+                            }}
+                          >
+                            編輯
+                          </SubmitButton>
+                        </AdminBtn>
+                      </FeatureItem>
+                    ))}
+                  {!add && (
+                    <FeatureItem>
+                      <AdminBtn>
+                        <AddButton
+                          onClick={() => {
+                            setAdd(true);
+                          }}
+                        >
+                          新增規格
+                        </AddButton>
+                      </AdminBtn>
+                    </FeatureItem>
+                  )}
+                  {add && (
+                    <FeatureItem>
+                      <Question
+                        title="規格名稱"
+                        name="name"
+                        value={feature.name}
+                        handleChange={handleNewFeatureChange}
+                      />
+                      <Question
+                        title="原價"
+                        name="price"
+                        value={feature.price}
+                        handleChange={handleNewFeatureChange}
+                      />
 
-                  <Question
-                    title="特價"
-                    name="promo_price"
-                    value={feature.promo_price}
-                    handleChange={handleNewFeatureChange}
-                  />
-                  <Question
-                    title="庫存"
-                    name="stock"
-                    value={feature.stock}
-                    handleChange={handleNewFeatureChange}
-                  />
-                  <Error error={error}>{feature.errorMessage}</Error>
-                  <AdminBtn>
-                    <SubmitButton
-                      onClick={() => {
-                        handleFeatureAdd(product.id);
-                      }}
-                    >
-                      提交
-                    </SubmitButton>
-                  </AdminBtn>
-                </FeatureItem>
-              )}
-            </AdminFeature>
-          </ProductContent>
-        </ProductDesc>
-      </Product>
+                      <Question
+                        title="特價"
+                        name="promo_price"
+                        value={feature.promo_price}
+                        handleChange={handleNewFeatureChange}
+                      />
+                      <Question
+                        title="庫存"
+                        name="stock"
+                        value={feature.stock}
+                        handleChange={handleNewFeatureChange}
+                      />
+                      <Error error={error}>{feature.errorMessage}</Error>
+                      <AdminBtn>
+                        <SubmitButton
+                          onClick={() => {
+                            handleFeatureAdd(product.id);
+                          }}
+                        >
+                          提交
+                        </SubmitButton>
+                      </AdminBtn>
+                    </FeatureItem>
+                  )}
+                </AdminFeature>
+              </ProductContent>
+            </ProductDesc>
+          </Product>
+        </>
+      )}
     </Content>
   );
 }

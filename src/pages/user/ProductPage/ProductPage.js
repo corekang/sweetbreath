@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import plusCircleOutlined from "@iconify-icons/ant-design/plus-circle-outlined";
 import minusCircleOutlined from "@iconify-icons/ant-design/minus-circle-outlined";
 import { getProduct, getCategory } from "../../../webAPI/productAPI";
+import { LoadingContext } from "../../../contexts";
+import Loading from "../../../components/Loading";
 import {
   Content,
   CategoryBar,
@@ -30,7 +32,9 @@ import {
   AddToCart,
   Button,
 } from "./style";
+
 export default function ProductPage() {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const { id } = useParams();
   const [categories, setCategories] = useState([]);
@@ -40,6 +44,7 @@ export default function ProductPage() {
   const [errorMessage, setErrorMessage] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     getCategory().then((ans) => {
       setCategories(ans.data);
     });
@@ -51,8 +56,9 @@ export default function ProductPage() {
       const { CategoryId, id, image, info, name } = res.data;
       setProduct({ CategoryId, id, image, info, name });
       setFeature(features);
+      setIsLoading(false);
     });
-  }, []);
+  }, [setIsLoading]);
 
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("cart")) || [];
@@ -131,75 +137,81 @@ export default function ProductPage() {
 
   return (
     <Content>
-      {product && (
-        <CategoryBar>
-          <Caption1>
-            {categories.length > 0 &&
-              categories.filter(
-                (category) => category.id === product.CategoryId
-              )[0].name}
-          </Caption1>
-          <Caption2>{product.name}</Caption2>
-        </CategoryBar>
-      )}
-      {product && (
-        <Product>
-          <ProductImage>
-            <img src={product.image} alt="product"></img>
-          </ProductImage>
-          <ProductDesc>
-            <ProductHead>
-              <ProductTitle>
-                <ProductName>{product.name}</ProductName>
-                <AddToLove>
-                  <span>❤</span>
-                </AddToLove>
-              </ProductTitle>
-              <ProductContent>{product.info}</ProductContent>
-            </ProductHead>
-            {feature.map((featureItem) => (
-              <FeatureList key={featureItem.id}>
-                <Feature>
-                  <FeatureName>{featureItem.name}</FeatureName>
-                  <ProductPrices>
-                    <ProductPromoPrice>
-                      {featureItem.promo_price
-                        ? "$" + featureItem.promo_price
-                        : "$" + featureItem.price}
-                    </ProductPromoPrice>
-                    {featureItem.promo_price ? (
-                      <ProductPrice>${featureItem.price} </ProductPrice>
-                    ) : (
-                      ""
-                    )}
-                  </ProductPrices>
-                </Feature>
-                <ProductCounter>
-                  <ProductStorage>庫存：{featureItem.stock}</ProductStorage>
-                  <CounterArea>
-                    <CounterIcon
-                      icon={minusCircleOutlined}
-                      onClick={() => {
-                        handleClickDown(featureItem.id);
-                      }}
-                    ></CounterIcon>
-                    <span>{featureItem.number}</span>
-                    <CounterIcon
-                      icon={plusCircleOutlined}
-                      onClick={() => {
-                        handleClickUp(featureItem.id, featureItem.stock);
-                      }}
-                    ></CounterIcon>
-                  </CounterArea>
-                </ProductCounter>
-              </FeatureList>
-            ))}
-            <Error errorMessage={errorMessage}>請輸入數量</Error>
-            <AddToCart>
-              <Button onClick={handleAddToCart}>加入購物車</Button>
-            </AddToCart>
-          </ProductDesc>
-        </Product>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          {product && (
+            <CategoryBar>
+              <Caption1>
+                {categories.length > 0 &&
+                  categories.filter(
+                    (category) => category.id === product.CategoryId
+                  )[0].name}
+              </Caption1>
+              <Caption2>{product.name}</Caption2>
+            </CategoryBar>
+          )}
+          {product && (
+            <Product>
+              <ProductImage>
+                <img src={product.image} alt="product"></img>
+              </ProductImage>
+              <ProductDesc>
+                <ProductHead>
+                  <ProductTitle>
+                    <ProductName>{product.name}</ProductName>
+                    <AddToLove>
+                      <span>❤</span>
+                    </AddToLove>
+                  </ProductTitle>
+                  <ProductContent>{product.info}</ProductContent>
+                </ProductHead>
+                {feature.map((featureItem) => (
+                  <FeatureList key={featureItem.id}>
+                    <Feature>
+                      <FeatureName>{featureItem.name}</FeatureName>
+                      <ProductPrices>
+                        <ProductPromoPrice>
+                          {featureItem.promo_price
+                            ? "$" + featureItem.promo_price
+                            : "$" + featureItem.price}
+                        </ProductPromoPrice>
+                        {featureItem.promo_price ? (
+                          <ProductPrice>${featureItem.price} </ProductPrice>
+                        ) : (
+                          ""
+                        )}
+                      </ProductPrices>
+                    </Feature>
+                    <ProductCounter>
+                      <ProductStorage>庫存：{featureItem.stock}</ProductStorage>
+                      <CounterArea>
+                        <CounterIcon
+                          icon={minusCircleOutlined}
+                          onClick={() => {
+                            handleClickDown(featureItem.id);
+                          }}
+                        ></CounterIcon>
+                        <span>{featureItem.number}</span>
+                        <CounterIcon
+                          icon={plusCircleOutlined}
+                          onClick={() => {
+                            handleClickUp(featureItem.id, featureItem.stock);
+                          }}
+                        ></CounterIcon>
+                      </CounterArea>
+                    </ProductCounter>
+                  </FeatureList>
+                ))}
+                <Error errorMessage={errorMessage}>請輸入數量</Error>
+                <AddToCart>
+                  <Button onClick={handleAddToCart}>加入購物車</Button>
+                </AddToCart>
+              </ProductDesc>
+            </Product>
+          )}
+        </>
       )}
     </Content>
   );

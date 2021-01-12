@@ -79,3 +79,10 @@ export const ErrorMessage = styled.div`
   color: ${theme.colors.mainPrimary};
   text-align: center;
 `;
+
+export const SubmitLoading = styled.div`
+  padding: 20px 0;
+  font-weight: 700;
+  color: ${(props) => props.theme.colors.neutralGrey};
+  text-align: center;
+`;
