@@ -6,7 +6,7 @@ import magnifying from "../icon/magnifying.png";
 import facebook from "../icon/facebook.png";
 import instagram from "../icon/instagram.png";
 import logout from "../icon/logout.png";
-import AuthContext from "../../contexts";
+import { AuthContext, LoadingContext } from "../../contexts";
 import { setAuthToken } from "../../utils";
 import { Logo, NavButton, IconButton, InstagramButton } from "./button";
 import {
@@ -16,11 +16,13 @@ import {
   LogOutButton,
   IconContent,
   LogOutImg,
+  LoadingGetMe,
 } from "./style";
 
 export default function Navbar() {
   const location = useLocation();
   const history = useHistory();
+  const { isLoadingGetMe } = useContext(LoadingContext);
   const { user, setUser } = useContext(AuthContext);
   const handleLogout = () => {
     setAuthToken("");
@@ -47,17 +49,23 @@ export default function Navbar() {
       </IconBar>
       <IconBar>
         <IconButton route="/cart" icon={cart} />
-        {user ? (
-          <IconButton route="/member" icon={member} />
+        {isLoadingGetMe ? (
+          <LoadingGetMe>資料驗證中...</LoadingGetMe>
         ) : (
-          <IconButton route="/login" icon={member} />
-        )}
-        {user && (
-          <LogOutButton src={logout} onClick={handleLogout}>
-            <IconContent>
-              <LogOutImg src={logout} />
-            </IconContent>
-          </LogOutButton>
+          <>
+            {user ? (
+              <IconButton route="/member" icon={member} />
+            ) : (
+              <IconButton route="/login" icon={member} />
+            )}
+            {user && (
+              <LogOutButton src={logout} onClick={handleLogout}>
+                <IconContent>
+                  <LogOutImg src={logout} />
+                </IconContent>
+              </LogOutButton>
+            )}
+          </>
         )}
       </IconBar>
     </NavbarContent>

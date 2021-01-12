@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import AuthContext from "../../contexts";
+import { AuthContext, LoadingContext } from "../../contexts";
 import { setAuthToken } from "../../utils";
 import logout from "../icon/logout.png";
 import {
