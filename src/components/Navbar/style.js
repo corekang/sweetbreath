@@ -133,3 +133,16 @@ export const LogOutButton = styled.button`
   border: 0;
   background: none;
 `;
+
+export const LoadingGetMe = styled.div`
+  width: 115px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  font-weight: 700;
+  color: ${(props) => props.theme.colors.neutralDarkGrey};
+  ${MEDIA_QUERY} {
+    margin: 0;
+  }
+`;

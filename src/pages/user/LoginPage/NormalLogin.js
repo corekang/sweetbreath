@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { login, getMe } from "../../../webAPI/userAPI";
 import { setAuthToken } from "../../../utils";
-import AuthContext from "../../../contexts";
+import { AuthContext, LoadingContext } from "../../../contexts";
 import {
   LoginForm,
   LoginInput,
