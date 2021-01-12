@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import {
   Product,
@@ -10,6 +10,8 @@ import {
   BlankCard,
 } from "./style";
 import { getCategoryAndLaunchedProducts } from "../../../webAPI/productAPI";
+import { LoadingContext } from "../../../contexts";
+import Loading from "../../../components/Loading";
 
 function RecommendItem(props) {
   return (
@@ -26,9 +28,11 @@ function RecommendItem(props) {
 }
 
 export default function ProductRecommend() {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    setIsLoading(true);
     getCategoryAndLaunchedProducts()
       .then((res) => {
         const recommendProducts = res.data.filter(
@@ -41,22 +45,31 @@ export default function ProductRecommend() {
       })
       .then((res) => {
         setProducts(res);
+      })
+      .then(() => {
+        setIsLoading(false);
       });
-  }, []);
+  }, [setIsLoading]);
 
   return (
     <RecommendContent>
-      {products &&
-        products.map((product) => (
-          <RecommendItem
-            itemLink={`/product/${product.id}`}
-            itemImg={product.image}
-            itemName={product.name}
-            key={product.id}
-          />
-        ))}
-      <BlankCard />
-      <BlankCard />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          {products &&
+            products.map((product) => (
+              <RecommendItem
+                itemLink={`/product/${product.id}`}
+                itemImg={product.image}
+                itemName={product.name}
+                key={product.id}
+              />
+            ))}
+          <BlankCard />
+          <BlankCard />
+        </>
+      )}
     </RecommendContent>
   );
 }

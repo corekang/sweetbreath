@@ -10,19 +10,24 @@ import {
   LoginRefer,
   LoginReferLink,
   ErrorMessage,
+  SubmitLoading,
 } from "./style";
 
 export default function NormalLogin() {
   const { setUser } = useContext(AuthContext);
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState();
   const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setErrorMessage(null);
     login(username, password).then((data) => {
       if (data.ok === 0) {
+        setIsLoading(false);
         setUsername("");
         setPassword("");
         return setErrorMessage(data.message);
@@ -31,18 +36,22 @@ export default function NormalLogin() {
 
       getMe().then((response) => {
         if (response.ok !== 1) {
+          setIsLoading(false);
           setAuthToken(null);
           return setErrorMessage(response.toString());
         }
+
         setUser(response.data);
         history.push("/");
       });
     });
   };
+
   const handleInputFocus = () => {
     setErrorMessage(null);
     setPassword("");
   };
+
   return (
     <>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
@@ -60,7 +69,13 @@ export default function NormalLogin() {
           type="password"
           placeholder="密碼"
         />
-        <LoginButton>登入</LoginButton>
+        {isLoading ? (
+          <SubmitLoading>資料驗證中...</SubmitLoading>
+        ) : (
+          <>
+            <LoginButton>登入</LoginButton>
+          </>
+        )}
         <LoginRefer>
           <LoginReferLink to="#">忘記帳號密碼？</LoginReferLink>
           <LoginReferLink to="/register">還不是會員？加入會員</LoginReferLink>

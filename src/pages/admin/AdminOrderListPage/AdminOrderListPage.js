@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { OrderList } from "./OrderList";
 import { H1 } from "../../../constants/style";
 import {
@@ -10,13 +10,18 @@ import {
   StatusButton,
 } from "./style";
 import { getOrders, editOrder } from "../../../webAPI/orderAPI";
+import { LoadingContext } from "../../../contexts";
+import Loading from "../../../components/Loading";
 
 export default function AdminOrderListPage() {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const [orders, setOrders] = useState([]);
   const [selected, setSelected] = useState("all");
 
   useEffect(() => {
+    setIsLoading(true);
     getOrders().then((res) => {
+      setIsLoading(false);
       if (res.data) {
         setOrders(res.data.reverse());
       }
@@ -53,54 +58,60 @@ export default function AdminOrderListPage() {
   return (
     <OrdersListWrapper>
       <H1>訂單管理</H1>
-      <OrderStatusButtons>
-        <StatusButton
-          onClick={() => handleChangeFilter("all")}
-          selected={selected === "all"}
-        >
-          所有訂單
-        </StatusButton>
-        <StatusButton
-          onClick={() => handleChangeFilter("active")}
-          selected={selected === "active"}
-        >
-          處理中
-        </StatusButton>
-        <StatusButton
-          onClick={() => handleChangeFilter("done")}
-          selected={selected === "done"}
-        >
-          已完成
-        </StatusButton>
-        <StatusButton
-          onClick={() => handleChangeFilter("cancel")}
-          selected={selected === "cancel"}
-        >
-          已取消
-        </StatusButton>
-      </OrderStatusButtons>
-      <OrdersContainer border="1">
-        <OrderTableHeader>
-          <th>訂單號碼</th>
-          <th>訂單日期</th>
-          <th>訂單狀態</th>
-          <th>合計</th>
-          <th>操作</th>
-        </OrderTableHeader>
-        {!orders ? (
-          <NoOrder>查無訂單</NoOrder>
-        ) : (
-          orders.map((order) => (
-            <OrderList
-              key={order.id}
-              order={order}
-              orders={orders}
-              setOrders={setOrders}
-              handleEditOrder={handleEditOrder}
-            />
-          ))
-        )}
-      </OrdersContainer>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <OrderStatusButtons>
+            <StatusButton
+              onClick={() => handleChangeFilter("all")}
+              selected={selected === "all"}
+            >
+              所有訂單
+            </StatusButton>
+            <StatusButton
+              onClick={() => handleChangeFilter("active")}
+              selected={selected === "active"}
+            >
+              處理中
+            </StatusButton>
+            <StatusButton
+              onClick={() => handleChangeFilter("done")}
+              selected={selected === "done"}
+            >
+              已完成
+            </StatusButton>
+            <StatusButton
+              onClick={() => handleChangeFilter("cancel")}
+              selected={selected === "cancel"}
+            >
+              已取消
+            </StatusButton>
+          </OrderStatusButtons>
+          <OrdersContainer border="1">
+            <OrderTableHeader>
+              <th>訂單號碼</th>
+              <th>訂單日期</th>
+              <th>訂單狀態</th>
+              <th>合計</th>
+              <th>操作</th>
+            </OrderTableHeader>
+            {!orders ? (
+              <NoOrder>查無訂單</NoOrder>
+            ) : (
+              orders.map((order) => (
+                <OrderList
+                  key={order.id}
+                  order={order}
+                  orders={orders}
+                  setOrders={setOrders}
+                  handleEditOrder={handleEditOrder}
+                />
+              ))
+            )}
+          </OrdersContainer>
+        </>
+      )}
     </OrdersListWrapper>
   );
 }

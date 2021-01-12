@@ -46,3 +46,11 @@ export const ErrorMessage = styled.div`
   width: 350px;
   margin: 0 auto;
 `;
+
+export const SubmitLoading = styled.div`
+  padding: 20px 0;
+  height: 46px;
+  font-weight: 700;
+  color: ${(props) => props.theme.colors.neutralGrey};
+  text-align: center;
+`;
