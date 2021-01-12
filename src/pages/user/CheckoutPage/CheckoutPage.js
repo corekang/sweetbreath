@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
+import { LoadingContext } from "../../../contexts";
+import Loading from "../../../components/Loading";
 import { CheckoutList } from "./CheckoutList";
 import { ProgressBar } from "./ProgressBar";
 import { OrderList } from "./OrderList";
@@ -14,6 +16,7 @@ import { getUser } from "../../../webAPI/userAPI";
 import { creatOrder } from "../../../webAPI/orderAPI";
 
 export default function CheckoutPage() {
+  const { isLoading, setIsLoading } = useContext(LoadingContext);
   const history = useHistory();
   const [userId, serUserId] = useState("");
   const [fullName, setFullName] = useState("");
@@ -27,6 +30,7 @@ export default function CheckoutPage() {
   const cart = JSON.parse(localStorage.getItem("cart"));
 
   useEffect(() => {
+    setIsLoading(true);
     // 讀取購物車
     if (cart) {
       setOrderItem(cart);
@@ -39,11 +43,13 @@ export default function CheckoutPage() {
 
     // 驗證登入
     if (!token) {
+      setIsLoading(false);
       alert("請先登入");
       history.push("/login");
     } else {
       // 撈取會員資料
       getUser().then((res) => {
+        setIsLoading(false);
         const data = res.data;
         data.fullname && setFullName(data.fullname);
         data.adress && setAddress(data.adress);
@@ -118,28 +124,34 @@ export default function CheckoutPage() {
 
   return (
     <CheckoutContainer>
-      <CheckoutHeader>
-        <CheckoutTitle>結帳</CheckoutTitle>
-        <ProgressBar />
-      </CheckoutHeader>
-      <CheckoutContent>
-        <CheckoutList
-          handleFullName={handleFullName}
-          handlePostalCode={handlePostalCode}
-          handleAddress={handleAddress}
-          handlePhone={handlePhone}
-          handleEmail={handleEmail}
-          handleSubmit={handleSubmit}
-          fullName={fullName}
-          postalCode={postalCode}
-          address={address}
-          phone={phone}
-          orderItem={orderItem}
-          email={email}
-          userId={userId}
-        />
-        <OrderList orderItem={orderItem} totalPrice={totalPrice} />
-      </CheckoutContent>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <CheckoutHeader>
+            <CheckoutTitle>結帳</CheckoutTitle>
+            <ProgressBar />
+          </CheckoutHeader>
+          <CheckoutContent>
+            <CheckoutList
+              handleFullName={handleFullName}
+              handlePostalCode={handlePostalCode}
+              handleAddress={handleAddress}
+              handlePhone={handlePhone}
+              handleEmail={handleEmail}
+              handleSubmit={handleSubmit}
+              fullName={fullName}
+              postalCode={postalCode}
+              address={address}
+              phone={phone}
+              orderItem={orderItem}
+              email={email}
+              userId={userId}
+            />
+            <OrderList orderItem={orderItem} totalPrice={totalPrice} />
+          </CheckoutContent>
+        </>
+      )}
     </CheckoutContainer>
   );
 }
