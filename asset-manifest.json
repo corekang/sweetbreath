@@ -1,33 +1,32 @@
 {
   "files": {
-    "main.css": "/static/css/main.0f5146e8.chunk.css",
-    "main.js": "/static/js/main.5562934a.chunk.js",
-    "main.js.map": "/static/js/main.5562934a.chunk.js.map",
+    "main.css": "/static/css/main.f086692e.chunk.css",
+    "main.js": "/static/js/main.06d3a906.chunk.js",
+    "main.js.map": "/static/js/main.06d3a906.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.bc80a1ae.js",
     "runtime-main.js.map": "/static/js/runtime-main.bc80a1ae.js.map",
     "static/css/2.165ff965.chunk.css": "/static/css/2.165ff965.chunk.css",
-    "static/js/2.8c284718.chunk.js": "/static/js/2.8c284718.chunk.js",
-    "static/js/2.8c284718.chunk.js.map": "/static/js/2.8c284718.chunk.js.map",
+    "static/js/2.d6aee1ad.chunk.js": "/static/js/2.d6aee1ad.chunk.js",
+    "static/js/2.d6aee1ad.chunk.js.map": "/static/js/2.d6aee1ad.chunk.js.map",
     "static/js/3.a96536f5.chunk.js": "/static/js/3.a96536f5.chunk.js",
     "static/js/3.a96536f5.chunk.js.map": "/static/js/3.a96536f5.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.165ff965.chunk.css.map": "/static/css/2.165ff965.chunk.css.map",
-    "static/css/main.0f5146e8.chunk.css.map": "/static/css/main.0f5146e8.chunk.css.map",
-    "static/js/2.8c284718.chunk.js.LICENSE.txt": "/static/js/2.8c284718.chunk.js.LICENSE.txt",
+    "static/css/main.f086692e.chunk.css.map": "/static/css/main.f086692e.chunk.css.map",
+    "static/js/2.d6aee1ad.chunk.js.LICENSE.txt": "/static/js/2.d6aee1ad.chunk.js.LICENSE.txt",
     "static/media/facebookLogin.47c6df6c.png": "/static/media/facebookLogin.47c6df6c.png",
     "static/media/googleLogin.e8514c2b.png": "/static/media/googleLogin.e8514c2b.png",
     "static/media/instagram.bb6713ca.png": "/static/media/instagram.bb6713ca.png",
     "static/media/magnifying.1eb0a6de.png": "/static/media/magnifying.1eb0a6de.png",
     "static/media/member.05d0404a.png": "/static/media/member.05d0404a.png",
     "static/media/slick-theme.css": "/static/media/slick.c94f7671.ttf",
-    "static/media/sweetBreath.bfc9597b.png": "/static/media/sweetBreath.bfc9597b.png",
-    "static/media/sweetBreath_line.206e0998.png": "/static/media/sweetBreath_line.206e0998.png"
+    "static/media/sweetBreath_line.b80bc7fb.png": "/static/media/sweetBreath_line.b80bc7fb.png"
   },
   "entrypoints": [
     "static/js/runtime-main.bc80a1ae.js",
     "static/css/2.165ff965.chunk.css",
-    "static/js/2.8c284718.chunk.js",
-    "static/css/main.0f5146e8.chunk.css",
-    "static/js/main.5562934a.chunk.js"
+    "static/js/2.d6aee1ad.chunk.js",
+    "static/css/main.f086692e.chunk.css",
+    "static/js/main.06d3a906.chunk.js"
   ]
 }
