@@ -46,67 +46,76 @@ export function OrderList({ orders, setOrders, order, handleEditOrder }) {
   // 訂單狀態
   const handleIsDoneOrder = () => {
     if (order.is_cancel) return;
-    setOrders(
-      orders.map((rawOrder) => {
-        if (rawOrder.order_number !== order.order_number) return rawOrder;
-        return {
-          ...rawOrder,
-          is_done: !rawOrder.is_done,
-        };
-      })
-    );
-    const editData = {
-      orderNumber: order.order_number,
-      isPaid: order.is_paid,
-      isSent: order.is_sent,
-      isDone: !order.is_done,
-      isCancel: order.is_cancel,
-    };
-    handleEditOrder(editData);
+
+    if (window.confirm("確定修改此筆訂單「已完成/未完成」嗎？")) {
+      setOrders(
+        orders.map((rawOrder) => {
+          if (rawOrder.order_number !== order.order_number) return rawOrder;
+          return {
+            ...rawOrder,
+            is_done: !rawOrder.is_done,
+          };
+        })
+      );
+      const editData = {
+        orderNumber: order.order_number,
+        isPaid: order.is_paid,
+        isSent: order.is_sent,
+        isDone: !order.is_done,
+        isCancel: order.is_cancel,
+      };
+      handleEditOrder(editData);
+    }
   };
 
   // 付款狀態
   const handleIsPaidOrder = () => {
     if (order.is_cancel) return;
-    setOrders(
-      orders.map((rawOrder) => {
-        if (rawOrder.order_number !== order.order_number) return rawOrder;
-        return {
-          ...rawOrder,
-          is_paid: !rawOrder.is_paid,
-        };
-      })
-    );
-    const editData = {
-      orderNumber: order.order_number,
-      isPaid: !order.is_paid,
-      isSent: order.is_sent,
-      isDone: order.is_done,
-      isCancel: order.is_cancel,
-    };
-    handleEditOrder(editData);
+
+    if (window.confirm("確定修改此筆訂單「已付款/未付款」嗎？")) {
+      setOrders(
+        orders.map((rawOrder) => {
+          if (rawOrder.order_number !== order.order_number) return rawOrder;
+          return {
+            ...rawOrder,
+            is_paid: !rawOrder.is_paid,
+          };
+        })
+      );
+      const editData = {
+        orderNumber: order.order_number,
+        isPaid: !order.is_paid,
+        isSent: order.is_sent,
+        isDone: order.is_done,
+        isCancel: order.is_cancel,
+      };
+      handleEditOrder(editData);
+    }
   };
 
   // 發貨狀態
   const handleIsSentOrder = () => {
     if (order.is_cancel) return;
-    setOrders(
-      orders.map((rawOrder) => {
-        if (rawOrder.order_number !== order.order_number) return rawOrder;
-        return {
-          ...rawOrder,
-          is_sent: !rawOrder.is_sent,
-        };
-      })
-    );
-    const editData = {
-      orderNumber: order.order_number,
-      isPaid: order.is_paid,
-      isSent: !order.is_sent,
-      isDone: order.is_done,
-      isCancel: order.is_cancel,
-    };
-    handleEditOrder(editData);
+
+    if (window.confirm("確定修改此筆訂單「已出貨/未出貨」嗎？")) {
+      setOrders(
+        orders.map((rawOrder) => {
+          if (rawOrder.order_number !== order.order_number) return rawOrder;
+          return {
+            ...rawOrder,
+            is_sent: !rawOrder.is_sent,
+          };
+        })
+      );
+      const editData = {
+        orderNumber: order.order_number,
+        isPaid: order.is_paid,
+        isSent: !order.is_sent,
+        isDone: order.is_done,
+        isCancel: order.is_cancel,
+      };
+      handleEditOrder(editData);
+    }
   };
 
   // 展開明細
